@@ -1,0 +1,29 @@
+t ls-files --others --exclude-from=.git/info/exclude
+# Lines that start with '#' are comments.
+# For a project mostly in C, the following would be a good set of
+# exclude patterns (uncomment them if you want to use them):
+# *.[oa]
+# *~
+
+GTAGS
+
+GRTAGS
+
+GPATH
+
+view/__pycache__/
+controller/__pycache__/
+model/__pycache__/
+model/visionprotocol/cython_visionprotocol/visionprotocol.egg-info
+model/visionprotocol/cython_visionprotocol/build_linux.sh
+model/visionprotocol/cython_visionprotocol/build_windows.ps1
+model/visionprotocol/cython_visionprotocol/__pycache__/
+model/visionprotocol/cython_visionprotocol/build/
+model/visionprotocol/build/linux-aarch64/CMakeFiles/
+model/visionprotocol/build/linux-x86_64/CMakeFiles/
+model/visionprotocol/build/windows-x86_64/CMakeFiles/
+test_files/
+test_results/
+.vscode
+.vs
+__pycache__

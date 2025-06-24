@@ -1,0 +1,96 @@
+'''
+ * Copyright Telechips Inc.
+ *
+ * TCC Version 1.0
+ *
+ * This source code contains confidential information of Telechips.
+ *
+ * Any unauthorized use without a written permission of Telechips including not
+ * limited to re-distribution in source or binary form is strictly prohibited.
+ *
+ * This source code is provided "AS IS" and nothing contained in this source code
+ * shall constitute any express or implied warranty of any kind, including without
+ * limitation, any warranty of merchantability, fitness for a particular purpose
+ * or non-infringement of any patent, copyright or other third party intellectual
+ * property right.
+ * No warranty is made, express or implied, regarding the information's accuracy,
+ * completeness, or performance.
+ *
+ * In no event shall Telechips be liable for any claim, damages or other
+ * liability arising from, out of or in connection with this source code or
+ * the use in the source code.
+ *
+ * This source code is provided subject to the terms of a Mutual Non-Disclosure
+ * Agreement between Telechips and Company.
+'''
+
+# messages
+VISION_MSG_EVENT_WAKEUP = 1
+
+VISION_MSG_REQUEST_VERSION = 2
+VISION_MSG_RESPONSE_VERSION = 3
+VISION_MSG_REQUEST_STREAMINFO = 4
+VISION_MSG_RESPONSE_STREAMINFO = 5
+VISION_MSG_EVENT_STREAMINFO = 6
+
+VISION_MSG_REQUEST_NPU_INFERENCE_TIME = 7
+VISION_MSG_RESPONSE_NPU_INFERENCE_TIME = 8
+VISION_MSG_EVENT_NPU_INFERENCE_TIME = 9
+
+
+VISION_MSG_REQUEST_NPU_UTILIZATION = 10
+VISION_MSG_RESPONSE_NPU_UTILIZATION = 11
+VISION_MSG_EVENT_NPU_UTILIZATION = 12
+
+VISION_MSG_REQUEST_NPU_INFERENCE_OD_BOUNDINGBOX = 13
+VISION_MSG_RESPONSE_NPU_INFERENCE_OD_BOUNDINGBOX = 14
+VISION_MSG_EVENT_NPU_INFERENCE_OD_BOUNDINGBOX = 15
+
+VISION_MSG_REQUEST_NPU_INFERENCE_LD_RESULT = 16
+VISION_MSG_RESPONSE_NPU_INFERENCE_LD_RESULT = 17
+VISION_MSG_EVENT_NPU_INFERENCE_LD_RESULT = 18
+
+VISION_MSG_REQUEST_NPU_INFERENCE_HBA_RESULT = 19
+VISION_MSG_RESPONSE_NPU_INFERENCE_HBA_RESULT = 20
+VISION_MSG_EVENT_NPU_INFERENCE_HBA_RESULT = 21
+
+VISION_MSG_REQUEST_NPU_INFERENCE_TSR_RESULT = 22
+VISION_MSG_RESPONSE_NPU_INFERENCE_TSR_RESULT = 23
+VISION_MSG_EVENT_NPU_INFERENCE_TSR_RESULT = 24
+
+
+VISION_MSG_REQUEST_CPU_UTILIZATION = 25
+VISION_MSG_RESPONSE_CPU_UTILIZATION = 26
+VISION_MSG_EVENT_CPU_UTILIZATION = 27
+
+VISION_MSG_REQUEST_SDK_MEM_USAGE = 28
+VISION_MSG_RESPONSE_SDK_MEM_USAGE = 29
+VISION_MSG_EVENT_SDK_MEM_USAGE = 30
+
+VISION_MSG_REQUEST_SDK_VIDEO_FPS = 31
+VISION_MSG_RESPONSE_SDK_VIDEO_FPS = 32
+VISION_MSG_EVENT_SDK_VIDEO_FPS = 33
+
+VISION_MSG_REQUEST_SDK_VIDEO_IMAGE_INFO = 34
+VISION_MSG_RESPONSE_SDK_VIDEO_IMAGE_INFO = 35
+VISION_MSG_EVENT_SDK_VIDEO_IMAGE_INFO = 36
+
+VISION_MSG_REQUEST_STREAM_START = 37
+VISION_MSG_RESPONSE_STREAM_START = 38
+VISION_MSG_EVENT_STREAM_START = 39
+
+
+VISION_MSG_REQUEST_STREAM_STOP = 40
+VISION_MSG_RESPONSE_STREAM_STOP = 41
+VISION_MSG_EVENT_STREAM_STOP = 42
+
+VISION_MSG_EVENT_RESULT_STARTSTOP = 43
+VISION_MSG_EVENT_RESULT_DATA_JSON = 44
+VISION_MSG_EVENT_RESULT_PERF_JSON = 45
+
+VISION_MSG_EVENT_DEWARP_STATUS=46
+VISION_MSG_EVENT_DEWARP_DATA_MSG=47
+
+VISION_MSG_EVENT_NPU_INFERENCE_DMS_RESULT = 48
+
+VISION_MSG_EVENT_NPU_DRIVER_USAGE = 49
