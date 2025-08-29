@@ -24,8 +24,6 @@
  * Agreement between Telechips and Company.
 '''
 
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from . VisionProtocol import *
-from . PostProcessor import *
-from . YoloToCoCo import *
+from .VisionProtocol import *
+from .PostProcessor import *
+from .YoloToCoCo import *

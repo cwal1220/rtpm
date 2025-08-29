@@ -1,34 +1,30 @@
-'''
- * Copyright Telechips Inc.
- *
- * TCC Version 1.0
- *
- * This source code contains confidential information of Telechips.
- *
- * Any unauthorized use without a written permission of Telechips including not
- * limited to re-distribution in source or binary form is strictly prohibited.
- *
- * This source code is provided "AS IS" and nothing contained in this source code
- * shall constitute any express or implied warranty of any kind, including without
- * limitation, any warranty of merchantability, fitness for a particular purpose
- * or non-infringement of any patent, copyright or other third party intellectual
- * property right.
- * No warranty is made, express or implied, regarding the information's accuracy,
- * completeness, or performance.
- *
- * In no event shall Telechips be liable for any claim, damages or other
- * liability arising from, out of or in connection with this source code or
- * the use in the source code.
- *
- * This source code is provided subject to the terms of a Mutual Non-Disclosure
- * Agreement between Telechips and Company.
-'''
-
 import logging
+import sys
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-formatter = logging.Formatter('[%(levelname)s][%(filename)s::%(funcName)s] %(message)s')
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
+def setup_logger():
+    logger = logging.getLogger('RTPM_APP')
+    logger.setLevel(logging.DEBUG)
+
+    # Avoid adding duplicate handlers
+    if logger.hasHandlers():
+        return logger
+
+    # Create handlers
+    stdout_handler = logging.StreamHandler(sys.stdout)
+    stdout_handler.setLevel(logging.INFO)
+    file_handler = logging.FileHandler('rtpm_app.log')
+    file_handler.setLevel(logging.DEBUG)
+
+    # Create formatters and add it to handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    stdout_handler.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
+
+    # Add handlers to the logger
+    logger.addHandler(stdout_handler)
+    logger.addHandler(file_handler)
+
+    return logger
+
+# Setup logger instance
+logger = setup_logger()

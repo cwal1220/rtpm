@@ -25,7 +25,7 @@
 '''
 
 from datetime import datetime
-from PyQt5.QtCore import *
+from PySide6.QtCore import QThread
 import numpy as np
 import cv2
 import json

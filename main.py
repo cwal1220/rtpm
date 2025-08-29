@@ -26,9 +26,10 @@
 
 from model import *
 from view import *
-from controller import *
+from controller.main_view_model import MainViewModel
 import sys
 import yaml
+from PySide6.QtWidgets import QApplication, QWidget
 
 _VERSION_MAJOR = 2
 _VERSION_MINOR = 0
@@ -36,40 +37,37 @@ _VERSION_PATCH = 5
 _VERSION = f"{_VERSION_MAJOR}.{_VERSION_MINOR}.{_VERSION_PATCH}"
 
 class Main(QWidget):
-	def __init__(self):
-		super(Main, self).__init__()
+    def __init__(self):
+        super(Main, self).__init__()
 
-		self.visionProtocol = None	# variable
-		self.postProcessor = None	# variable
-		self.settingData = None
-		try:
-			with open('Setting.yaml') as f:
-				self.settingData = yaml.load(f, Loader=yaml.FullLoader)
-		except:
-			# default setting
-			self.settingData = {
-					'Projection': {'width': 1280, 'height': 720, 'channel': 3}, 
-					'Injection'	: {'width': 1280, 'height': 720, 'channel': 3}, 
-					'DetectType': ['NPU0', 'NPU1']
-					}
+        self.settingData = None
+        try:
+            with open('Setting.yaml') as f:
+                self.settingData = yaml.load(f, Loader=yaml.FullLoader)
+        except:
+            # default setting
+            self.settingData = {
+                    'Projection': {'width': 1280, 'height': 720, 'channel': 3}, 
+                    'Injection'	: {'width': 1280, 'height': 720, 'channel': 3}, 
+                    'DetectType': ['NPU0', 'NPU1']
+                    }
 
-		self.initViews()
-		self.initControllers()
+        self.init_views()
+        self.init_view_model()
 
-	# Initialize Controller
-	def initControllers(self):
-		self.rtpmController = RtpmController(self, self.settingData)
+    def init_view_model(self):
+        self.viewModel = MainViewModel(self, self.settingData)
 
-	# Initialize View(GUI)
-	def initViews(self):
-		self.rtpmMainWidget = RtpmMainWidget(self.settingData)
+    def init_views(self):
+        self.rtpmMainWidget = RtpmMainWidget(self.settingData)
 
-	def start(self):
-		self.rtpmMainWidget.show()
-		self.rtpmMainWidget.resize(1400, 900) # default size
+    def start(self):
+        self.viewModel.connect_signals(self.rtpmMainWidget)
+        self.rtpmMainWidget.show()
+        self.rtpmMainWidget.resize(1400, 900) # default size
 
 if __name__ == '__main__':
-	app = QApplication([])
-	main = Main()
-	main.start()
-	sys.exit(app.exec_())
+    app = QApplication([])
+    main = Main()
+    main.start()
+    sys.exit(app.exec())

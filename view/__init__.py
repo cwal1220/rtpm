@@ -24,7 +24,5 @@
  * Agreement between Telechips and Company.
 '''
 
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
 # from . RtpmMainWidget import *
-from . RtpmMainTextWidget import *
+from .RtpmMainTextWidget import *

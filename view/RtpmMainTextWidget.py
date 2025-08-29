@@ -24,10 +24,10 @@
  * Agreement between Telechips and Company.
 '''
 
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5 import uic
+from PySide6.QtCore import *
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtUiTools import QUiLoader
 import sys
 from time import time
 class RtpmMainWidget(QWidget):
@@ -57,21 +57,21 @@ class RtpmMainWidget(QWidget):
 	fpsView
 	"""
 	# Widget event signal
-	rtpmStartStopSignal = pyqtSignal(bool, str, int, bool)
-	rtpmFrameLabelSizeSignal = pyqtSignal(int, int)
+	rtpmStartStopSignal = Signal(bool, str, int, bool)
+	rtpmFrameLabelSizeSignal = Signal(int, int)
 
 	# GUI update signal
-	updateImageSignal = pyqtSignal(list)
-	clearImageSignal = pyqtSignal()
-	updateProgressBarSignal = pyqtSignal(int, int)
-	clearProgressBarSignal = pyqtSignal()
-	clearAllGraphSignal = pyqtSignal()
-	updateCpuGraphSignal = pyqtSignal(int, int)
-	updateMemoryGraphSignal = pyqtSignal(int, int)
-	updateFpsGraphSignal = pyqtSignal(int, int)
-	updateNpuUsageSignal = pyqtSignal(int, tuple)
-	showMessageBoxSignal = pyqtSignal(str, str)
-	onUpdateResultPerfSignal = pyqtSignal(int, int, int)
+	updateImageSignal = Signal(list)
+	clearImageSignal = Signal()
+	updateProgressBarSignal = Signal(int, int)
+	clearProgressBarSignal = Signal()
+	clearAllGraphSignal = Signal()
+	updateCpuGraphSignal = Signal(int, int)
+	updateMemoryGraphSignal = Signal(int, int)
+	updateFpsGraphSignal = Signal(int, int)
+	updateNpuUsageSignal = Signal(int, tuple)
+	showMessageBoxSignal = Signal(str, str)
+	onUpdateResultPerfSignal = Signal(int, int, int)
 
 	def __init__(self, settingData):
 		'''
@@ -88,7 +88,7 @@ class RtpmMainWidget(QWidget):
 		None
 		'''
 		QWidget.__init__(self)
-		self.ui = uic.loadUi("view/RtpmMainTextWidget.ui", self)
+		self.ui = QUiLoader().load("view/RtpmMainTextWidget.ui", self)
 		
 		self.initMonitoringView(settingData)
 		self.initSlots()
@@ -243,37 +243,37 @@ class RtpmMainWidget(QWidget):
 				self.__dataEditList[idx1][idx2].display(0)
 
 	# Gui update slot
-	@pyqtSlot(int, int, int)
+	@Slot(int, int, int)
 	def onUpdateResultPerfSlot(self, index, infTimeValue, npuUtilValue):
 		self.__updateChart(0, index, infTimeValue)
 		self.__updateChart(1, index, npuUtilValue)
 
-	@pyqtSlot(int, int)
+	@Slot(int, int)
 	def onUpdateInferenceTimeGraphSlot(self, index, value):
 		self.__updateChart(0, index, value)
 
-	@pyqtSlot(int, int)	
+	@Slot(int, int)	
 	def onUpdateCpuGraphSlot(self, index, value):
 		self.__updateChart(2, index, value)
 
-	@pyqtSlot(int, int)	
+	@Slot(int, int)	
 	def onUpdateMemoryGraphSlot(self, index, value):
 		self.__updateChart(3, index, value)
 
-	@pyqtSlot(int, int)
+	@Slot(int, int)
 	def onUpdateFpsGraphSlot(self, index, value):
 		self.__updateChart(4, index, value)
 
-	@pyqtSlot(int, tuple)
+	@Slot(int, tuple)
 	def onUpdateNpuUsageGraphSlot(self, index, value):
 		for idx, percent in enumerate(value):
 			self.__updateChart(5, idx, percent)
 
-	@pyqtSlot()
+	@Slot()
 	def onClearAllGraphSlot(self):
 		self.__clearChart()
 
-	@pyqtSlot(int, int)
+	@Slot(int, int)
 	def onUpdateProgressBarSlot(self, currentFrame, totalFrame):
 		try:
 			self.frameCountEdit.setText(str(currentFrame) + ' / ' + str(totalFrame))
@@ -284,12 +284,12 @@ class RtpmMainWidget(QWidget):
 			self.frameCountEdit.setText('0 / 0')
 			self.playProgress.setValue(0)
 
-	@pyqtSlot()
+	@Slot()
 	def onClearProgressBarSlot(self):
 		self.frameCountEdit.setText('0 / 0')
 		self.playProgress.setValue(0)
 
-	@pyqtSlot(list)
+	@Slot(list)
 	def onUpdateImageSlot(self, frame):
 		# bgn = time()
 		inputMode = self.inputComboBox.currentIndex()
@@ -325,16 +325,16 @@ class RtpmMainWidget(QWidget):
 		except:
 			self.frameLabel.clear()
 
-	@pyqtSlot()
+	@Slot()
 	def onClearImageSlot(self):
 		self.frameLabel.clear()
 		self.__setEnableControlButton(True, False)
 
-	@pyqtSlot(str, str)
+	@Slot(str, str)
 	def onShowMessageBoxSlot(self, title, message):
 		self.__showMessageBox(title, message)
 
-	@pyqtSlot()
+	@Slot()
 	def onFileSelectButtonClicked(self):
 		filePath = ''
 		inputMode = self.inputComboBox.currentIndex()
@@ -349,7 +349,7 @@ class RtpmMainWidget(QWidget):
 		if filePath != '':
 			self.filePathEdit.setText(filePath)
 
-	@pyqtSlot()
+	@Slot()
 	def onStartButtonClicked(self):
 		filePath = self.filePathEdit.text()
 		self.__setEnableControlButton(False, True)
@@ -357,12 +357,12 @@ class RtpmMainWidget(QWidget):
 		inputIndex = self.inputComboBox.currentIndex() # 0 : Camera (EVB) / 1 : file / 2 : folder
 		self.rtpmStartStopSignal.emit(True, filePath, inputIndex, saveMode)
 
-	@pyqtSlot()
+	@Slot()
 	def onStopButtonClicked(self):
 		self.__setEnableControlButton(False, False)
 		self.rtpmStartStopSignal.emit(False, '', 0, True)
 
-	@pyqtSlot(int)
+	@Slot(int)
 	def onInputComboBoxIndexChanged(self, index):
 		self.filePathEdit.clear()
 		if index > 0:
