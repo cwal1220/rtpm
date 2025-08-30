@@ -24,7 +24,7 @@
  * Agreement between Telechips and Company.
 '''
 try: # rtpm
-    from model.visionprotocol.cython_visionprotocol import visionprotocol as vpm
+    from third_party.visionprotocol.cython_visionprotocol import visionprotocol as vpm
 except ImportError:
     import visionprotocol as vpm
 

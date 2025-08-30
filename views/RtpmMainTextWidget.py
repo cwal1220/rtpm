@@ -88,7 +88,7 @@ class RtpmMainWidget(QWidget):
 		None
 		'''
 		QWidget.__init__(self)
-		self.ui = QUiLoader().load("view/RtpmMainTextWidget.ui", self)
+		self.ui = QUiLoader().load("views/RtpmMainTextWidget.ui", self)
 		
 		# Create a layout for RtpmMainWidget and add self.ui to it
 		main_layout = QVBoxLayout(self)
@@ -188,7 +188,6 @@ class RtpmMainWidget(QWidget):
 	def __updateChart(self, key, index, value):
 		if key == "inference_time":
 			widgets = self.__performanceWidgets[key]
-			print('inf: ',index, value)
 			if index < len(widgets):
 				widgets[index].setText(f"{value} ms")
 		elif key == "npu_utilization":

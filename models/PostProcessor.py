@@ -59,14 +59,15 @@ class PostProcessor(QThread):
 			for lData in odResult:
 				try:
 					cId = lData['category_id']
+					color = self.colorList[cId % len(self.colorList)]
 					startPoint = (int(lData['bbox'][0]*drawRatioList[0]), int(lData['bbox'][1]*drawRatioList[1]))
 					endPoint = (int((lData['bbox'][0]+lData['bbox'][2])*drawRatioList[0]), int((lData['bbox'][1]+lData['bbox'][3])*drawRatioList[1]))
-					cv2.rectangle(frame, startPoint, endPoint, self.colorList[cId], 2)
+					cv2.rectangle(frame, startPoint, endPoint, color, 2)
 					if cId != 4:
-						cv2.putText(frame, '[{}][{:.1f}%] {:.1f}m'.format(lData['desc'], lData['score'], lData['distance']), (startPoint[0]-8, startPoint[1]-8), cv2.FONT_HERSHEY_SIMPLEX, 0.6, self.colorList[lData['category_id']], 2)
+						cv2.putText(frame, '[{}][{:.1f}%] {:.1f}m'.format(lData['desc'], lData['score'], lData['distance']), (startPoint[0]-8, startPoint[1]-8), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
 						lData['desc'] = ''
 					else:
-						cv2.putText(frame, '[{}][{:.1f}%]'.format(lData['desc'], lData['score']), (startPoint[0]-8, startPoint[1]-8), cv2.FONT_HERSHEY_SIMPLEX, 0.6, self.colorList[lData['category_id']], 2)
+						cv2.putText(frame, '[{}][{:.1f}%]'.format(lData['desc'], lData['score']), (startPoint[0]-8, startPoint[1]-8), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
 						lData['distance'] = 0.0
 					lData['score'] = lData['score']/100.0
 				except Exception as e:

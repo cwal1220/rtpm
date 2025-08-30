@@ -24,4 +24,9 @@
  * Agreement between Telechips and Company.
 '''
 
-from .main_view_model import MainViewModel
+class ISerializable:
+    def GetBytes(self):  # Byte 배열로 반환
+        pass
+
+    def GetSize():  # Byte 배열의 크기를 반환
+        pass

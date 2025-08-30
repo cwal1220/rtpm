@@ -33,15 +33,15 @@ from PySide6.QtCore import QThread, Slot, Signal
 import numpy as np
 
 # Load C based Vision Protocol Library v2.x.x
-from model.visionprotocol.cython_visionprotocol.vision_api import *
+from third_party.visionprotocol.cython_visionprotocol.vision_api import *
 
-from msg import msginfo
-from msg.enums import ResultType, PerformanceDataType
-from msg.logger import logger
-from msg.CpuUtilization import CpuUtilizationClass
-from msg.SdkMemUsage import SdkMemUsageClass
-from msg.SdkNpuUsage import SdkNpuUsageClass
-from msg.JsonResultParser import JsonResultParser
+from data_structures import msginfo
+from data_structures.enums import ResultType, PerformanceDataType
+from utils.logger import logger
+from data_structures.CpuUtilization import CpuUtilizationClass
+from data_structures.SdkMemUsage import SdkMemUsageClass
+from data_structures.SdkNpuUsage import SdkNpuUsageClass
+from data_structures.JsonResultParser import JsonResultParser
 
 
 class VisionProtocol(QThread):

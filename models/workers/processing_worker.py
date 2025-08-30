@@ -5,7 +5,7 @@ import json
 import os
 import sys
 from numpy import frombuffer
-from msg.logger import logger
+from utils.logger import logger
 
 class WorkerConfig:
     """A data class to hold configuration for the processing worker."""

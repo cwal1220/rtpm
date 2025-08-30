@@ -39,7 +39,7 @@ QLabel {
     font-size: 10pt;
 }
 
-QLabel[objectName$="ValueLabel"] { /* Targets labels ending with "ValueLabel" */
+QLabel[objectName$=&quot;ValueLabel&quot;] { /* Targets labels ending with &quot;ValueLabel&quot; */
     font-size: 18pt; /* Reduced font size */
     font-weight: bold;
     color: #66BB6A; /* Softer green */
@@ -137,9 +137,9 @@ QCheckBox {
 }
 </string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,1">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="6,1">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
+    <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0">
      <item>
       <widget class="QGroupBox" name="toolControllerGroup">
        <property name="sizePolicy">

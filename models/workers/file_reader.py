@@ -5,7 +5,7 @@ from PIL import Image
 from numpy import ravel, asarray
 import time
 import sys
-from msg.logger import logger
+from utils.logger import logger
 
 class RtpmFileReader(QThread):
     reader_stopped = Signal()

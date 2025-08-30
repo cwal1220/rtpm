@@ -4,7 +4,7 @@ import cv2
 import os
 import json
 import time
-from msg.logger import logger
+from utils.logger import logger
 
 class RtpmImageSaver(QThread):
     def __init__(self):

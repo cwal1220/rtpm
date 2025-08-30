@@ -25,9 +25,14 @@
 '''
 
 from PySide6.QtCore import QObject, Signal, Slot
-from model import VisionProtocol, PostProcessor
-from model.workers import RtpmFileReader, RtpmDataUpdater, RtpmImageSaver, RtpmVideoRecorder
-from model.workers.processing_worker import ProcessingWorker, WorkerConfig
+from models.VisionProtocol import VisionProtocol
+from models.PostProcessor import PostProcessor
+from models.workers.file_reader import RtpmFileReader
+from models.workers.data_updater import RtpmDataUpdater
+from models.workers.image_saver import RtpmImageSaver
+from models.workers.video_recorder import RtpmVideoRecorder
+from models.workers.processing_worker import ProcessingWorker, WorkerConfig
+from data_structures.enums import PerformanceDataType, ResultType
 
 from datetime import datetime
 import os

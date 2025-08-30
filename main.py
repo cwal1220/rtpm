@@ -24,9 +24,9 @@
  * Agreement between Telechips and Company.
 '''
 
-from model import *
-from view import *
-from controller.main_view_model import MainViewModel
+from models import *
+from views import *
+from view_models.main_view_model import MainViewModel
 import sys
 import yaml
 from PySide6.QtWidgets import QApplication, QWidget
@@ -42,7 +42,7 @@ class Main(QWidget):
 
         self.settingData = None
         try:
-            with open('Setting.yaml') as f:
+            with open('config/Setting.yaml') as f:
                 self.settingData = yaml.load(f, Loader=yaml.FullLoader)
         except:
             # default setting

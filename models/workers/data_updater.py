@@ -1,7 +1,7 @@
 from PySide6.QtCore import QThread, Signal
 import time
-from msg.enums import PerformanceDataType
-from msg.logger import logger
+from data_structures.enums import PerformanceDataType
+from utils.logger import logger
 
 class RtpmDataUpdater(QThread):
     inference_time_updated = Signal(int, int, int)
