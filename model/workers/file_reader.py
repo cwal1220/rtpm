@@ -3,7 +3,7 @@ import os
 import cv2
 from PIL import Image
 from numpy import ravel, asarray
-from time import time
+import time
 import sys
 from msg.logger import logger
 

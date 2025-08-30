@@ -24,7 +24,7 @@
  * Agreement between Telechips and Company.
 '''
 
-from PySide6.QtCore import *
+from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from PySide6.QtUiTools import QUiLoader
@@ -95,8 +95,8 @@ class RtpmMainWidget(QWidget):
 
 	def resizeEvent(self, a0: QResizeEvent) -> None:
 		# print(a0.size())
-		# print(self.frameLabel.width(), self.frameLabel.height())
-		self.rtpmFrameLabelSizeSignal.emit(self.frameLabel.width(), self.frameLabel.height())
+		# print(self.ui.frameLabel.width(), self.ui.frameLabel.height())
+		self.rtpmFrameLabelSizeSignal.emit(self.ui.frameLabel.width(), self.ui.frameLabel.height())
 
 	def initSlots(self):
 		'''
@@ -124,10 +124,10 @@ class RtpmMainWidget(QWidget):
 		self.updateNpuUsageSignal.connect(self.onUpdateNpuUsageGraphSlot)
 		self.showMessageBoxSignal.connect(self.onShowMessageBoxSlot)
 
-		self.fileSelectButton.clicked.connect(self.onFileSelectButtonClicked)
-		self.startButton.clicked.connect(self.onStartButtonClicked)
-		self.stopButton.clicked.connect(self.onStopButtonClicked)
-		self.inputComboBox.currentIndexChanged.connect(self.onInputComboBoxIndexChanged)
+		self.ui.fileSelectButton.clicked.connect(self.onFileSelectButtonClicked)
+		self.ui.startButton.clicked.connect(self.onStartButtonClicked)
+		self.ui.stopButton.clicked.connect(self.onStopButtonClicked)
+		self.ui.inputComboBox.currentIndexChanged.connect(self.onInputComboBoxIndexChanged)
 
 	def _setLabelStyle(self, label):
 			label.setFont(QFont('Gulim', 12, weight=QFont.Weight.Bold))
@@ -147,90 +147,58 @@ class RtpmMainWidget(QWidget):
 		self.npuLcdList = list()
 
 		# inference time object
-		infLayout = QGridLayout()
+		infLayout = QVBoxLayout()
 		for idx, value in enumerate(settingData['DetectTypes']):
 			# Label
 			label = QLabel(value)
 			self._setLabelStyle(label)
-			infLayout.addWidget(label, idx, 0)
+			infLayout.addWidget(label)
 			# LCD Number
 			lcdNumber = QLCDNumber()
 			self._setLcdNumberStyle(lcdNumber)
 			self.infLcdList.append(lcdNumber)
 
-			infLayout.addWidget(self.infLcdList[idx], idx, 1)
+			infLayout.addWidget(self.infLcdList[idx])
 			tempList.append(self.infLcdList[idx])
-			self.infBox.setLayout(infLayout)
+		self.ui.infBox.setLayout(infLayout)
 		self.__dataEditList.append(tempList[:]) # 0
 		tempList.clear()
 
 		# npu util object
-		npuLayout = QGridLayout()
+		npuLayout = QVBoxLayout()
 		for idx, value in enumerate(settingData['DetectTypes']):
 			# Label
 			label = QLabel(value)
 			self._setLabelStyle(label)
-			npuLayout.addWidget(label, idx, 0)
+			npuLayout.addWidget(label)
 			# LCD Number
 			lcdNumber = QLCDNumber()
 			self._setLcdNumberStyle(lcdNumber)
 			self.npuLcdList.append(lcdNumber)
 
-			npuLayout.addWidget(self.npuLcdList[idx], idx, 1)
+			npuLayout.addWidget(self.npuLcdList[idx])
 			tempList.append(self.npuLcdList[idx])
-			self.npuBox.setLayout(npuLayout)
+		self.ui.npuBox.setLayout(npuLayout)
 		self.__dataEditList.append(tempList[:]) # 1
 		tempList.clear()
 
-		tempList.append(self.cpuLcd)
+		tempList.append(self.ui.cpuLcd)
 		self.__dataEditList.append(tempList[:]) # 2
 		tempList.clear()
-		tempList.append(self.memLcd)
+		tempList.append(self.ui.memLcd)
 		self.__dataEditList.append(tempList[:]) # 3
 		tempList.clear()
-		tempList.append(self.fpsLcd)			# 4
+		tempList.append(self.ui.fpsLcd)			# 4
 		self.__dataEditList.append(tempList[:])
 		tempList.clear()
-		tempList.append(self.npu0DmaPer)
-		tempList.append(self.npu0CompPer)
-		tempList.append(self.npu1DmaPer)
-		tempList.append(self.npu1CompPer)
+		tempList.append(self.ui.npu0DmaPer)
+		tempList.append(self.ui.npu0CompPer)
+		tempList.append(self.ui.npu1DmaPer)
+		tempList.append(self.ui.npu1CompPer)
 		self.__dataEditList.append(tempList[:])  # 5
 		tempList.clear()
 		self.__dataEditList.append(tempList[:])
 		tempList.clear()
-
-		# Dynamic
-		# self.__initTextView('Inference Time', 1, 'ms')
-		# self.__initTextView('NPU', 1, '%')
-		# self.__initTextView('Cpu', 1, '%')
-		# self.__initTextView('Memory', 1, '%')
-		# self.__initTextView('Fps', 1, 'FPS')
-		# self.performanceLayout.addItem(QSpacerItem(10, 100, QSizePolicy.Expanding))
-
-	def __initTextView(self, title, dataNum, suffix):
-		titleLabel = QLabel(title)
-		titleLabel.setFont(QFont('Consolas', 25))
-		self.performanceLayout.addWidget(titleLabel)
-		tempList = list()
-		for idx in range(dataNum):
-			suffixLabel = QLabel(suffix)
-			suffixLabel.setFont(QFont('Consolas', 25))
-			tempLayout = QHBoxLayout()
-			self.performanceLayout.addLayout(tempLayout)
-			# tempLayout.addWidget(QLabel(str(idx)))
-			tempList.append(QTextEdit())
-			tempLayout.addWidget(tempList[idx])
-			# tempList[idx].setTextColor(QColor(0, 0, 255))
-			tempList[idx].setReadOnly(True)
-			tempList[idx].setFixedSize(120, 60)
-			tempList[idx].setFont(QFont('Consolas', 30, QFont.Bold))
-			tempLayout.addWidget(suffixLabel)
-		hLine = QFrame()
-		hLine.setFrameShape(QFrame.HLine)
-		hLine.setFrameShadow(QFrame.Sunken)
-		self.performanceLayout.addWidget(hLine)	
-		self.__dataEditList.append(tempList)
 
 	def __updateChart(self, editIndex, index, value):
 		# self.__dataEditList[editIndex][index].setText(str(value))
@@ -247,10 +215,6 @@ class RtpmMainWidget(QWidget):
 	def onUpdateResultPerfSlot(self, index, infTimeValue, npuUtilValue):
 		self.__updateChart(0, index, infTimeValue)
 		self.__updateChart(1, index, npuUtilValue)
-
-	@Slot(int, int)
-	def onUpdateInferenceTimeGraphSlot(self, index, value):
-		self.__updateChart(0, index, value)
 
 	@Slot(int, int)	
 	def onUpdateCpuGraphSlot(self, index, value):
@@ -276,26 +240,26 @@ class RtpmMainWidget(QWidget):
 	@Slot(int, int)
 	def onUpdateProgressBarSlot(self, currentFrame, totalFrame):
 		try:
-			self.frameCountEdit.setText(str(currentFrame) + ' / ' + str(totalFrame))
+			self.ui.frameCountEdit.setText(str(currentFrame) + ' / ' + str(totalFrame))
 			percent = int((currentFrame * 100)/totalFrame)
-			self.playProgress.setValue(percent)
+			self.ui.playProgress.setValue(percent)
 		except Exception as e:
 			print(__name__, e)
-			self.frameCountEdit.setText('0 / 0')
-			self.playProgress.setValue(0)
+			self.ui.frameCountEdit.setText('0 / 0')
+			self.ui.playProgress.setValue(0)
 
 	@Slot()
 	def onClearProgressBarSlot(self):
-		self.frameCountEdit.setText('0 / 0')
-		self.playProgress.setValue(0)
+		self.ui.frameCountEdit.setText('0 / 0')
+		self.ui.playProgress.setValue(0)
 
 	@Slot(list)
 	def onUpdateImageSlot(self, frame):
 		# bgn = time()
-		inputMode = self.inputComboBox.currentIndex()
-		projectFitMode = self.projectionFitSizeCheckBox.isChecked() if inputMode == 0 else False
-		frameWidth = self.frameLabel.width()
-		frameHeight = self.frameLabel.height()
+		inputMode = self.ui.inputComboBox.currentIndex()
+		projectFitMode = self.ui.projectionFitSizeCheckBox.isChecked() if inputMode == 0 else False
+		frameWidth = self.ui.frameLabel.width()
+		frameHeight = self.ui.frameLabel.height()
 		try:
 			shapeFlag = True
 			if len(frame[0].shape) == 2:
@@ -308,7 +272,7 @@ class RtpmMainWidget(QWidget):
 				colorFormat = QImage.Format_BGR888
 			else:
 				shapeFlag = False
-				self.frameLabel.clear()
+				self.ui.frameLabel.clear()
 
 			if shapeFlag:
 				convertToQtFormat = QImage(frame[0].data, w, h, bytesPerLine, colorFormat)
@@ -318,16 +282,16 @@ class RtpmMainWidget(QWidget):
 				scaledSize[1] = frameHeight if scaledSize[1] > frameHeight else scaledSize[1]
 				widthOffset = int((frameWidth - scaledSize[0])*0.5) if not projectFitMode else 10
 				widthOffset = 10 if widthOffset < 10 else widthOffset
-				self.frameLabel.move(widthOffset, 10)
+				self.ui.frameLabel.move(widthOffset, 10)
 				image = convertToQtFormat.scaled(scaledSize[0], scaledSize[1])
-				self.frameLabel.setPixmap(QPixmap.fromImage(image))
+				self.ui.frameLabel.setPixmap(QPixmap.fromImage(image))
 				# print('update time : {}'.format(f"{time() - bgn:.5f} s"))	
 		except:
-			self.frameLabel.clear()
+			self.ui.frameLabel.clear()
 
 	@Slot()
 	def onClearImageSlot(self):
-		self.frameLabel.clear()
+		self.ui.frameLabel.clear()
 		self.__setEnableControlButton(True, False)
 
 	@Slot(str, str)
@@ -337,7 +301,7 @@ class RtpmMainWidget(QWidget):
 	@Slot()
 	def onFileSelectButtonClicked(self):
 		filePath = ''
-		inputMode = self.inputComboBox.currentIndex()
+		inputMode = self.ui.inputComboBox.currentIndex()
 		if inputMode == 1: # File
 			filePathTuple = QFileDialog.getOpenFileName(self, "Open", "", "Select file (*.*)")
 			filePath = filePathTuple[0]
@@ -347,14 +311,14 @@ class RtpmMainWidget(QWidget):
 			pass
 
 		if filePath != '':
-			self.filePathEdit.setText(filePath)
+			self.ui.filePathEdit.setText(filePath)
 
 	@Slot()
 	def onStartButtonClicked(self):
-		filePath = self.filePathEdit.text()
+		filePath = self.ui.filePathEdit.text()
 		self.__setEnableControlButton(False, True)
-		saveMode = self.saveCheckBox.isChecked()
-		inputIndex = self.inputComboBox.currentIndex() # 0 : Camera (EVB) / 1 : file / 2 : folder
+		saveMode = self.ui.saveCheckBox.isChecked()
+		inputIndex = self.ui.inputComboBox.currentIndex() # 0 : Camera (EVB) / 1 : file / 2 : folder
 		self.rtpmStartStopSignal.emit(True, filePath, inputIndex, saveMode)
 
 	@Slot()
@@ -364,15 +328,15 @@ class RtpmMainWidget(QWidget):
 
 	@Slot(int)
 	def onInputComboBoxIndexChanged(self, index):
-		self.filePathEdit.clear()
+		self.ui.filePathEdit.clear()
 		if index > 0:
-			self.fileSelectButton.setEnabled(True)
+			self.ui.fileSelectButton.setEnabled(True)
 		else:
-			self.fileSelectButton.setEnabled(False)
+			self.ui.fileSelectButton.setEnabled(False)
 
 	def __setEnableControlButton(self, startBtnStatus, stopBtnStatus):
-		self.startButton.setEnabled(startBtnStatus)
-		self.stopButton.setEnabled(stopBtnStatus)
+		self.ui.startButton.setEnabled(startBtnStatus)
+		self.ui.stopButton.setEnabled(stopBtnStatus)
 
 	def __showMessageBox(self, title, message):
 		msg = QMessageBox()

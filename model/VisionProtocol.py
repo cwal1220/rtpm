@@ -51,6 +51,15 @@ class VisionProtocol(QThread):
         self.__sendQueueSize = 4
         self.rtpmMode = inputMode
 
+        self.__dataQueue = list()
+        self.__dataLenMax = 10
+        self.__resultQueue = list()
+        self.__isRunning = False
+        self.vpm_msg = None
+        self.vpm_stream = None
+        self.__reader = FrameReader(self)
+
+    def run(self):
         messageConfig = vision_user_config_t()
         messageConfig.netRole              = Role.SERVER
         messageConfig.netInterface         = Interface.INTERFACE_ETHERNET
@@ -89,17 +98,10 @@ class VisionProtocol(QThread):
             streamConfig.recvQ.numQ           = 0
         self.vpm_stream = VisionProtocolModule(streamConfig)
 
-        self.__reader = FrameReader(self)
         if self.rtpmMode == 0: # projection mode
             self.__reader.start()
 
-        self.__dataQueue = list()
-        self.__dataLenMax = 10
-        self.__resultQueue = list()
-        self.start()
-        self.__isRunning = False
-
-    def run(self):
+        self.__isRunning = True
         while True:
             resultType, resultData = self.__receiveData()
             if resultType is None:
@@ -126,7 +128,6 @@ class VisionProtocol(QThread):
                     self.__dataQueue.append(resultData)
             
             time.sleep(0.001)
-            self.__isRunning = True
 
     def getStatus(self):
         return self.__isRunning

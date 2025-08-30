@@ -49,7 +49,7 @@ class Main(QWidget):
             self.settingData = {
                     'Projection': {'width': 1280, 'height': 720, 'channel': 3}, 
                     'Injection'	: {'width': 1280, 'height': 720, 'channel': 3}, 
-                    'DetectType': ['NPU0', 'NPU1']
+                    'DetectTypes': ['NPU0', 'NPU1']
                     }
 
         self.init_views()

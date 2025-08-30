@@ -77,7 +77,7 @@ class MainViewModel(QObject):
         self.__frameList = []
         self.__frameListMax = 5
         self.__saveFrameList = []
-        self.__captureFrame = False
+        
         self.folder_mode_path = ''
         self.image_result_path = '/image_result'
         self.data_result_path = '/data_result'
@@ -87,6 +87,18 @@ class MainViewModel(QObject):
         self.__updater = RtpmDataUpdater(self.visionProtocol)
         self.__recorder = RtpmVideoRecorder()
         self.__imageSaver = RtpmImageSaver()
+
+    def _connect_worker_signals(self):
+        # Worker -> ViewModel
+        self.__reader.reader_stopped.connect(self.on_reader_stopped)
+        self.__reader.progress_updated.connect(self.update_progress_bar_signal)
+        self.__reader.error_occurred.connect(self.show_message_box_signal)
+        self.__updater.inference_time_updated.connect(self.update_result_perf_signal)
+        self.__updater.fps_updated.connect(self.update_fps_graph_signal)
+        self.__updater.cpu_updated.connect(self.update_cpu_graph_signal)
+        self.__updater.memory_updated.connect(self.update_memory_graph_signal)
+        self.__updater.npu_usage_updated.connect(self.update_npu_usage_signal)
+        self.__updater.updater_finished.connect(self.clear_all_graph_signal)
 
     def connect_signals(self, view):
         # View -> ViewModel
@@ -105,16 +117,7 @@ class MainViewModel(QObject):
         self.clear_all_graph_signal.connect(view.onClearAllGraphSlot)
         self.show_message_box_signal.connect(view.onShowMessageBoxSlot)
 
-        # Worker -> ViewModel
-        self.__reader.reader_stopped.connect(self.on_reader_stopped)
-        self.__reader.progress_updated.connect(self.update_progress_bar_signal)
-        self.__reader.error_occurred.connect(self.show_message_box_signal)
-        self.__updater.inference_time_updated.connect(self.update_result_perf_signal)
-        self.__updater.fps_updated.connect(self.update_fps_graph_signal)
-        self.__updater.cpu_updated.connect(self.update_cpu_graph_signal)
-        self.__updater.memory_updated.connect(self.update_memory_graph_signal)
-        self.__updater.npu_usage_updated.connect(self.update_npu_usage_signal)
-        self.__updater.updater_finished.connect(self.clear_all_graph_signal)
+        self._connect_worker_signals()
 
     @Slot(bool, str, int, bool)
     def on_start_stop(self, start, file_path, input_mode, save_mode):
@@ -125,7 +128,9 @@ class MainViewModel(QObject):
             self.__mode = True if input_mode > 0 else False
 
             self._setup_model(input_mode)
+            self.visionProtocol.start()
             self._init_workers()
+            self._connect_worker_signals()
             self._setup_save_paths(input_mode, file_path)
 
             config = WorkerConfig(self)

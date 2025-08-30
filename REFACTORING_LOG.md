@@ -178,3 +178,39 @@
 *   `ProcessingWorker` 내의 `_process_file_mode`에서 `frame_list` 동기화 메커니즘을 더 견고하게 만들 수 있습니다.
 
 ---
+
+## 6. 추가 디버깅 및 안정화
+
+리팩토링 이후 발생한 여러 문제들을 해결하고 애플리케이션의 안정성을 높였습니다.
+
+### 6.1. UI 위젯 렌더링 오류 (`TypeError`) 해결
+*   **문제**: `RtpmMainTextWidget.py`에서 `QGridLayout.addWidget` 호출 시 `TypeError`가 지속적으로 발생하며 UI가 렌더링되지 않았습니다.
+*   **해결**:
+    *   근본 원인을 찾기 어려운 `QGridLayout` 관련 문제를 회피하기 위해, `infBox`와 `npuBox`의 레이아웃을 `QVBoxLayout`으로 변경하여 문제를 해결했습니다.
+    *   `QUiLoader`로 로드된 UI 위젯에 접근 시 `self.ui` 접두사가 누락되어 발생한 `AttributeError`를 수정했습니다. 모든 위젯 접근 코드를 `self.ui.widgetName` 형태로 변경하여 UI 요소에 정상적으로 접근하도록 했습니다.
+
+### 6.2. `numpy` 호환성 문제 해결
+*   **문제**: 가상 환경 재구성 후, `numpy.dtype size changed` `ValueError`가 발생하며 애플리케이션이 시작되지 않았습니다. 이는 컴파일된 Cython 모듈(`visionprotocol`)과 설치된 `numpy` 버전 간의 바이너리 비호환성 문제였습니다.
+*   **해결**: `numpy` 버전을 호환성이 확인된 `1.26.4`로 다운그레이드하여 문제를 해결했습니다.
+
+### 6.3. `VisionProtocol` 초기화 블로킹 문제 해결
+*   **문제**: `VisionProtocol` 객체 생성자(`__init__`)의 블로킹 동작으로 인해 UI 스레드가 멈춰 화면이 나타나지 않는 현상이 있었습니다.
+*   **해결**:
+    *   `VisionProtocol`의 생성자에서는 간단한 변수 초기화만 수행하도록 변경했습니다.
+    *   `VisionProtocolModule` 생성과 같이 시간이 오래 걸리는 블로킹 코드들을 `run` 메서드로 이동시켰습니다.
+    *   `main_view_model.py`에서 `VisionProtocol` 스레드를 `on_start_stop` 슬롯 내에서, 즉 **Start** 버튼 클릭 시점에 시작하도록 변경하여 UI 블로킹을 완전히 해결했습니다.
+
+### 6.4. 불필요한 코드 제거
+*   **`view/RtpmMainTextWidget.py`**:
+    *   사용되지 않는 `__initTextView`와 `onUpdateInferenceTimeGraphSlot` 메서드를 제거했습니다.
+    *   관련된 주석 처리된 코드 블록도 함께 삭제하여 코드 가독성을 높였습니다.
+*   **`controller/main_view_model.py`**:
+    *   사용되지 않는 `__captureFrame` 인스턴스 변수를 제거했습니다.
+
+### 6.5. 데이터 처리 오류 (`KeyError`) 수정
+*   **문제**: `processing_worker.py`에서 탐지 결과(`result_list`) 처리 시, 데이터 구조가 중첩되어 있거나 특정 키(`'od'`)가 없는 경우 `KeyError`가 발생했습니다.
+*   **해결**: `result_list`를 순회하며 `'od'` 키가 존재하는지 먼저 확인하고, 중첩된 구조 안의 데이터도 정상적으로 처리하도록 로직을 수정하여 안정성을 높였습니다.
+
+### 6.6. 프로그레스 바 업데이트 오류 수정
+*   **문제**: 파일 처리 시 프로그레스 바가 갱신되지 않았습니다. 이는 **Start** 버튼을 누를 때마다 `RtpmFileReader` 워커가 새로 생성되지만, 이 새 워커의 시그널이 UI 슬롯에 연결되지 않았기 때문입니다.
+*   **해결**: `main_view_model.py`의 구조를 리팩토링하여, 워커가 새로 생성될 때마다 시그널-슬롯 연결이 다시 이루어지도록 `_connect_worker_signals` 메서드를 도입하고 호출 로직을 수정했습니다.

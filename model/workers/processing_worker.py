@@ -71,7 +71,9 @@ class ProcessingWorker(QThread):
             draw_ratio = [frame_data[0].shape[1] / cfg.frame_width, frame_data[0].shape[0] / cfg.frame_height]
             
             # Drawing logic here...
-            frame_data[0] = cfg.post_processor.drawBoundingBoxforDistance(frame_data[0], result_list['od'], draw_ratio)
+            for key, value in result_list.items():
+                if isinstance(value, dict) and 'od' in value:
+                    frame_data[0] = cfg.post_processor.drawBoundingBoxforDistance(frame_data[0], value['od'], draw_ratio)
 
             if cfg.is_saving_files:
                 cfg.save_frame_list.append(frame_data[:])
