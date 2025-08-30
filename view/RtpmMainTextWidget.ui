@@ -10,59 +10,156 @@
     <height>893</height>
    </rect>
   </property>
-  <property name="maximumSize">
-   <size>
-    <width>1654</width>
-    <height>893</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Realtime Performance Monitor</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background:rgb(91,91,91);</string>
+   <string notr="true">QWidget#Form {
+    background-color: #2d2d2d;
+}
+
+QGroupBox {
+    background-color: #424242; /* Slightly lighter */
+    border: 1px solid #616161; /* Softer border */
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 10px; /* Added padding */
+    font-size: 11pt;
+    color: #e0e0e0; /* Slightly softer text color */
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 0 5px;
+}
+
+QLabel {
+    color: #f0f0f0;
+    font-size: 10pt;
+}
+
+QLabel[objectName$="ValueLabel"] { /* Targets labels ending with "ValueLabel" */
+    font-size: 18pt; /* Reduced font size */
+    font-weight: bold;
+    color: #66BB6A; /* Softer green */
+}
+
+QPushButton {
+    color: white;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+QPushButton#startButton {
+    background-color: #4CAF50; /* Green */
+}
+
+QPushButton#startButton:hover {
+    background-color: #5cb85c;
+}
+
+QPushButton#startButton:disabled {
+    background-color: #444;
+}
+
+QPushButton#stopButton {
+    background-color: #d9534f; /* Red */
+}
+
+QPushButton#stopButton:hover {
+    background-color: #c9302c;
+}
+
+QPushButton#stopButton:disabled {
+    background-color: #444;
+}
+
+QPushButton#fileSelectButton {
+    background-color: #5bc0de; /* Blue */
+    padding: 5px;
+}
+
+QPushButton#fileSelectButton:hover {
+    background-color: #46b8da;
+}
+
+QPushButton#togglePerformanceButton {
+    background-color: #f0ad4e; /* Orange */
+}
+
+QPushButton#togglePerformanceButton:hover {
+    background-color: #eea236;
+}
+
+QComboBox {
+    background-color: #555;
+    border: 1px solid #666;
+    border-radius: 5px;
+    padding: 5px;
+    color: #f0f0f0;
+}
+
+QComboBox::drop-down {
+    border: none;
+}
+
+QComboBox::down-arrow {
+    image: url(:/icons/down_arrow.png); /* Add a custom down arrow icon if needed */
+}
+
+QProgressBar {
+    border: 1px solid #555555;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #424242; /* Matching QGroupBox background */
+    color: white;
+    height: 15px; /* Slightly taller */
+}
+
+QProgressBar::chunk {
+    background-color: #66BB6A; /* Softer green */
+    border-radius: 5px;
+}
+
+QLineEdit {
+    background-color: #555;
+    border: 1px solid #666;
+    border-radius: 5px;
+    padding: 5px;
+    color: #f0f0f0;
+}
+
+QCheckBox {
+    color: #f0f0f0;
+}
+</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="4">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,1">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
      <item>
       <widget class="QGroupBox" name="toolControllerGroup">
-       <property name="styleSheet">
-        <string notr="true"/>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="title">
         <string/>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0,0">
+       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1,2">
         <item>
          <widget class="QGroupBox" name="saveGroupBox">
-          <property name="font">
-           <font>
-            <family>Consolas</family>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QGroupBox {
-color: white;
-}</string>
-          </property>
           <property name="title">
-           <string>Save Type</string>
+           <string>Save Options</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_8">
            <item>
             <widget class="QCheckBox" name="saveCheckBox">
-             <property name="font">
-              <font>
-               <family>Consolas</family>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QCheckBox {
-color: white;
-}</string>
-             </property>
              <property name="text">
               <string>Save result file</string>
              </property>
@@ -73,61 +170,25 @@ color: white;
         </item>
         <item>
          <widget class="QGroupBox" name="inputGroupBox">
-          <property name="font">
-           <font>
-            <family>Consolas</family>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QGroupBox {
-color: white;
-}</string>
-          </property>
           <property name="title">
            <string>Input Mode</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_12">
            <item>
             <widget class="QComboBox" name="inputComboBox">
-             <property name="minimumSize">
-              <size>
-               <width>160</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QComboBox
-{
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    selection-background-color: #111;
-    selection-color: yellow;
-    color: white;
-    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
-    border-style: solid;
-    border: 1px solid #1e1e1e;
-    border-radius: 5;
-    padding: 1px 0px 1px 10px;
-}
-
-QListView
-{
-	color: white;
-}</string>
-             </property>
              <item>
               <property name="text">
-               <string> Camera (EVB)</string>
+               <string>Camera (EVB)</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string> File (video or image)</string>
+               <string>File (video or image)</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string> Folder (only image)</string>
+               <string>Folder (only image)</string>
               </property>
              </item>
             </widget>
@@ -140,64 +201,9 @@ QListView
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_9">
             <item>
-             <widget class="QLabel" name="label_9">
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>80</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>Consolas</family>
-                <pointsize>10</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QLabel {
-color: white;
-}</string>
-              </property>
-              <property name="text">
-               <string>Source Path</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QLineEdit" name="filePathEdit">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">border: 1px solid white;
-border-radius: 5px;
-background:rgb(255,255,255);</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
+              <property name="placeholderText">
+               <string>Select a file or folder...</string>
               </property>
              </widget>
             </item>
@@ -206,51 +212,15 @@ background:rgb(255,255,255);</string>
               <property name="enabled">
                <bool>false</bool>
               </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>40</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton{
-	border-radius: 5px;
-	background:rgb(225,225,225);
-}
-
-QPushButton:hover {
-	background-color: rgb(255,255,255);
-}
-
-QPushButton:pressed {
-	background-color: rgb(185,185,185);
-}</string>
-              </property>
               <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../resources/folder.png</normaloff>../resources/folder.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>25</width>
-                <height>25</height>
-               </size>
+               <string>...</string>
               </property>
              </widget>
             </item>
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,0,0,0">
+           <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,0,0,0,0">
             <item>
              <spacer name="horizontalSpacer_4">
               <property name="orientation">
@@ -266,189 +236,18 @@ QPushButton:pressed {
             </item>
             <item>
              <widget class="QCheckBox" name="projectionFitSizeCheckBox">
-              <property name="palette">
-               <palette>
-                <active>
-                 <colorrole role="WindowText">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="Button">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>91</red>
-                    <green>91</green>
-                    <blue>91</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="Base">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>91</red>
-                    <green>91</green>
-                    <blue>91</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="Window">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>91</red>
-                    <green>91</green>
-                    <blue>91</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                </active>
-                <inactive>
-                 <colorrole role="WindowText">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="Button">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>91</red>
-                    <green>91</green>
-                    <blue>91</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="Base">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>91</red>
-                    <green>91</green>
-                    <blue>91</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="Window">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>91</red>
-                    <green>91</green>
-                    <blue>91</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                </inactive>
-                <disabled>
-                 <colorrole role="WindowText">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>120</red>
-                    <green>120</green>
-                    <blue>120</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="Button">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>91</red>
-                    <green>91</green>
-                    <blue>91</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="Base">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>91</red>
-                    <green>91</green>
-                    <blue>91</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="Window">
-                  <brush brushstyle="SolidPattern">
-                   <color alpha="255">
-                    <red>91</red>
-                    <green>91</green>
-                    <blue>91</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                </disabled>
-               </palette>
-              </property>
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
               <property name="layoutDirection">
                <enum>Qt::RightToLeft</enum>
               </property>
               <property name="text">
-               <string>Project
-FitSize</string>
+               <string>Fit to Window</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="startButton">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton{
-	color: white;
-	border-radius: 8px;
-	background-color: rgb(70, 205, 85);
-}
-
-QPushButton:hover {
-	background-color: rgb(0,230,0);
-}
-
-QPushButton:pressed {
-	background-color: rgb(50, 175, 65);
-}
-QPushButton:disabled {
-	background-color: rgb(50, 50, 50);
-}
-</string>
-              </property>
               <property name="text">
                <string>Start</string>
-              </property>
-              <property name="checkable">
-               <bool>false</bool>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -457,50 +256,15 @@ QPushButton:disabled {
               <property name="enabled">
                <bool>false</bool>
               </property>
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton{
-	color: white;
-	border-radius: 8px;
-	background-color: rgb(255, 70, 85);
-}
-
-QPushButton:hover {
-	background-color: rgb(255,0,0);
-}
-
-QPushButton:pressed {
-	background-color: rgb(205, 40, 55);
-}
-QPushButton:disabled {
-	background-color: rgb(50, 50, 50);
-}</string>
-              </property>
               <property name="text">
                <string>Stop</string>
               </property>
-              <property name="checkable">
-               <bool>false</bool>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="togglePerformanceButton">
+              <property name="text">
+               <string>Performance</string>
               </property>
              </widget>
             </item>
@@ -513,737 +277,373 @@ QPushButton:disabled {
      </item>
      <item>
       <widget class="QGroupBox" name="monitoringGroup">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string/>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
-        <property name="spacing">
-         <number>10</number>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
-            <item>
-             <widget class="QLabel" name="frameLabel">
-              <property name="minimumSize">
-               <size>
-                <width>1280</width>
-                <height>720</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>1280</width>
-                <height>720</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_10">
-              <item>
-               <widget class="QProgressBar" name="playProgress">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Consolas</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QProgressBar
-{
-	border: 1px solid gray;
-	border-radius: 5px;
-}
-QProgressBar::chunk 
-{
-	background-color: rgb(125,225,155);
-	border-radius :5px;
-    width: 3px;
-    margin: 0.5px;
-}      </string>
-                </property>
-                <property name="value">
-                 <number>0</number>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="textVisible">
-                 <bool>false</bool>
-                </property>
-                <property name="format">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="frameCountEdit">
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>200</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Consolas</family>
-                  <pointsize>9</pointsize>
-                 </font>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="acceptDrops">
-                 <bool>false</bool>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(125,195,155);
-border: 0px;</string>
-                </property>
-                <property name="text">
-                 <string>0 / 0</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="performanceGroup">
+         <widget class="QLabel" name="frameLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
-            <width>0</width>
-            <height>0</height>
+            <width>320</width>
+            <height>240</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: lightgray;</string>
+           <string notr="true">background-color: black; border-radius: 5px;</string>
           </property>
-          <property name="title">
+          <property name="text">
            <string/>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <widget class="QGroupBox" name="infBox">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"> QGroupBox {
- border: 1px solid black;
- border-radius: 5px;
-}</string>
-             </property>
-             <property name="title">
-              <string>Inference Time (ms)</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="npuBox">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"> QGroupBox {
- border: 1px solid black;
- border-radius: 5px;
-}</string>
-             </property>
-             <property name="title">
-              <string>NPU Utilization</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="fpsBox">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"> QGroupBox {
- border: 1px solid black;
- border-radius: 5px;
-}</string>
-             </property>
-             <property name="title">
-              <string>FPS</string>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_5">
-              <item>
-               <spacer name="horizontalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLCDNumber" name="fpsLcd">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>30</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>80</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>80</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Agency FB</family>
-                  <pointsize>9</pointsize>
-                 </font>
-                </property>
-                <property name="segmentStyle">
-                 <enum>QLCDNumber::Flat</enum>
-                </property>
-                <property name="value" stdset="0">
-                 <double>0.000000000000000</double>
-                </property>
-                <property name="intValue" stdset="0">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="cpuBox">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"> QGroupBox {
- border: 1px solid black;
- border-radius: 5px;
-}</string>
-             </property>
-             <property name="title">
-              <string>CPU (%)</string>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_7">
-              <item>
-               <spacer name="horizontalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLCDNumber" name="cpuLcd">
-                <property name="minimumSize">
-                 <size>
-                  <width>80</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>80</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Agency FB</family>
-                  <pointsize>9</pointsize>
-                 </font>
-                </property>
-                <property name="segmentStyle">
-                 <enum>QLCDNumber::Flat</enum>
-                </property>
-                <property name="value" stdset="0">
-                 <double>0.000000000000000</double>
-                </property>
-                <property name="intValue" stdset="0">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="memBox">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"> QGroupBox {
- border: 1px solid black;
- border-radius: 5px;
-}</string>
-             </property>
-             <property name="title">
-              <string>Memory (%)</string>
-             </property>
-             <property name="flat">
-              <bool>false</bool>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_6">
-              <item>
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLCDNumber" name="memLcd">
-                <property name="minimumSize">
-                 <size>
-                  <width>80</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>80</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Agency FB</family>
-                  <pointsize>9</pointsize>
-                 </font>
-                </property>
-                <property name="segmentStyle">
-                 <enum>QLCDNumber::Flat</enum>
-                </property>
-                <property name="value" stdset="0">
-                 <double>0.000000000000000</double>
-                </property>
-                <property name="intValue" stdset="0">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"> QGroupBox {
- border: 1px solid black;
- border-radius: 5px;
-}</string>
-             </property>
-             <property name="title">
-              <string>NPU (%)</string>
-             </property>
-             <property name="flat">
-              <bool>false</bool>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>12</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>NPU 0</string>
-                </property>
-                <property name="indent">
-                 <number>15</number>
-                </property>
-                <property name="openExternalLinks">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="frame">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_2">
-                 <item>
-                  <widget class="QLabel" name="npu0Dma">
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>DMA</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLCDNumber" name="npu0DmaPer">
-                   <property name="minimumSize">
-                    <size>
-                     <width>80</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>80</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Agency FB</family>
-                     <pointsize>9</pointsize>
-                    </font>
-                   </property>
-                   <property name="segmentStyle">
-                    <enum>QLCDNumber::Flat</enum>
-                   </property>
-                   <property name="value" stdset="0">
-                    <double>0.000000000000000</double>
-                   </property>
-                   <property name="intValue" stdset="0">
-                    <number>0</number>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="frame_2">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_13">
-                 <item>
-                  <widget class="QLabel" name="npu0Comp">
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>COMPUTATION</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLCDNumber" name="npu0CompPer">
-                   <property name="minimumSize">
-                    <size>
-                     <width>80</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>80</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Agency FB</family>
-                     <pointsize>9</pointsize>
-                    </font>
-                   </property>
-                   <property name="segmentStyle">
-                    <enum>QLCDNumber::Flat</enum>
-                   </property>
-                   <property name="value" stdset="0">
-                    <double>0.000000000000000</double>
-                   </property>
-                   <property name="intValue" stdset="0">
-                    <number>0</number>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="Line" name="line">
-                <property name="layoutDirection">
-                 <enum>Qt::LeftToRight</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>1</number>
-                </property>
-                <property name="midLineWidth">
-                 <number>1</number>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_2">
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>NPU 1</string>
-                </property>
-                <property name="indent">
-                 <number>15</number>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="frame_3">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_15">
-                 <item>
-                  <widget class="QLabel" name="npu1Dma">
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>DMA</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLCDNumber" name="npu1DmaPer">
-                   <property name="minimumSize">
-                    <size>
-                     <width>80</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>80</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Agency FB</family>
-                     <pointsize>9</pointsize>
-                    </font>
-                   </property>
-                   <property name="segmentStyle">
-                    <enum>QLCDNumber::Flat</enum>
-                   </property>
-                   <property name="value" stdset="0">
-                    <double>0.000000000000000</double>
-                   </property>
-                   <property name="intValue" stdset="0">
-                    <number>0</number>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="frame_4">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_14">
-                 <item>
-                  <widget class="QLabel" name="npu1Comp">
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>COMPUTATION</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLCDNumber" name="npu1CompPer">
-                   <property name="minimumSize">
-                    <size>
-                     <width>80</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>80</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Agency FB</family>
-                     <pointsize>9</pointsize>
-                    </font>
-                   </property>
-                   <property name="segmentStyle">
-                    <enum>QLCDNumber::Flat</enum>
-                   </property>
-                   <property name="value" stdset="0">
-                    <double>0.000000000000000</double>
-                   </property>
-                   <property name="intValue" stdset="0">
-                    <number>0</number>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
          </widget>
         </item>
        </layout>
       </widget>
      </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,0">
+       <item>
+        <widget class="QProgressBar" name="playProgress">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="value">
+          <number>0</number>
+         </property>
+         <property name="textVisible">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="frameCountEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>0 / 0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="performanceGroup">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Performance</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="QGroupBox" name="infBox">
+        <property name="title">
+         <string>Inference Time (ms)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_inf">
+         <item>
+          <widget class="QLabel" name="npu0InfTimeLabel">
+           <property name="text">
+            <string>NPU 0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="inf0ValueLabel">
+           <property name="text">
+            <string>0 ms</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="npu1InfTimeLabel">
+           <property name="text">
+            <string>NPU 1</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="inf1ValueLabel">
+           <property name="text">
+            <string>0 ms</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="npuBox">
+        <property name="title">
+         <string>NPU Utilization (%)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_npu">
+         <item>
+          <widget class="QLabel" name="npu0UtilLabel">
+           <property name="text">
+            <string>NPU 0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="npu0ValueLabel">
+           <property name="text">
+            <string>0%</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QProgressBar" name="npu0ProgressBar">
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="textVisible">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="npu1UtilLabel">
+           <property name="text">
+            <string>NPU 1</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="npu1ValueLabel">
+           <property name="text">
+            <string>0%</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QProgressBar" name="npu1ProgressBar">
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="textVisible">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="fpsBox">
+        <property name="title">
+         <string>FPS</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_fps">
+         <item>
+          <widget class="QLabel" name="fpsValueLabel">
+           <property name="text">
+            <string>0</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="cpuBox">
+        <property name="title">
+         <string>CPU (%)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_cpu">
+         <item>
+          <widget class="QLabel" name="cpuValueLabel">
+           <property name="text">
+            <string>0%</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QProgressBar" name="cpuProgressBar">
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="textVisible">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="memBox">
+        <property name="title">
+         <string>Memory (%)</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_mem">
+         <item>
+          <widget class="QLabel" name="memValueLabel">
+           <property name="text">
+            <string>0%</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QProgressBar" name="memProgressBar">
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="textVisible">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>NPU Details (%)</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_npu_details">
+         <item row="0" column="0">
+          <widget class="QLabel" name="npu0DmaLabel">
+           <property name="text">
+            <string>NPU 0 DMA</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="npu0DmaValueLabel">
+           <property name="text">
+            <string>0%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="npu0CompLabel">
+           <property name="text">
+            <string>NPU 0 COMP</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="npu0CompValueLabel">
+           <property name="text">
+            <string>0%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="Line" name="line">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="npu1DmaLabel">
+           <property name="text">
+            <string>NPU 1 DMA</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLabel" name="npu1DmaValueLabel">
+           <property name="text">
+            <string>0%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="npu1CompLabel">
+           <property name="text">
+            <string>NPU 1 COMP</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLabel" name="npu1CompValueLabel">
+           <property name="text">
+            <string>0%</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

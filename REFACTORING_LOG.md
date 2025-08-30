@@ -145,11 +145,11 @@
 
     logger = setup_logger()
     ```
-*   **내용**: 애플리케이션 전반에 걸쳐 사용될 중앙 집중식 로깅 설정을 정의했습니다.
+*   **내용**: 애플리케이션 전반에 걸쳐 사용될 중앙 집중식 로깅 설정을 정의했습니다。
 
 ### 3.7. `model/VisionProtocol.py`
-*   **Enum 사용**: `msg.enums`에서 `ResultType`과 `PerformanceDataType`을 임포트하여 `run` 및 `__receiveData` 메서드 내의 매직 넘버를 대체했습니다.
-*   **로깅 적용**: `msg.logger`에서 `logger`를 임포트하고 `print()` 구문을 `logger` 호출로 대체했습니다.
+*   **Enum 사용**: `msg.enums`에서 `ResultType`과 `PerformanceDataType`을 임포트하여 `run` 및 `__receiveData` 메서드 내의 매직 넘버를 대체했습니다。
+*   **로깅 적용**: `msg.logger`에서 `logger`를 임포트하고 `print()` 구문을 `logger` 호출로 대체했습니다。
 
 ### 3.8. `model/PostProcessor.py`
 *   **변경 없음**: 이번 리팩토링 단계에서는 `PostProcessor.py` 파일의 내용에 직접적인 변경은 적용되지 않았습니다. 주로 `RtpmController`에서 워커 분리 및 MVVM 아키텍처 적용에 중점을 두었기 때문입니다. 향후 추가적인 리팩토링 시 고려될 수 있습니다.
@@ -158,7 +158,7 @@
 *   **`controller/__init__.py`**: `from .RtpmController import *` 대신 `from .main_view_model import MainViewModel`을 임포트하도록 변경했습니다.
 *   **`model/__init__.py`**: `PyQt5` 관련 임포트 구문을 제거하고, `from .VisionProtocol import *`, `from .PostProcessor import *`, `from .YoloToCoCo import *`만 남겼습니다.
 *   **`view/__init__.py`**: `PyQt5` 관련 임포트 구문을 제거하고, `from .RtpmMainTextWidget import *`만 남겼습니다.
-*   **`model/workers/__init__.py`**: `from .file_reader import RtpmFileReader`, `from .data_updater import RtpmDataUpdater`, `from .image_saver import RtpmImageSaver`, `from .video_recorder import RtpmVideoRecorder`를 임포트하도록 추가했습니다.
+*   **`model/workers/__init__.py`**: `from .file_reader import RtpmFileReader`, `from .data_updater import RtpmDataUpdater`, `from .image_saver import RtpmImageSaver`, `from .video_recorder import RtpmVideoRecorder`를 임포트하도록 추가했습니다。
 
 ## 4. 리팩토링의 이점
 
@@ -214,3 +214,33 @@
 ### 6.6. 프로그레스 바 업데이트 오류 수정
 *   **문제**: 파일 처리 시 프로그레스 바가 갱신되지 않았습니다. 이는 **Start** 버튼을 누를 때마다 `RtpmFileReader` 워커가 새로 생성되지만, 이 새 워커의 시그널이 UI 슬롯에 연결되지 않았기 때문입니다.
 *   **해결**: `main_view_model.py`의 구조를 리팩토링하여, 워커가 새로 생성될 때마다 시그널-슬롯 연결이 다시 이루어지도록 `_connect_worker_signals` 메서드를 도입하고 호출 로직을 수정했습니다.
+
+## 7. Performance Tab UI/Logic Refinement
+
+The "Performance" tab's UI and underlying logic were significantly refactored to improve readability, modernize its appearance, and correctly display per-NPU metrics.
+
+### 7.1. UI (`RtpmMainTextWidget.ui`) Changes
+
+*   **Widget Type Transition**: Replaced all `QLCDNumber` instances with `QLabel` for value displays to allow for more flexible styling and modern typography.
+*   **Progress Bar Integration**: Added `QProgressBar` widgets for percentage-based metrics (CPU, Memory, NPU Utilization) to provide intuitive visual feedback alongside numerical values.
+*   **Refined Styling**:
+    *   Adjusted `QLabel[objectName$="ValueLabel"]` font size from `24pt` to `18pt` and changed color from vibrant green (`#00FF00`) to a softer, more professional green (`#66BB6A`).
+    *   Updated `QProgressBar::chunk` background color to match the new softer green (`#66BB6A`).
+    *   Applied consistent padding (`10px`) to `QGroupBox` elements for better visual spacing.
+*   **Per-NPU Metric Display**:
+    *   Modified `infBox` (Inference Time) to include separate `QLabel`s (`inf0ValueLabel`, `inf1ValueLabel`) for NPU 0 and NPU 1 inference times. Static labels ("NPU 0", "NPU 1") were added for clarity.
+    *   Modified `npuBox` (NPU Utilization) to include separate `QLabel`s (`npu0ValueLabel`, `npu1ValueLabel`) and `QProgressBar`s (`npu0ProgressBar`, `npu1ProgressBar`) for NPU 0 and NPU 1 utilization. Static labels ("NPU 0", "NPU 1") were added.
+*   **UI File Integrity Fix**: Corrected an XML parsing error (`Unexpected element string`) in the `styleSheet` property by removing a nested `<string notr="true">` tag, ensuring the UI file loads correctly.
+
+### 7.2. Python Logic (`RtpmMainTextWidget.py`) Changes
+
+*   **Widget Management Refactoring**:
+    *   Replaced the list-of-lists `self.__dataEditList` with a more readable and maintainable dictionary `self.__performanceWidgets`. This dictionary now stores widgets (or dictionaries of widgets for combined displays like value/progress bar) under descriptive string keys (e.g., `"inference_time"`, `"npu_utilization"`, `"cpu"`).
+    *   Updated `initMonitoringView` to populate `self.__performanceWidgets` by directly referencing the newly defined UI widgets (e.g., `self.ui.inf0ValueLabel`, `self.ui.npu0ProgressBar`), removing dynamic widget creation for these specific metrics.
+*   **Dynamic Update Logic Adaptation**:
+    *   `__updateChart` function was significantly refactored to accept string keys (e.g., `"inference_time"`) instead of integer indices. It now intelligently updates `QLabel`s (using `setText()` with appropriate formatting like "ms" or "%") and `QProgressBar`s (using `setValue()`) based on the widget type and the performance metric. It also correctly handles per-NPU updates for "inference_time" and "npu_utilization" based on the `index` parameter.
+    *   `__clearChart` function was updated to iterate through the new `self.__performanceWidgets` dictionary and clear/reset all performance display widgets (both `QLabel`s and `QProgressBar`s) to their initial states.
+*   **Signal Slot Adaptations**:
+    *   All `onUpdate...Slot` functions (`onUpdateResultPerfSlot`, `onUpdateCpuGraphSlot`, `onUpdateMemoryGraphSlot`, `onUpdateFpsGraphSlot`, `onUpdateNpuUsageGraphSlot`) were updated to pass the new string keys (e.g., `"inference_time"`, `"cpu"`) to `__updateChart`, aligning with the refactored widget management.
+*   **Indentation Fix**: Corrected an `IndentationError` in the `initMonitoringView` function, ensuring proper Python syntax.
+*   **Improved Debugging**: Enhanced error handling in `onUpdateImageSlot` to print full tracebacks, aiding in future debugging efforts.

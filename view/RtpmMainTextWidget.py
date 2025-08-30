@@ -90,6 +90,11 @@ class RtpmMainWidget(QWidget):
 		QWidget.__init__(self)
 		self.ui = QUiLoader().load("view/RtpmMainTextWidget.ui", self)
 		
+		# Create a layout for RtpmMainWidget and add self.ui to it
+		main_layout = QVBoxLayout(self)
+		main_layout.addWidget(self.ui)
+		self.setLayout(main_layout)
+		
 		self.initMonitoringView(settingData)
 		self.initSlots()
 
@@ -128,110 +133,135 @@ class RtpmMainWidget(QWidget):
 		self.ui.startButton.clicked.connect(self.onStartButtonClicked)
 		self.ui.stopButton.clicked.connect(self.onStopButtonClicked)
 		self.ui.inputComboBox.currentIndexChanged.connect(self.onInputComboBoxIndexChanged)
+		self.ui.togglePerformanceButton.clicked.connect(self.onTogglePerformanceView)
 
 	def _setLabelStyle(self, label):
 			label.setFont(QFont('Gulim', 12, weight=QFont.Weight.Bold))
 
-	def _setLcdNumberStyle(self, lcdNumber):
-			lcdNumber.setMaximumWidth(80)
-			lcdNumber.setMaximumHeight(30)
-			lcdNumber.setMinimumWidth(80)
-			lcdNumber.setMinimumHeight(30)
-			lcdNumber.setSegmentStyle(QLCDNumber.SegmentStyle.Flat)
-			lcdNumber.setFont(QFont('Agency', 9))
+	def _setLabelValueStyle(self, label):
+			# Styling is primarily done via stylesheet now
+			pass
      
 	def initMonitoringView(self, settingData):
-		self.__dataEditList = list()
-		tempList = list()
-		self.infLcdList = list()
-		self.npuLcdList = list()
+		self.__performanceWidgets = {}
 
-		# inference time object
-		infLayout = QVBoxLayout()
-		for idx, value in enumerate(settingData['DetectTypes']):
-			# Label
-			label = QLabel(value)
-			self._setLabelStyle(label)
-			infLayout.addWidget(label)
-			# LCD Number
-			lcdNumber = QLCDNumber()
-			self._setLcdNumberStyle(lcdNumber)
-			self.infLcdList.append(lcdNumber)
+		# Inference Time objects
+		# These are now defined in the UI file
+		self.__performanceWidgets["inference_time"] = [
+			self.ui.inf0ValueLabel,
+			self.ui.inf1ValueLabel
+		]
 
-			infLayout.addWidget(self.infLcdList[idx])
-			tempList.append(self.infLcdList[idx])
-		self.ui.infBox.setLayout(infLayout)
-		self.__dataEditList.append(tempList[:]) # 0
-		tempList.clear()
+		# NPU Utilization objects
+		# These are now defined in the UI file
+		self.__performanceWidgets["npu_utilization"] = [
+			{
+				"value_label": self.ui.npu0ValueLabel,
+				"progress_bar": self.ui.npu0ProgressBar
+			},
+			{
+				"value_label": self.ui.npu1ValueLabel,
+				"progress_bar": self.ui.npu1ProgressBar
+			}
+		]
 
-		# npu util object
-		npuLayout = QVBoxLayout()
-		for idx, value in enumerate(settingData['DetectTypes']):
-			# Label
-			label = QLabel(value)
-			self._setLabelStyle(label)
-			npuLayout.addWidget(label)
-			# LCD Number
-			lcdNumber = QLCDNumber()
-			self._setLcdNumberStyle(lcdNumber)
-			self.npuLcdList.append(lcdNumber)
+		self.__performanceWidgets["cpu"] = {
+			"value_label": self.ui.cpuValueLabel,
+			"progress_bar": self.ui.cpuProgressBar
+		}
 
-			npuLayout.addWidget(self.npuLcdList[idx])
-			tempList.append(self.npuLcdList[idx])
-		self.ui.npuBox.setLayout(npuLayout)
-		self.__dataEditList.append(tempList[:]) # 1
-		tempList.clear()
+		self.__performanceWidgets["memory"] = {
+			"value_label": self.ui.memValueLabel,
+			"progress_bar": self.ui.memProgressBar
+		}
 
-		tempList.append(self.ui.cpuLcd)
-		self.__dataEditList.append(tempList[:]) # 2
-		tempList.clear()
-		tempList.append(self.ui.memLcd)
-		self.__dataEditList.append(tempList[:]) # 3
-		tempList.clear()
-		tempList.append(self.ui.fpsLcd)			# 4
-		self.__dataEditList.append(tempList[:])
-		tempList.clear()
-		tempList.append(self.ui.npu0DmaPer)
-		tempList.append(self.ui.npu0CompPer)
-		tempList.append(self.ui.npu1DmaPer)
-		tempList.append(self.ui.npu1CompPer)
-		self.__dataEditList.append(tempList[:])  # 5
-		tempList.clear()
-		self.__dataEditList.append(tempList[:])
-		tempList.clear()
+		self.__performanceWidgets["fps"] = self.ui.fpsValueLabel
 
-	def __updateChart(self, editIndex, index, value):
-		# self.__dataEditList[editIndex][index].setText(str(value))
-		self.__dataEditList[editIndex][index].display(value)
+		self.__performanceWidgets["npu_details"] = {
+			"npu0_dma": self.ui.npu0DmaValueLabel,
+			"npu0_comp": self.ui.npu0CompValueLabel,
+			"npu1_dma": self.ui.npu1DmaValueLabel,
+			"npu1_comp": self.ui.npu1CompValueLabel
+		}
+
+
+	def __updateChart(self, key, index, value):
+		if key == "inference_time":
+			widgets = self.__performanceWidgets[key]
+			print('inf: ',index, value)
+			if index < len(widgets):
+				widgets[index].setText(f"{value} ms")
+		elif key == "npu_utilization":
+			# 'index' here refers to the NPU index (0 or 1)
+			if index < len(self.__performanceWidgets[key]):
+				npu_widgets = self.__performanceWidgets[key][index]
+				npu_widgets["value_label"].setText(f"{value}%")
+				npu_widgets["progress_bar"].setValue(value)
+			else:
+				print(f"Error: Invalid NPU index {index} for NPU utilization")
+		elif key == "cpu":
+			widgets = self.__performanceWidgets[key]
+			widgets["value_label"].setText(f"{value}%")
+			widgets["progress_bar"].setValue(value)
+		elif key == "memory":
+			widgets = self.__performanceWidgets[key]
+			widgets["value_label"].setText(f"{value}%")
+			widgets["progress_bar"].setValue(value)
+		elif key == "fps":
+			self.__performanceWidgets[key].setText(f"{value}")
+		elif key == "npu_details":
+			# 'index' here refers to the specific NPU detail (0_dma, 0_comp, etc.)
+			# We need to map the index to the correct key in the npu_details dictionary
+			npu_detail_keys = ["npu0_dma", "npu0_comp", "npu1_dma", "npu1_comp"]
+			if index < len(npu_detail_keys):
+				detail_key = npu_detail_keys[index]
+				self.__performanceWidgets[key][detail_key].setText(f"{value}%")
+			else:
+				print(f"Error: Invalid index {index} for NPU details")
+		else:
+			print(f"Error: Unknown performance widget key: {key}")
 
 	def __clearChart(self):
-		for idx1 in range(len(self.__dataEditList)):
-			for idx2 in range(len(self.__dataEditList[idx1])):
-				# self.__dataEditList[idx1][idx2].clear()
-				self.__dataEditList[idx1][idx2].display(0)
+		for key, widgets in self.__performanceWidgets.items():
+			if key == "inference_time":
+				for widget in widgets:
+					widget.setText("0 ms")
+			elif key == "npu_utilization":
+				for npu_widgets in widgets:
+					npu_widgets["value_label"].setText("0%")
+					npu_widgets["progress_bar"].setValue(0)
+			elif key == "fps":
+				widgets.setText("0")
+			elif key == "npu_details":
+				for detail_key in widgets:
+					widgets[detail_key].setText("0%")
+			else:
+				print(f"Warning: Unknown performance widget key in __clearChart: {key}")
 
 	# Gui update slot
 	@Slot(int, int, int)
 	def onUpdateResultPerfSlot(self, index, infTimeValue, npuUtilValue):
-		self.__updateChart(0, index, infTimeValue)
-		self.__updateChart(1, index, npuUtilValue)
+		self.__updateChart("inference_time", index, infTimeValue)
+		self.__updateChart("npu_utilization", index, npuUtilValue)
 
 	@Slot(int, int)	
 	def onUpdateCpuGraphSlot(self, index, value):
-		self.__updateChart(2, index, value)
+		self.__updateChart("cpu", 0, value) # index 0 for value_label, index 1 for progress_bar
+		self.__updateChart("cpu", 1, value)
 
 	@Slot(int, int)	
 	def onUpdateMemoryGraphSlot(self, index, value):
-		self.__updateChart(3, index, value)
+		self.__updateChart("memory", 0, value) # index 0 for value_label, index 1 for progress_bar
+		self.__updateChart("memory", 1, value)
 
 	@Slot(int, int)
 	def onUpdateFpsGraphSlot(self, index, value):
-		self.__updateChart(4, index, value)
+		self.__updateChart("fps", 0, value) # FPS is a single QLabel, index 0 is arbitrary but consistent
 
 	@Slot(int, tuple)
 	def onUpdateNpuUsageGraphSlot(self, index, value):
 		for idx, percent in enumerate(value):
-			self.__updateChart(5, idx, percent)
+			self.__updateChart("npu_details", idx, percent)
 
 	@Slot()
 	def onClearAllGraphSlot(self):
@@ -286,7 +316,9 @@ class RtpmMainWidget(QWidget):
 				image = convertToQtFormat.scaled(scaledSize[0], scaledSize[1])
 				self.ui.frameLabel.setPixmap(QPixmap.fromImage(image))
 				# print('update time : {}'.format(f"{time() - bgn:.5f} s"))	
-		except:
+		except Exception as e:
+			import traceback
+			traceback.print_exc()
 			self.ui.frameLabel.clear()
 
 	@Slot()
@@ -343,6 +375,13 @@ class RtpmMainWidget(QWidget):
 		msg.setWindowTitle(title)
 		msg.setText(message)
 		msg.exec()
+
+	@Slot()
+	def onTogglePerformanceView(self):
+		if self.ui.performanceGroup.isVisible():
+			self.ui.performanceGroup.hide()
+		else:
+			self.ui.performanceGroup.show()
 
 if __name__ == "__main__":
 	app = QApplication([])
