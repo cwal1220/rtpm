@@ -24,6 +24,6 @@
  * Agreement between Telechips and Company.
 '''
 
-from .VisionProtocol import *
 from .PostProcessor import *
+from .VisionProtocol import *
 from .YoloToCoCo import *

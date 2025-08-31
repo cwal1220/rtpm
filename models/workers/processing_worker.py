@@ -1,11 +1,13 @@
-from PySide6.QtCore import QThread, Signal
-import time
-import cv2
 import json
 import os
-import sys
+import time
+
+import cv2
 from numpy import frombuffer
+from PySide6.QtCore import QThread, Signal
+
 from utils.logger import logger
+
 
 class WorkerConfig:
     """A data class to hold configuration for the processing worker."""
@@ -17,7 +19,6 @@ class WorkerConfig:
         self.frame_list = view_model._MainViewModel__frameList
         self.save_frame_list = view_model._MainViewModel__saveFrameList
         self.folder_mode_path = view_model.folder_mode_path
-        self.data_result_path = view_model.data_result_path
         self.frame_width = view_model._MainViewModel__frameWidth
         self.frame_height = view_model._MainViewModel__frameHeight
         self.proj_frame_channel = view_model._MainViewModel__projframeChannel
@@ -33,9 +34,13 @@ class ProcessingWorker(QThread):
         super().__init__(parent)
         self.config = config
         self.is_running = False
+        self.all_images = []
+        self.all_annotations = []
 
     def run(self):
         self.is_running = True
+        self.all_images = []
+        self.all_annotations = []
         logger.info("Processing worker started.")
         cfg = self.config
 
@@ -66,19 +71,44 @@ class ProcessingWorker(QThread):
             frame_data = cfg.frame_list.pop(0)
             if frame_data[1] != result_list['info'][0]:
                 logger.warning(f"Frame sync mismatch: expected {result_list['info'][0]}, got {frame_data[1]}")
-                return # Not the corresponding frame
+                return
 
             draw_ratio = [frame_data[0].shape[1] / cfg.frame_width, frame_data[0].shape[0] / cfg.frame_height]
             
-            # Drawing logic here...
+            # --- Drawing Logic ---
             for key, value in result_list.items():
-                if isinstance(value, dict) and 'od' in value:
-                    frame_data[0] = cfg.post_processor.drawBoundingBoxforDistance(frame_data[0], value['od'], draw_ratio)
+                if not key.startswith('cluster') or not isinstance(value, dict):
+                    continue
+                try:
+                    cluster_index = int(key[len('cluster'):]) - 1
+                except (ValueError, IndexError):
+                    logger.warning(f"Could not parse index from cluster key: {key}")
+                    continue
 
+                if 'od' in value:
+                    frame_data[0] = cfg.post_processor.draw_object_detection_boxes(
+                        frame=frame_data[0],
+                        object_detection_results=value['od'],
+                        npu_index=cluster_index,
+                        draw_ratio_list=draw_ratio
+                    )
+                if 'cl' in value:
+                    frame_data[0] = cfg.post_processor.draw_classification_results(
+                        frame=frame_data[0],
+                        classification_result=value['cl'],
+                        npu_index=cluster_index
+                    )
+
+            # --- Data Accumulation ---
             if cfg.is_saving_files:
+                image_entry = cfg.post_processor.create_image_entry(frame_data[2], frame_data[0].shape, result_list)
+                self.all_images.append(image_entry)
+
+                annotations = cfg.post_processor.create_prediction_annotations(result_list, frame_data[0].shape)
+                self.all_annotations.extend(annotations)
+                
+                # Keep saving frame images if needed for video
                 cfg.save_frame_list.append(frame_data[:])
-                if len(frame_data) > 2:
-                    cfg.post_processor.saveResultData(frame_data[2], cfg.folder_mode_path, frame_data[0].shape, result_list)
             
             self.frame_processed.emit([frame_data[0]])
 
@@ -86,6 +116,7 @@ class ProcessingWorker(QThread):
             logger.error(f"Error in processing worker (file mode): {e}", exc_info=True)
 
     def _process_stream_mode(self, cfg):
+        # This mode does not currently support saving predictions.
         result_frame = cfg.vision_protocol.getFrame()
         if result_frame is None:
             return
@@ -105,21 +136,29 @@ class ProcessingWorker(QThread):
             logger.error(f"Error in processing worker (stream mode): {e}", exc_info=True)
 
     def _cleanup(self, cfg):
-        if cfg.is_saving_files and cfg.folder_mode_path:
-            result_list = []
+        """Saves the accumulated predictions to a single COCO-style JSON file."""
+        if not cfg.is_saving_files or not self.all_annotations:
+            return
+
+        if cfg.folder_mode_path:
             result_path = cfg.folder_mode_path + '_result'
-            data_result_path = os.path.join(result_path, cfg.data_result_path.strip('/'))
-            if os.path.exists(data_result_path):
-                for file_name in os.listdir(data_result_path):
-                    with open(os.path.join(data_result_path, file_name), 'r') as f:
-                        try:
-                            result_list.append(json.load(f))
-                        except json.JSONDecodeError as e:
-                            logger.error(f"Error decoding JSON from {file_name}: {e}")
-                with open(os.path.join(result_path, 'result_out.json'), 'w') as fp:
-                    json.dump(result_list, fp, sort_keys=False, indent=4)
-            else:
-                logger.warning(f"Data result path does not exist: {data_result_path}")
+            output_path = os.path.join(result_path, 'coco_predictions.json')
+            
+            final_coco = {
+                'info': { 'description': 'RTPM Prediction Results' },
+                'licenses': [],
+                'images': self.all_images,
+                'annotations': self.all_annotations,
+                'categories': cfg.post_processor.categories
+            }
+
+            try:
+                os.makedirs(result_path, exist_ok=True)
+                with open(output_path, 'w') as fp:
+                    json.dump(final_coco, fp, sort_keys=False, indent=4)
+                logger.info(f"Successfully saved COCO prediction file to {output_path}")
+            except IOError as e:
+                logger.error(f"Failed to save prediction file to {output_path}: {e}")
 
     def stop(self):
         self.is_running = False

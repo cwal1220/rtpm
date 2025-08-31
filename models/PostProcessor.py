@@ -1,172 +1,147 @@
-'''
- * Copyright Telechips Inc.
- *
- * TCC Version 1.0
- *
- * This source code contains confidential information of Telechips.
- *
- * Any unauthorized use without a written permission of Telechips including not
- * limited to re-distribution in source or binary form is strictly prohibited.
- *
- * This source code is provided "AS IS" and nothing contained in this source code
- * shall constitute any express or implied warranty of any kind, including without
- * limitation, any warranty of merchantability, fitness for a particular purpose
- * or non-infringement of any patent, copyright or other third party intellectual
- * property right.
- * No warranty is made, express or implied, regarding the information's accuracy,
- * completeness, or performance.
- *
- * In no event shall Telechips be liable for any claim, damages or other
- * liability arising from, out of or in connection with this source code or
- * the use in the source code.
- *
- * This source code is provided subject to the terms of a Mutual Non-Disclosure
- * Agreement between Telechips and Company.
-'''
-
-from datetime import datetime
-from PySide6.QtCore import QThread
-import numpy as np
-import cv2
 import json
-import os, sys
+import os
+import sys
+
+import cv2
+import numpy as np
+from PySide6.QtCore import QThread
+
 
 class PostProcessor(QThread):
-	def __init__(self, frameWidth, frameHeight):
-		self.colorList = [(255, 0, 0), (0, 255, 0), (0, 0, 255)
-						, (255, 255, 0), (255, 0, 255)]
-		self.resultName = ['OD/TSR', 'LD', 'HBA']
-		self.__frameWidth = frameWidth
-		self.__frameHeight = frameHeight
+    """Handles post-processing of detection results, including drawing on frames and creating annotations."""
 
-	def drawBoundingBox(self, frame, odResult, num, drawRatioList=[1.0, 1.0]): # for NN
-		resultNum = len(odResult)
-		if resultNum > 0:
-			for lData in odResult:
-				try:
-					startPoint = (int(lData['bbox'][0]*drawRatioList[0]), int(lData['bbox'][1]*drawRatioList[1]))
-					endPoint = (int((lData['bbox'][0]+lData['bbox'][2])*drawRatioList[0]), int((lData['bbox'][1]+lData['bbox'][3])*drawRatioList[1]))
-					cv2.rectangle(frame, startPoint, endPoint, self.colorList[num], 2)
-					cv2.putText(frame, '[{}][{:.1f}%]'.format(lData['category_id'], lData['score']), (startPoint[0]-8, startPoint[1]-8), cv2.FONT_HERSHEY_SIMPLEX, 0.6, self.colorList[num], 2)
-				except Exception as e:
-					_, _ , tb = sys.exc_info()
-					print(__name__, tb.tb_lineno, e)
-		return frame
+    def __init__(self, frame_width, frame_height, label_path):
+        super().__init__()
+        self._frame_width = frame_width
+        self._frame_height = frame_height
+        self.categories = self._load_categories(label_path)
 
-	def drawBoundingBoxforDistance(self, frame, odResult, drawRatioList=[1.0, 1.0]): # for Falcon
-		resultNum = len(odResult)
-		if resultNum > 0:
-			for lData in odResult:
-				try:
-					cId = lData['category_id']
-					color = self.colorList[cId % len(self.colorList)]
-					startPoint = (int(lData['bbox'][0]*drawRatioList[0]), int(lData['bbox'][1]*drawRatioList[1]))
-					endPoint = (int((lData['bbox'][0]+lData['bbox'][2])*drawRatioList[0]), int((lData['bbox'][1]+lData['bbox'][3])*drawRatioList[1]))
-					cv2.rectangle(frame, startPoint, endPoint, color, 2)
-					if cId != 4:
-						cv2.putText(frame, '[{}][{:.1f}%] {:.1f}m'.format(lData['desc'], lData['score'], lData['distance']), (startPoint[0]-8, startPoint[1]-8), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
-						lData['desc'] = ''
-					else:
-						cv2.putText(frame, '[{}][{:.1f}%]'.format(lData['desc'], lData['score']), (startPoint[0]-8, startPoint[1]-8), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
-						lData['distance'] = 0.0
-					lData['score'] = lData['score']/100.0
-				except Exception as e:
-					_, _ , tb = sys.exc_info()
-					print(__name__, tb.tb_lineno, e)
-		return frame
+    def _load_categories(self, path):
+        """Loads category names from a text file."""
+        categories = []
+        try:
+            with open(path, 'r') as f:
+                for i, line in enumerate(f):
+                    categories.append({'id': i + 1, 'name': line.strip(), 'supercategory': 'object'})
+        except FileNotFoundError:
+            print(f"Warning: Label file not found at {path}. Categories will be empty.")
+        return categories
 
-	def drawLane(self, frame, laneResult, drawRatioList=[1.0, 1.0]):
-		resultNum = len(laneResult)
-		if resultNum > 0:
-			for pointList in laneResult:
-				pointList = np.multiply(pointList, drawRatioList)
-				pointList = pointList.astype('int32')
-				cv2.polylines(frame, [pointList], False, (224, 32, 100), 3)
-		return frame
+    def _get_color_for_id(self, id_):
+        """Generates a unique and vibrant color based on an ID."""
+        # Use a prime number to spread hues more evenly
+        hue = (id_ * 37) % 180
+        # Create a color in HSV, then convert to BGR for OpenCV
+        hsv_color = np.uint8([[[hue, 255, 255]]])
+        bgr_color = cv2.cvtColor(hsv_color, cv2.COLOR_HSV2BGR)[0][0]
+        return tuple(map(int, bgr_color))
 
-	def printHBA(self, frame, hbaResult):
-		if len(hbaResult) > 0:
-			# hbaResult['state'] - high / low
-			cv2.putText(frame, 'HBA : ' + hbaResult['state'], (50, frame.shape[0] - 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-		return frame
+    def draw_object_detection_boxes(self, frame, object_detection_results, npu_index, draw_ratio_list=[1.0, 1.0]):
+        """Draws bounding boxes for object detection results."""
+        if not object_detection_results:
+            return frame
 
-	def printClass(self, frame, clResult, num, posX, posY):
-		cv2.putText(frame, 'Cluster_{} : {}'.format(num, clResult), (posX, posY), cv2.FONT_HERSHEY_SIMPLEX, 1, self.colorList[num], 2)
-		return frame
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        font_scale = 0.7
+        font_thickness = 2
 
-	def saveResultData(self, fileName, fileDir, imageShape, resultDict):
-		data = dict()
-		try:
-			fileNameList = os.path.splitext(fileName)
-			path = os.path.splitdrive(fileDir)
-			data['images'] = {'file_path' : fileDir + '/' + fileName}
-			data['images']['file_name'] = fileNameList[0]
-			data['images']['sub_dir'] = str(path[1][1:])
-			data['images']['height'] = imageShape[0]
-			data['images']['width'] = imageShape[1]
+        for detection in object_detection_results:
+            try:
+                start_point = (int(detection['bbox'][0] * draw_ratio_list[0]), int(detection['bbox'][1] * draw_ratio_list[1]))
+                end_point = (int((detection['bbox'][0] + detection['bbox'][2]) * draw_ratio_list[0]), int((detection['bbox'][1] + detection['bbox'][3]) * draw_ratio_list[1]))
+                
+                category_id = detection.get('category_id', 0)
+                color = self._get_color_for_id(category_id)
+                
+                # Draw bounding box
+                cv2.rectangle(frame, start_point, end_point, color, 2)
+                
+                # Prepare text
+                text = f"[NPU:{npu_index}][{detection['category_id']}][{detection['score']:.1f}%]"
+                text_size = cv2.getTextSize(text, font, font_scale, font_thickness)[0]
+                
+                # Draw text background
+                text_bg_start = (start_point[0], start_point[1] - text_size[1] - 10) # 10 pixels padding above text
+                text_bg_end = (start_point[0] + text_size[0], start_point[1])
+                cv2.rectangle(frame, text_bg_start, text_bg_end, (0, 0, 0), -1) # Black background
 
-			height_factor = imageShape[0] / self.__frameHeight
-			width_factor = imageShape[1] / self.__frameWidth
+                # Draw text
+                cv2.putText(frame, text, (start_point[0], start_point[1] - 5), font, font_scale, (255, 255, 255), font_thickness) # White text
 
-			scaledOdList = []
-			if 'cluster1' in resultDict and "od" in resultDict['cluster1']:
-				for object in resultDict['cluster1']['od']:
-					newDict = dict()
-					newDict['id'] = object['id']
-					newDict['category_id'] = object['category_id']
-					newDict['score'] = object['score']
-					newDict['desc'] = object['desc']
-					newDict['distance'] = object['distance']
-					newDict['bbox'] = [round(object['bbox'][0] * width_factor)
-										, round(object['bbox'][1] * height_factor)
-										, round(object['bbox'][2] * width_factor)
-										, round(object['bbox'][3] * height_factor)]
-					scaledOdList.append(newDict)
+            except (IndexError, KeyError) as e:
+                _, _, tb = sys.exc_info()
+                print(f"{__name__} Error at line {tb.tb_lineno}: {e}")
+        return frame
 
-			if 'od' in resultDict:
-				for object in resultDict['od']:
-					newDict = dict()
-					newDict['id'] = object['id']
-					newDict['category_id'] = object['category_id']
-					newDict['score'] = object['score']
-					newDict['desc'] = object['desc']
-					newDict['distance'] = object['distance']
-					newDict['bbox'] = [round(object['bbox'][0] * width_factor)
-										, round(object['bbox'][1] * height_factor)
-										, round(object['bbox'][2] * width_factor)
-										, round(object['bbox'][3] * height_factor)]
-					scaledOdList.append(newDict)
+    def draw_classification_results(self, frame, classification_result, npu_index):
+        """Prints classification results on the frame at a position based on the NPU index."""
+        pos_x = 10
+        pos_y = 30 + (npu_index * 30)
+        color = self._get_color_for_id(npu_index)
+        text = f"Cluster_{npu_index} : {classification_result}"
+        cv2.putText(frame, text, (pos_x, pos_y), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
+        return frame
 
-			# data['annotations'] =  resultDict['od']
-			data['annotations'] = scaledOdList
-			if 'hba' in resultDict:
-				data['hba'] = resultDict['hba']
-			
-			with open('{}_result/data_result/{}.json'.format(fileDir, fileNameList[0]), 'w') as fp:
-				json.dump(data, fp, sort_keys=False, indent=4, separators=(',', ':'))
+    def create_image_entry(self, file_name, image_shape, result_dict):
+        """Creates a COCO-style image entry, including non-standard classification results."""
+        image_id = result_dict.get('info', [0])[0]
+        
+        classification_results = {}
+        for key, value in result_dict.items():
+            if key.startswith('cluster') and 'cl' in value:
+                cluster_index = int(key[len('cluster'):]) - 1
+                classification_results[f'cluster_{cluster_index}_cl'] = value['cl']
 
-		except Exception as e:
-			_, _ , tb = sys.exc_info()
-			print(__name__, tb.tb_lineno, e)
+        return {
+            'id': image_id,
+            'file_name': file_name,
+            'height': image_shape[0],
+            'width': image_shape[1],
+            **classification_results
+        }
 
-	def saveResultList(self, resultNumList, resultList):
-		now = datetime.now()
-		try:
-			f = open(now.strftime("%Y-%m-%d_%H%M") + '.txt', 'w')
-			for i in range(len(resultNumList)):
-				f.write('[{}] total : {}'.format(self.resultName[i], resultNumList[i]) + '\n')
-				for ri in range(len(resultList[i])):
-					f.write('({}) : '.format(ri) + str(resultList[i][ri]) + '\n')
-			f.close()
-		except Exception as e:
-			_, _ , tb = sys.exc_info()
-			print(__name__, tb.tb_lineno, e)
+    def create_prediction_annotations(self, result_dict, image_shape):
+        """Creates a list of COCO-style prediction annotations from a result dictionary."""
+        try:
+            image_id = result_dict.get('info', [0])[0]
+            annotations = []
+            height_factor = image_shape[0] / self._frame_height
+            width_factor = image_shape[1] / self._frame_width
+            
+            od_sources = [value.get('od', []) for key, value in result_dict.items() if key.startswith('cluster')]
 
-if __name__ == "__main__":
-	img = cv2.imread('test_files/test.jpg')
-	dstimg = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-	print(img.shape)
-	img.save("test_files/filename.jpeg")
-	cv2.imshow('test', dstimg)
-	cv2.waitKey()
-	cv2.destroyAllWindows()
+            for od_list in od_sources:
+                for od_object in od_list:
+                    annotations.append(
+                        self._create_coco_annotation(od_object, image_id, width_factor, height_factor)
+                    )
+            return annotations
+        except (KeyError, IndexError, TypeError) as e:
+            _, _, tb = sys.exc_info()
+            print(f"{__name__} Error in create_prediction_annotations at line {tb.tb_lineno}: {e}")
+            return []
+
+    def _create_coco_annotation(self, od_object, image_id, width_factor, height_factor):
+        """Creates a COCO-compliant annotation entry from an OD object."""
+        bbox = od_object.get('bbox', [0, 0, 0, 0])
+        scaled_bbox = [
+            round(bbox[0] * width_factor),
+            round(bbox[1] * height_factor),
+            round(bbox[2] * width_factor),
+            round(bbox[3] * height_factor)
+        ]
+        
+        category_id_from_model = od_object.get('category_id', -1)
+        coco_category_id = category_id_from_model + 1
+        
+        score_from_model = od_object.get('score', 0.0)
+        normalized_score = score_from_model / 100.0
+
+        return {
+            'image_id': image_id,
+            'category_id': coco_category_id,
+            'bbox': scaled_bbox,
+            'score': normalized_score,
+            'area': scaled_bbox[2] * scaled_bbox[3],
+            'iscrowd': 0,
+        }

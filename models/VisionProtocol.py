@@ -24,24 +24,23 @@
  * Agreement between Telechips and Company.
 '''
 
-from time import time
-import json
-import sys
-import struct
 import ctypes
-from PySide6.QtCore import QThread, Slot, Signal
+import json
+import time
+
 import numpy as np
+from PySide6.QtCore import QThread
+
+from data_structures import msginfo
+from data_structures.CpuUtilization import CpuUtilizationClass
+from data_structures.enums import PerformanceDataType, ResultType
+from data_structures.JsonResultParser import JsonResultParser
+from data_structures.SdkMemUsage import SdkMemUsageClass
+from data_structures.SdkNpuUsage import SdkNpuUsageClass
 
 # Load C based Vision Protocol Library v2.x.x
 from third_party.visionprotocol.cython_visionprotocol.vision_api import *
-
-from data_structures import msginfo
-from data_structures.enums import ResultType, PerformanceDataType
 from utils.logger import logger
-from data_structures.CpuUtilization import CpuUtilizationClass
-from data_structures.SdkMemUsage import SdkMemUsageClass
-from data_structures.SdkNpuUsage import SdkNpuUsageClass
-from data_structures.JsonResultParser import JsonResultParser
 
 
 class VisionProtocol(QThread):

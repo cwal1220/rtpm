@@ -1,4 +1,5 @@
-from enum import Enum, auto
+from enum import Enum
+
 
 class ResultType(Enum):
     DETECTION_RESULT = 0

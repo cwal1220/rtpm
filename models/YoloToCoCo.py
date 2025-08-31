@@ -24,9 +24,9 @@
  * Agreement between Telechips and Company.
 '''
 
-from pathlib import Path
 import json
-import numpy as np
+from pathlib import Path
+
 import imagesize
 
 #################################################
@@ -42,7 +42,6 @@ classes = [
     "traffic_sign"
 ]
 
-from pathlib import Path
 
 
 def create_image_annotation(file_path: Path, width: int, height: int, image_id: int):

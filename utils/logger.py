@@ -1,6 +1,7 @@
 import logging
 import sys
 
+
 def setup_logger():
     logger = logging.getLogger('RTPM_APP')
     logger.setLevel(logging.DEBUG)

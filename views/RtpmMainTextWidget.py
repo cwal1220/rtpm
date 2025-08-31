@@ -24,12 +24,14 @@
  * Agreement between Telechips and Company.
 '''
 
-from PySide6.QtCore import Qt, Signal, Slot
-from PySide6.QtWidgets import *
+import sys
+
+from PySide6.QtCore import Signal, Slot
 from PySide6.QtGui import *
 from PySide6.QtUiTools import QUiLoader
-import sys
-from time import time
+from PySide6.QtWidgets import *
+
+
 class RtpmMainWidget(QWidget):
 	"""
 	Description
@@ -315,7 +317,7 @@ class RtpmMainWidget(QWidget):
 				image = convertToQtFormat.scaled(scaledSize[0], scaledSize[1])
 				self.ui.frameLabel.setPixmap(QPixmap.fromImage(image))
 				# print('update time : {}'.format(f"{time() - bgn:.5f} s"))	
-		except Exception as e:
+		except Exception:
 			import traceback
 			traceback.print_exc()
 			self.ui.frameLabel.clear()

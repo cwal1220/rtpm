@@ -1,11 +1,13 @@
-from PySide6.QtCore import QThread, Signal
 import os
-import cv2
-from PIL import Image
-from numpy import ravel, asarray
 import time
-import sys
+
+import cv2
+from numpy import asarray, ravel
+from PIL import Image
+from PySide6.QtCore import QThread, Signal
+
 from utils.logger import logger
+
 
 class RtpmFileReader(QThread):
     reader_stopped = Signal()

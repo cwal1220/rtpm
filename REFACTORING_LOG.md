@@ -145,11 +145,11 @@
 
     logger = setup_logger()
     ```
-*   **내용**: 애플리케이션 전반에 걸쳐 사용될 중앙 집중식 로깅 설정을 정의했습니다。
+*   **내용**: 애플리케이션 전반에 걸쳐 사용될 중앙 집중식 로깅 설정을 정의했습니다.
 
 ### 3.7. `model/VisionProtocol.py`
-*   **Enum 사용**: `msg.enums`에서 `ResultType`과 `PerformanceDataType`을 임포트하여 `run` 및 `__receiveData` 메서드 내의 매직 넘버를 대체했습니다。
-*   **로깅 적용**: `msg.logger`에서 `logger`를 임포트하고 `print()` 구문을 `logger` 호출로 대체했습니다。
+*   **Enum 사용**: `msg.enums`에서 `ResultType`과 `PerformanceDataType`을 임포트하여 `run` 및 `__receiveData` 메서드 내의 매직 넘버를 대체했습니다.
+*   **로깅 적용**: `msg.logger`에서 `logger`를 임포트하고 `print()` 구문을 `logger` 호출로 대체했습니다.
 
 ### 3.8. `model/PostProcessor.py`
 *   **변경 없음**: 이번 리팩토링 단계에서는 `PostProcessor.py` 파일의 내용에 직접적인 변경은 적용되지 않았습니다. 주로 `RtpmController`에서 워커 분리 및 MVVM 아키텍처 적용에 중점을 두었기 때문입니다. 향후 추가적인 리팩토링 시 고려될 수 있습니다.
@@ -158,7 +158,7 @@
 *   **`controller/__init__.py`**: `from .RtpmController import *` 대신 `from .main_view_model import MainViewModel`을 임포트하도록 변경했습니다.
 *   **`model/__init__.py`**: `PyQt5` 관련 임포트 구문을 제거하고, `from .VisionProtocol import *`, `from .PostProcessor import *`, `from .YoloToCoCo import *`만 남겼습니다.
 *   **`view/__init__.py`**: `PyQt5` 관련 임포트 구문을 제거하고, `from .RtpmMainTextWidget import *`만 남겼습니다.
-*   **`model/workers/__init__.py`**: `from .file_reader import RtpmFileReader`, `from .data_updater import RtpmDataUpdater`, `from .image_saver import RtpmImageSaver`, `from .video_recorder import RtpmVideoRecorder`를 임포트하도록 추가했습니다。
+*   **`model/workers/__init__.py`**: `from .file_reader import RtpmFileReader`, `from .data_updater import RtpmDataUpdater`, `from .image_saver import RtpmImageSaver`, `from .video_recorder import RtpmVideoRecorder`를 임포트하도록 추가했습니다.
 
 ## 4. 리팩토링의 이점
 
@@ -244,3 +244,32 @@ The "Performance" tab's UI and underlying logic were significantly refactored to
     *   All `onUpdate...Slot` functions (`onUpdateResultPerfSlot`, `onUpdateCpuGraphSlot`, `onUpdateMemoryGraphSlot`, `onUpdateFpsGraphSlot`, `onUpdateNpuUsageGraphSlot`) were updated to pass the new string keys (e.g., `"inference_time"`, `"cpu"`) to `__updateChart`, aligning with the refactored widget management.
 *   **Indentation Fix**: Corrected an `IndentationError` in the `initMonitoringView` function, ensuring proper Python syntax.
 *   **Improved Debugging**: Enhanced error handling in `onUpdateImageSlot` to print full tracebacks, aiding in future debugging efforts.
+
+## 8. COCO 포맷 예측 데이터 저장 및 시각화 개선
+
+### 8.1. COCO 포맷 예측 데이터 저장
+*   **설정 파일 통합**: `config/Setting.yaml`을 `config/settings.py`로 마이그레이션하고, `pyyaml` 의존성을 제거했습니다.
+*   **버전 정보 관리**: 애플리케이션 버전 정보를 `main.py`에서 `version.py` 파일로 분리하고, 시작 시 버전이 출력되도록 했습니다.
+*   **라벨 관리 시스템**: 프로젝트 루트에 `labels` 디렉토리를 생성하고, `coco.txt` 파일을 통해 COCO 카테고리 이름을 관리하도록 했습니다.
+*   **`PostProcessor.py` 리팩토링**:
+    *   `saveResultData` 함수를 제거하고, `create_image_entry` 및 `create_prediction_annotations` 헬퍼 함수를 도입했습니다.
+    *   `_create_coco_annotation` 함수에서 모델의 0-기반 `category_id`를 COCO 표준 1-기반으로 변환하도록 수정했습니다.
+    *   `score` 값을 0-100 범위에서 0.0-1.0 범위로 정규화하도록 수정했습니다.
+*   **`processing_worker.py` 리팩토링**:
+    *   `PostProcessor`의 헬퍼 함수들을 사용하여 이미지별 `image` 객체와 `annotation` 리스트를 누적하도록 변경했습니다.
+    *   모든 처리가 완료된 후, 누적된 `image` 객체, `annotation` 리스트, `categories` 정보를 포함하는 **단일 `coco_predictions.json` 파일**을 생성하도록 `_cleanup` 메서드를 수정했습니다. 이 파일은 `classification` 결과와 같은 비표준 필드도 `image` 객체 내에 포함합니다.
+
+### 8.2. 시각화 개선
+*   **동적 색상 생성**: `PostProcessor.py`에서 하드코딩된 `COLOR_LIST`를 제거하고, `_get_color_for_id` 헬퍼 함수를 통해 `category_id` 또는 `npu_index`에 따라 동적으로 색상을 생성하도록 변경했습니다.
+*   **`draw_object_detection_boxes` 함수 개선**:
+    *   바운딩 박스 텍스트에 `npu_index` 정보 추가.
+    *   텍스트 가시성 향상: 텍스트 뒤에 배경 사각형을 그리고, 텍스트 색상과 폰트 크기/두께를 조정하여 가독성을 높였습니다.
+*   **함수명 변경**:
+    *   `drawBoundingBox` → `draw_object_detection_boxes`
+    *   `printClassification` → `draw_classification_results`
+
+## 9. 버그 수정 및 안정화
+
+*   **`NameError` 수정**: `view_models/main_view_model.py`에서 `settings` 모듈 import 누락으로 인한 `NameError`를 수정했습니다.
+*   **`AttributeError` 수정**: `models/VisionProtocol.py`에서 `time` 모듈 import 오류로 인한 `AttributeError`를 수정했습니다.
+*   **`ruff` 코드 스타일 적용**: 프로젝트 전체에 `ruff`를 적용하여 불필요한 import 제거 및 import 순서 정렬 등 코드 스타일을 최적화했습니다. (단, `third_party` 폴더는 제외)

@@ -1,0 +1,1256 @@
+2025-08-31 23:23:35,850 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:23:35,850 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:23:43,811 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:43,883 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:43,955 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,028 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,101 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,177 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,248 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,320 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,390 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,466 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,538 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,567 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,680 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,744 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,824 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,894 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:44,974 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,044 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,122 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,190 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,266 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,339 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,410 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,485 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,557 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,628 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,702 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,775 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,848 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,920 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:45,993 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,066 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,131 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,209 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,286 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,359 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,429 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,504 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,577 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,654 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,723 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,795 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,868 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:46,940 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,017 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,098 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,218 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,292 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,401 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,551 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,633 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,714 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,797 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,874 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:47,958 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,029 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,151 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,228 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,298 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,379 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,465 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,548 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,681 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,749 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,834 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:48,959 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,036 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,108 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,246 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,298 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,451 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,533 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,607 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,684 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,748 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,833 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,917 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:49,998 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,070 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,192 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,280 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,362 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,450 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,531 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,618 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,701 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,782 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,867 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:50,968 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,131 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,216 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,286 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,405 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,487 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,567 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,652 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,729 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,816 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,890 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:51,969 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,053 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,133 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,263 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,348 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,434 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,520 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,604 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,653 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,802 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,886 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:52,966 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,050 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,142 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,235 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,384 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,468 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,541 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,612 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,691 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,763 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,836 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:53,882 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,045 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,127 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,200 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,289 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,373 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,458 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,548 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,634 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,711 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,786 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,858 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:54,937 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,010 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,097 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,197 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,279 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,361 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,438 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,532 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,609 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,687 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,769 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,857 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:55,951 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,035 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,114 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,172 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,348 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,432 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,514 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,597 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,696 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,773 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,854 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,938 - RTPM_APP - ERROR - Error in processing worker (file mode): 'PostProcessor' object has no attribute 'colorList'
+Traceback (most recent call last):
+  File "c:\Users\qkrck\Desktop\rtpm\models\workers\processing_worker.py", line 79, in _process_file_mode
+    color_index = cluster_index % len(cfg.post_processor.colorList)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PostProcessor' object has no attribute 'colorList'
+2025-08-31 23:23:56,947 - RTPM_APP - INFO - Processing worker finished.
+2025-08-31 23:25:57,401 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:25:57,401 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:28:39,945 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:28:39,945 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:29:01,588 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:29:01,588 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:29:20,778 - RTPM_APP - INFO - Processing worker finished.
+2025-08-31 23:39:43,945 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:39:43,945 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:40:04,998 - RTPM_APP - INFO - Processing worker finished.
+2025-08-31 23:40:10,431 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:40:10,432 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:40:10,676 - RTPM_APP - WARNING - Frame sync mismatch: expected 1, got 158
+2025-08-31 23:40:10,683 - RTPM_APP - WARNING - Frame sync mismatch: expected 2, got 159
+2025-08-31 23:40:10,769 - RTPM_APP - WARNING - Frame sync mismatch: expected 3, got 1
+2025-08-31 23:40:10,893 - RTPM_APP - WARNING - Frame sync mismatch: expected 4, got 2
+2025-08-31 23:40:10,896 - RTPM_APP - WARNING - Frame sync mismatch: expected 5, got 3
+2025-08-31 23:40:11,022 - RTPM_APP - WARNING - Frame sync mismatch: expected 6, got 4
+2025-08-31 23:40:11,025 - RTPM_APP - WARNING - Frame sync mismatch: expected 7, got 5
+2025-08-31 23:40:11,151 - RTPM_APP - WARNING - Frame sync mismatch: expected 8, got 6
+2025-08-31 23:40:11,272 - RTPM_APP - WARNING - Frame sync mismatch: expected 9, got 7
+2025-08-31 23:40:11,275 - RTPM_APP - WARNING - Frame sync mismatch: expected 10, got 8
+2025-08-31 23:40:11,397 - RTPM_APP - WARNING - Frame sync mismatch: expected 11, got 9
+2025-08-31 23:40:11,400 - RTPM_APP - WARNING - Frame sync mismatch: expected 12, got 10
+2025-08-31 23:40:11,583 - RTPM_APP - WARNING - Frame sync mismatch: expected 13, got 11
+2025-08-31 23:40:11,585 - RTPM_APP - WARNING - Frame sync mismatch: expected 14, got 12
+2025-08-31 23:40:11,706 - RTPM_APP - WARNING - Frame sync mismatch: expected 15, got 13
+2025-08-31 23:40:11,711 - RTPM_APP - WARNING - Frame sync mismatch: expected 16, got 14
+2025-08-31 23:40:11,819 - RTPM_APP - WARNING - Frame sync mismatch: expected 17, got 15
+2025-08-31 23:40:11,954 - RTPM_APP - WARNING - Frame sync mismatch: expected 18, got 16
+2025-08-31 23:40:11,957 - RTPM_APP - WARNING - Frame sync mismatch: expected 19, got 17
+2025-08-31 23:40:12,090 - RTPM_APP - WARNING - Frame sync mismatch: expected 20, got 18
+2025-08-31 23:40:12,093 - RTPM_APP - WARNING - Frame sync mismatch: expected 21, got 19
+2025-08-31 23:40:12,189 - RTPM_APP - WARNING - Frame sync mismatch: expected 22, got 20
+2025-08-31 23:40:12,282 - RTPM_APP - INFO - Data updater finished.
+2025-08-31 23:40:12,307 - RTPM_APP - WARNING - Frame sync mismatch: expected 23, got 21
+2025-08-31 23:40:12,310 - RTPM_APP - WARNING - Frame sync mismatch: expected 24, got 22
+2025-08-31 23:40:12,326 - RTPM_APP - INFO - Processing worker finished.
+2025-08-31 23:41:42,617 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:41:42,617 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:41:58,171 - RTPM_APP - INFO - Processing worker finished.
+2025-08-31 23:43:36,873 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:43:36,873 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:43:57,248 - RTPM_APP - INFO - Processing worker finished.
+2025-08-31 23:44:01,240 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:44:01,240 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:44:01,426 - RTPM_APP - WARNING - Frame sync mismatch: expected 1, got 158
+2025-08-31 23:44:01,556 - RTPM_APP - WARNING - Frame sync mismatch: expected 2, got 159
+2025-08-31 23:44:01,682 - RTPM_APP - WARNING - Frame sync mismatch: expected 3, got 1
+2025-08-31 23:44:01,685 - RTPM_APP - WARNING - Frame sync mismatch: expected 4, got 2
+2025-08-31 23:44:01,810 - RTPM_APP - WARNING - Frame sync mismatch: expected 5, got 3
+2025-08-31 23:44:01,817 - RTPM_APP - WARNING - Frame sync mismatch: expected 6, got 4
+2025-08-31 23:44:01,933 - RTPM_APP - WARNING - Frame sync mismatch: expected 7, got 5
+2025-08-31 23:44:02,063 - RTPM_APP - WARNING - Frame sync mismatch: expected 8, got 6
+2025-08-31 23:44:02,066 - RTPM_APP - WARNING - Frame sync mismatch: expected 9, got 7
+2025-08-31 23:44:02,193 - RTPM_APP - WARNING - Frame sync mismatch: expected 10, got 8
+2025-08-31 23:44:02,196 - RTPM_APP - WARNING - Frame sync mismatch: expected 11, got 9
+2025-08-31 23:44:02,327 - RTPM_APP - WARNING - Frame sync mismatch: expected 12, got 10
+2025-08-31 23:44:02,451 - RTPM_APP - WARNING - Frame sync mismatch: expected 13, got 11
+2025-08-31 23:44:02,454 - RTPM_APP - WARNING - Frame sync mismatch: expected 14, got 12
+2025-08-31 23:44:02,580 - RTPM_APP - WARNING - Frame sync mismatch: expected 15, got 13
+2025-08-31 23:44:02,583 - RTPM_APP - WARNING - Frame sync mismatch: expected 16, got 14
+2025-08-31 23:44:02,707 - RTPM_APP - WARNING - Frame sync mismatch: expected 17, got 15
+2025-08-31 23:44:02,830 - RTPM_APP - WARNING - Frame sync mismatch: expected 18, got 16
+2025-08-31 23:44:02,838 - RTPM_APP - WARNING - Frame sync mismatch: expected 19, got 17
+2025-08-31 23:44:02,954 - RTPM_APP - WARNING - Frame sync mismatch: expected 20, got 18
+2025-08-31 23:44:02,957 - RTPM_APP - WARNING - Frame sync mismatch: expected 21, got 19
+2025-08-31 23:44:03,065 - RTPM_APP - WARNING - Frame sync mismatch: expected 22, got 20
+2025-08-31 23:44:03,198 - RTPM_APP - WARNING - Frame sync mismatch: expected 23, got 21
+2025-08-31 23:44:03,201 - RTPM_APP - WARNING - Frame sync mismatch: expected 24, got 22
+2025-08-31 23:44:03,323 - RTPM_APP - WARNING - Frame sync mismatch: expected 25, got 23
+2025-08-31 23:44:03,331 - RTPM_APP - WARNING - Frame sync mismatch: expected 26, got 24
+2025-08-31 23:44:03,436 - RTPM_APP - WARNING - Frame sync mismatch: expected 27, got 25
+2025-08-31 23:44:03,563 - RTPM_APP - WARNING - Frame sync mismatch: expected 28, got 26
+2025-08-31 23:44:03,566 - RTPM_APP - WARNING - Frame sync mismatch: expected 29, got 27
+2025-08-31 23:44:03,613 - RTPM_APP - WARNING - Frame sync mismatch: expected 30, got 28
+2025-08-31 23:44:03,813 - RTPM_APP - WARNING - Frame sync mismatch: expected 31, got 29
+2025-08-31 23:44:03,897 - RTPM_APP - WARNING - Frame sync mismatch: expected 32, got 30
+2025-08-31 23:44:03,992 - RTPM_APP - WARNING - Frame sync mismatch: expected 33, got 31
+2025-08-31 23:44:04,087 - RTPM_APP - WARNING - Frame sync mismatch: expected 34, got 32
+2025-08-31 23:44:04,161 - RTPM_APP - WARNING - Frame sync mismatch: expected 35, got 33
+2025-08-31 23:44:04,232 - RTPM_APP - WARNING - Frame sync mismatch: expected 36, got 34
+2025-08-31 23:44:04,322 - RTPM_APP - WARNING - Frame sync mismatch: expected 37, got 35
+2025-08-31 23:44:04,366 - RTPM_APP - WARNING - Frame sync mismatch: expected 38, got 36
+2025-08-31 23:44:04,514 - RTPM_APP - WARNING - Frame sync mismatch: expected 39, got 37
+2025-08-31 23:44:04,599 - RTPM_APP - WARNING - Frame sync mismatch: expected 40, got 38
+2025-08-31 23:44:04,686 - RTPM_APP - WARNING - Frame sync mismatch: expected 41, got 39
+2025-08-31 23:44:04,758 - RTPM_APP - WARNING - Frame sync mismatch: expected 42, got 40
+2025-08-31 23:44:04,836 - RTPM_APP - WARNING - Frame sync mismatch: expected 43, got 41
+2025-08-31 23:44:04,938 - RTPM_APP - WARNING - Frame sync mismatch: expected 44, got 42
+2025-08-31 23:44:05,028 - RTPM_APP - WARNING - Frame sync mismatch: expected 45, got 43
+2025-08-31 23:44:05,130 - RTPM_APP - WARNING - Frame sync mismatch: expected 46, got 44
+2025-08-31 23:44:05,226 - RTPM_APP - WARNING - Frame sync mismatch: expected 47, got 45
+2025-08-31 23:44:05,332 - RTPM_APP - WARNING - Frame sync mismatch: expected 48, got 46
+2025-08-31 23:44:05,427 - RTPM_APP - WARNING - Frame sync mismatch: expected 49, got 47
+2025-08-31 23:44:05,498 - RTPM_APP - WARNING - Frame sync mismatch: expected 50, got 48
+2025-08-31 23:44:05,587 - RTPM_APP - WARNING - Frame sync mismatch: expected 51, got 49
+2025-08-31 23:44:05,675 - RTPM_APP - WARNING - Frame sync mismatch: expected 52, got 50
+2025-08-31 23:44:05,770 - RTPM_APP - WARNING - Frame sync mismatch: expected 53, got 51
+2025-08-31 23:44:05,841 - RTPM_APP - WARNING - Frame sync mismatch: expected 54, got 52
+2025-08-31 23:44:05,938 - RTPM_APP - WARNING - Frame sync mismatch: expected 55, got 53
+2025-08-31 23:44:06,030 - RTPM_APP - WARNING - Frame sync mismatch: expected 56, got 54
+2025-08-31 23:44:06,113 - RTPM_APP - WARNING - Frame sync mismatch: expected 57, got 55
+2025-08-31 23:44:06,198 - RTPM_APP - WARNING - Frame sync mismatch: expected 58, got 56
+2025-08-31 23:44:06,284 - RTPM_APP - WARNING - Frame sync mismatch: expected 59, got 57
+2025-08-31 23:44:06,368 - RTPM_APP - WARNING - Frame sync mismatch: expected 60, got 58
+2025-08-31 23:44:06,452 - RTPM_APP - WARNING - Frame sync mismatch: expected 61, got 59
+2025-08-31 23:44:06,546 - RTPM_APP - WARNING - Frame sync mismatch: expected 62, got 60
+2025-08-31 23:44:06,635 - RTPM_APP - WARNING - Frame sync mismatch: expected 63, got 61
+2025-08-31 23:44:06,734 - RTPM_APP - WARNING - Frame sync mismatch: expected 64, got 62
+2025-08-31 23:44:06,825 - RTPM_APP - WARNING - Frame sync mismatch: expected 65, got 63
+2025-08-31 23:44:06,914 - RTPM_APP - WARNING - Frame sync mismatch: expected 66, got 64
+2025-08-31 23:44:07,000 - RTPM_APP - WARNING - Frame sync mismatch: expected 67, got 65
+2025-08-31 23:44:07,085 - RTPM_APP - WARNING - Frame sync mismatch: expected 68, got 66
+2025-08-31 23:44:07,179 - RTPM_APP - WARNING - Frame sync mismatch: expected 69, got 67
+2025-08-31 23:44:07,297 - RTPM_APP - WARNING - Frame sync mismatch: expected 70, got 68
+2025-08-31 23:44:07,367 - RTPM_APP - WARNING - Frame sync mismatch: expected 71, got 69
+2025-08-31 23:44:07,458 - RTPM_APP - WARNING - Frame sync mismatch: expected 72, got 70
+2025-08-31 23:44:07,532 - RTPM_APP - WARNING - Frame sync mismatch: expected 73, got 71
+2025-08-31 23:44:07,617 - RTPM_APP - WARNING - Frame sync mismatch: expected 74, got 72
+2025-08-31 23:44:07,708 - RTPM_APP - WARNING - Frame sync mismatch: expected 75, got 73
+2025-08-31 23:44:07,790 - RTPM_APP - WARNING - Frame sync mismatch: expected 76, got 74
+2025-08-31 23:44:07,879 - RTPM_APP - WARNING - Frame sync mismatch: expected 77, got 75
+2025-08-31 23:44:07,963 - RTPM_APP - WARNING - Frame sync mismatch: expected 78, got 76
+2025-08-31 23:44:08,047 - RTPM_APP - WARNING - Frame sync mismatch: expected 79, got 77
+2025-08-31 23:44:08,142 - RTPM_APP - WARNING - Frame sync mismatch: expected 80, got 78
+2025-08-31 23:44:08,226 - RTPM_APP - WARNING - Frame sync mismatch: expected 81, got 79
+2025-08-31 23:44:08,322 - RTPM_APP - WARNING - Frame sync mismatch: expected 82, got 80
+2025-08-31 23:44:08,419 - RTPM_APP - WARNING - Frame sync mismatch: expected 83, got 81
+2025-08-31 23:44:08,499 - RTPM_APP - WARNING - Frame sync mismatch: expected 84, got 82
+2025-08-31 23:44:08,581 - RTPM_APP - WARNING - Frame sync mismatch: expected 85, got 83
+2025-08-31 23:44:08,666 - RTPM_APP - WARNING - Frame sync mismatch: expected 86, got 84
+2025-08-31 23:44:08,760 - RTPM_APP - WARNING - Frame sync mismatch: expected 87, got 85
+2025-08-31 23:44:08,856 - RTPM_APP - WARNING - Frame sync mismatch: expected 88, got 86
+2025-08-31 23:44:08,957 - RTPM_APP - WARNING - Frame sync mismatch: expected 89, got 87
+2025-08-31 23:44:09,046 - RTPM_APP - WARNING - Frame sync mismatch: expected 90, got 88
+2025-08-31 23:44:09,138 - RTPM_APP - WARNING - Frame sync mismatch: expected 91, got 89
+2025-08-31 23:44:09,231 - RTPM_APP - WARNING - Frame sync mismatch: expected 92, got 90
+2025-08-31 23:44:09,316 - RTPM_APP - WARNING - Frame sync mismatch: expected 93, got 91
+2025-08-31 23:44:09,384 - RTPM_APP - WARNING - Frame sync mismatch: expected 94, got 92
+2025-08-31 23:44:09,495 - RTPM_APP - WARNING - Frame sync mismatch: expected 95, got 93
+2025-08-31 23:44:09,576 - RTPM_APP - WARNING - Frame sync mismatch: expected 96, got 94
+2025-08-31 23:44:09,646 - RTPM_APP - WARNING - Frame sync mismatch: expected 97, got 95
+2025-08-31 23:44:09,740 - RTPM_APP - WARNING - Frame sync mismatch: expected 98, got 96
+2025-08-31 23:44:09,817 - RTPM_APP - WARNING - Frame sync mismatch: expected 99, got 97
+2025-08-31 23:44:09,903 - RTPM_APP - WARNING - Frame sync mismatch: expected 100, got 98
+2025-08-31 23:44:10,000 - RTPM_APP - WARNING - Frame sync mismatch: expected 101, got 99
+2025-08-31 23:44:10,092 - RTPM_APP - WARNING - Frame sync mismatch: expected 102, got 100
+2025-08-31 23:44:10,185 - RTPM_APP - WARNING - Frame sync mismatch: expected 103, got 101
+2025-08-31 23:44:10,270 - RTPM_APP - WARNING - Frame sync mismatch: expected 104, got 102
+2025-08-31 23:44:10,353 - RTPM_APP - WARNING - Frame sync mismatch: expected 105, got 103
+2025-08-31 23:44:10,451 - RTPM_APP - WARNING - Frame sync mismatch: expected 106, got 104
+2025-08-31 23:44:10,539 - RTPM_APP - WARNING - Frame sync mismatch: expected 107, got 105
+2025-08-31 23:44:10,641 - RTPM_APP - WARNING - Frame sync mismatch: expected 108, got 106
+2025-08-31 23:44:10,715 - RTPM_APP - WARNING - Frame sync mismatch: expected 109, got 107
+2025-08-31 23:44:10,794 - RTPM_APP - WARNING - Frame sync mismatch: expected 110, got 108
+2025-08-31 23:44:10,878 - RTPM_APP - WARNING - Frame sync mismatch: expected 111, got 109
+2025-08-31 23:44:10,956 - RTPM_APP - WARNING - Frame sync mismatch: expected 112, got 110
+2025-08-31 23:44:11,066 - RTPM_APP - WARNING - Frame sync mismatch: expected 113, got 111
+2025-08-31 23:44:11,170 - RTPM_APP - WARNING - Frame sync mismatch: expected 114, got 112
+2025-08-31 23:44:11,245 - RTPM_APP - WARNING - Frame sync mismatch: expected 115, got 113
+2025-08-31 23:44:11,338 - RTPM_APP - WARNING - Frame sync mismatch: expected 116, got 114
+2025-08-31 23:44:11,405 - RTPM_APP - WARNING - Frame sync mismatch: expected 117, got 115
+2025-08-31 23:44:11,496 - RTPM_APP - WARNING - Frame sync mismatch: expected 118, got 116
+2025-08-31 23:44:11,582 - RTPM_APP - WARNING - Frame sync mismatch: expected 119, got 117
+2025-08-31 23:44:11,654 - RTPM_APP - WARNING - Frame sync mismatch: expected 120, got 118
+2025-08-31 23:44:11,742 - RTPM_APP - WARNING - Frame sync mismatch: expected 121, got 119
+2025-08-31 23:44:11,791 - RTPM_APP - WARNING - Frame sync mismatch: expected 122, got 120
+2025-08-31 23:44:11,955 - RTPM_APP - WARNING - Frame sync mismatch: expected 123, got 121
+2025-08-31 23:44:12,038 - RTPM_APP - WARNING - Frame sync mismatch: expected 124, got 122
+2025-08-31 23:44:12,110 - RTPM_APP - WARNING - Frame sync mismatch: expected 125, got 123
+2025-08-31 23:44:12,211 - RTPM_APP - WARNING - Frame sync mismatch: expected 126, got 124
+2025-08-31 23:44:12,289 - RTPM_APP - WARNING - Frame sync mismatch: expected 127, got 125
+2025-08-31 23:44:12,372 - RTPM_APP - WARNING - Frame sync mismatch: expected 128, got 126
+2025-08-31 23:44:12,464 - RTPM_APP - WARNING - Frame sync mismatch: expected 129, got 127
+2025-08-31 23:44:12,548 - RTPM_APP - WARNING - Frame sync mismatch: expected 130, got 128
+2025-08-31 23:44:12,626 - RTPM_APP - WARNING - Frame sync mismatch: expected 131, got 129
+2025-08-31 23:44:12,698 - RTPM_APP - WARNING - Frame sync mismatch: expected 132, got 130
+2025-08-31 23:44:12,771 - RTPM_APP - WARNING - Frame sync mismatch: expected 133, got 131
+2025-08-31 23:44:12,862 - RTPM_APP - WARNING - Frame sync mismatch: expected 134, got 132
+2025-08-31 23:44:12,935 - RTPM_APP - WARNING - Frame sync mismatch: expected 135, got 133
+2025-08-31 23:44:13,035 - RTPM_APP - WARNING - Frame sync mismatch: expected 136, got 134
+2025-08-31 23:44:13,125 - RTPM_APP - WARNING - Frame sync mismatch: expected 137, got 135
+2025-08-31 23:44:13,216 - RTPM_APP - WARNING - Frame sync mismatch: expected 138, got 136
+2025-08-31 23:44:13,288 - RTPM_APP - WARNING - Frame sync mismatch: expected 139, got 137
+2025-08-31 23:44:13,367 - RTPM_APP - WARNING - Frame sync mismatch: expected 140, got 138
+2025-08-31 23:44:13,466 - RTPM_APP - WARNING - Frame sync mismatch: expected 141, got 139
+2025-08-31 23:44:13,540 - RTPM_APP - WARNING - Frame sync mismatch: expected 142, got 140
+2025-08-31 23:44:13,612 - RTPM_APP - WARNING - Frame sync mismatch: expected 143, got 141
+2025-08-31 23:44:13,717 - RTPM_APP - WARNING - Frame sync mismatch: expected 144, got 142
+2025-08-31 23:44:13,807 - RTPM_APP - WARNING - Frame sync mismatch: expected 145, got 143
+2025-08-31 23:44:13,900 - RTPM_APP - WARNING - Frame sync mismatch: expected 146, got 144
+2025-08-31 23:44:13,984 - RTPM_APP - WARNING - Frame sync mismatch: expected 147, got 145
+2025-08-31 23:44:14,063 - RTPM_APP - WARNING - Frame sync mismatch: expected 148, got 146
+2025-08-31 23:44:14,157 - RTPM_APP - WARNING - Frame sync mismatch: expected 149, got 147
+2025-08-31 23:44:14,247 - RTPM_APP - WARNING - Frame sync mismatch: expected 150, got 148
+2025-08-31 23:44:14,335 - RTPM_APP - WARNING - Frame sync mismatch: expected 151, got 149
+2025-08-31 23:44:14,423 - RTPM_APP - WARNING - Frame sync mismatch: expected 152, got 150
+2025-08-31 23:44:14,507 - RTPM_APP - WARNING - Frame sync mismatch: expected 153, got 151
+2025-08-31 23:44:14,595 - RTPM_APP - WARNING - Frame sync mismatch: expected 154, got 152
+2025-08-31 23:44:14,675 - RTPM_APP - WARNING - Frame sync mismatch: expected 155, got 153
+2025-08-31 23:44:14,757 - RTPM_APP - WARNING - Frame sync mismatch: expected 156, got 154
+2025-08-31 23:44:14,842 - RTPM_APP - WARNING - Frame sync mismatch: expected 157, got 155
+2025-08-31 23:44:14,870 - RTPM_APP - INFO - Processing worker finished.
+2025-08-31 23:59:06,542 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:59:06,542 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:59:21,913 - RTPM_APP - INFO - Processing worker finished.
+2025-08-31 23:59:23,616 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:59:23,616 - RTPM_APP - INFO - Data updater started.
+2025-08-31 23:59:23,848 - RTPM_APP - WARNING - Frame sync mismatch: expected 1, got 158
+2025-08-31 23:59:23,851 - RTPM_APP - WARNING - Frame sync mismatch: expected 2, got 159
+2025-08-31 23:59:23,943 - RTPM_APP - WARNING - Frame sync mismatch: expected 3, got 1
+2025-08-31 23:59:24,016 - RTPM_APP - WARNING - Frame sync mismatch: expected 4, got 2
+2025-08-31 23:59:24,088 - RTPM_APP - WARNING - Frame sync mismatch: expected 5, got 3
+2025-08-31 23:59:24,162 - RTPM_APP - WARNING - Frame sync mismatch: expected 6, got 4
+2025-08-31 23:59:24,236 - RTPM_APP - WARNING - Frame sync mismatch: expected 7, got 5
+2025-08-31 23:59:24,309 - RTPM_APP - WARNING - Frame sync mismatch: expected 8, got 6
+2025-08-31 23:59:24,423 - RTPM_APP - WARNING - Frame sync mismatch: expected 9, got 7
+2025-08-31 23:59:24,427 - RTPM_APP - WARNING - Frame sync mismatch: expected 10, got 8
+2025-08-31 23:59:24,542 - RTPM_APP - WARNING - Frame sync mismatch: expected 11, got 9
+2025-08-31 23:59:24,555 - RTPM_APP - WARNING - Frame sync mismatch: expected 12, got 10
+2025-08-31 23:59:24,711 - RTPM_APP - WARNING - Frame sync mismatch: expected 13, got 11
+2025-08-31 23:59:24,714 - RTPM_APP - WARNING - Frame sync mismatch: expected 14, got 12
+2025-08-31 23:59:24,827 - RTPM_APP - WARNING - Frame sync mismatch: expected 15, got 13
+2025-08-31 23:59:24,947 - RTPM_APP - WARNING - Frame sync mismatch: expected 16, got 14
+2025-08-31 23:59:24,951 - RTPM_APP - WARNING - Frame sync mismatch: expected 17, got 15
+2025-08-31 23:59:25,046 - RTPM_APP - WARNING - Frame sync mismatch: expected 18, got 16
+2025-08-31 23:59:25,163 - RTPM_APP - WARNING - Frame sync mismatch: expected 19, got 17
+2025-08-31 23:59:25,167 - RTPM_APP - WARNING - Frame sync mismatch: expected 20, got 18
+2025-08-31 23:59:25,284 - RTPM_APP - WARNING - Frame sync mismatch: expected 21, got 19
+2025-08-31 23:59:25,404 - RTPM_APP - WARNING - Frame sync mismatch: expected 22, got 20
+2025-08-31 23:59:25,408 - RTPM_APP - WARNING - Frame sync mismatch: expected 23, got 21
+2025-08-31 23:59:25,541 - RTPM_APP - WARNING - Frame sync mismatch: expected 24, got 22
+2025-08-31 23:59:25,544 - RTPM_APP - WARNING - Frame sync mismatch: expected 25, got 23
+2025-08-31 23:59:25,668 - RTPM_APP - WARNING - Frame sync mismatch: expected 26, got 24
+2025-08-31 23:59:25,791 - RTPM_APP - WARNING - Frame sync mismatch: expected 27, got 25
+2025-08-31 23:59:25,795 - RTPM_APP - WARNING - Frame sync mismatch: expected 28, got 26
+2025-08-31 23:59:25,885 - RTPM_APP - WARNING - Frame sync mismatch: expected 29, got 27
+2025-08-31 23:59:25,965 - RTPM_APP - WARNING - Frame sync mismatch: expected 30, got 28
+2025-08-31 23:59:26,060 - RTPM_APP - WARNING - Frame sync mismatch: expected 31, got 29
+2025-08-31 23:59:26,152 - RTPM_APP - WARNING - Frame sync mismatch: expected 32, got 30
+2025-08-31 23:59:26,243 - RTPM_APP - WARNING - Frame sync mismatch: expected 33, got 31
+2025-08-31 23:59:26,339 - RTPM_APP - WARNING - Frame sync mismatch: expected 34, got 32
+2025-08-31 23:59:26,412 - RTPM_APP - WARNING - Frame sync mismatch: expected 35, got 33
+2025-08-31 23:59:26,487 - RTPM_APP - WARNING - Frame sync mismatch: expected 36, got 34
+2025-08-31 23:59:26,566 - RTPM_APP - WARNING - Frame sync mismatch: expected 37, got 35
+2025-08-31 23:59:26,690 - RTPM_APP - WARNING - Frame sync mismatch: expected 38, got 36
+2025-08-31 23:59:26,761 - RTPM_APP - WARNING - Frame sync mismatch: expected 39, got 37
+2025-08-31 23:59:26,832 - RTPM_APP - WARNING - Frame sync mismatch: expected 40, got 38
+2025-08-31 23:59:26,923 - RTPM_APP - WARNING - Frame sync mismatch: expected 41, got 39
+2025-08-31 23:59:26,998 - RTPM_APP - WARNING - Frame sync mismatch: expected 42, got 40
+2025-08-31 23:59:27,070 - RTPM_APP - WARNING - Frame sync mismatch: expected 43, got 41
+2025-08-31 23:59:27,176 - RTPM_APP - WARNING - Frame sync mismatch: expected 44, got 42
+2025-08-31 23:59:27,266 - RTPM_APP - WARNING - Frame sync mismatch: expected 45, got 43
+2025-08-31 23:59:27,370 - RTPM_APP - WARNING - Frame sync mismatch: expected 46, got 44
+2025-08-31 23:59:27,466 - RTPM_APP - WARNING - Frame sync mismatch: expected 47, got 45
+2025-08-31 23:59:27,572 - RTPM_APP - WARNING - Frame sync mismatch: expected 48, got 46
+2025-08-31 23:59:27,671 - RTPM_APP - WARNING - Frame sync mismatch: expected 49, got 47
+2025-08-31 23:59:27,743 - RTPM_APP - WARNING - Frame sync mismatch: expected 50, got 48
+2025-08-31 23:59:27,833 - RTPM_APP - WARNING - Frame sync mismatch: expected 51, got 49
+2025-08-31 23:59:27,925 - RTPM_APP - WARNING - Frame sync mismatch: expected 52, got 50
+2025-08-31 23:59:27,982 - RTPM_APP - WARNING - Frame sync mismatch: expected 53, got 51
+2025-08-31 23:59:28,141 - RTPM_APP - WARNING - Frame sync mismatch: expected 54, got 52
+2025-08-31 23:59:28,227 - RTPM_APP - WARNING - Frame sync mismatch: expected 55, got 53
+2025-08-31 23:59:28,322 - RTPM_APP - WARNING - Frame sync mismatch: expected 56, got 54
+2025-08-31 23:59:28,403 - RTPM_APP - WARNING - Frame sync mismatch: expected 57, got 55
+2025-08-31 23:59:28,498 - RTPM_APP - WARNING - Frame sync mismatch: expected 58, got 56
+2025-08-31 23:59:28,586 - RTPM_APP - WARNING - Frame sync mismatch: expected 59, got 57
+2025-08-31 23:59:28,668 - RTPM_APP - WARNING - Frame sync mismatch: expected 60, got 58
+2025-08-31 23:59:28,747 - RTPM_APP - WARNING - Frame sync mismatch: expected 61, got 59
+2025-08-31 23:59:28,840 - RTPM_APP - WARNING - Frame sync mismatch: expected 62, got 60
+2025-08-31 23:59:28,932 - RTPM_APP - WARNING - Frame sync mismatch: expected 63, got 61
+2025-08-31 23:59:29,037 - RTPM_APP - WARNING - Frame sync mismatch: expected 64, got 62
+2025-08-31 23:59:29,123 - RTPM_APP - WARNING - Frame sync mismatch: expected 65, got 63
+2025-08-31 23:59:29,221 - RTPM_APP - WARNING - Frame sync mismatch: expected 66, got 64
+2025-08-31 23:59:29,310 - RTPM_APP - WARNING - Frame sync mismatch: expected 67, got 65
+2025-08-31 23:59:29,398 - RTPM_APP - WARNING - Frame sync mismatch: expected 68, got 66
+2025-08-31 23:59:29,493 - RTPM_APP - WARNING - Frame sync mismatch: expected 69, got 67
+2025-08-31 23:59:29,547 - RTPM_APP - WARNING - Frame sync mismatch: expected 70, got 68
+2025-08-31 23:59:29,695 - RTPM_APP - WARNING - Frame sync mismatch: expected 71, got 69
+2025-08-31 23:59:29,778 - RTPM_APP - WARNING - Frame sync mismatch: expected 72, got 70
+2025-08-31 23:59:29,850 - RTPM_APP - WARNING - Frame sync mismatch: expected 73, got 71
+2025-08-31 23:59:29,942 - RTPM_APP - WARNING - Frame sync mismatch: expected 74, got 72
+2025-08-31 23:59:30,035 - RTPM_APP - WARNING - Frame sync mismatch: expected 75, got 73
+2025-08-31 23:59:30,122 - RTPM_APP - WARNING - Frame sync mismatch: expected 76, got 74
+2025-08-31 23:59:30,214 - RTPM_APP - WARNING - Frame sync mismatch: expected 77, got 75
+2025-08-31 23:59:30,302 - RTPM_APP - WARNING - Frame sync mismatch: expected 78, got 76
+2025-08-31 23:59:30,385 - RTPM_APP - WARNING - Frame sync mismatch: expected 79, got 77
+2025-08-31 23:59:30,483 - RTPM_APP - WARNING - Frame sync mismatch: expected 80, got 78
+2025-08-31 23:59:45,378 - RTPM_APP - INFO - Processing worker started.
+2025-08-31 23:59:45,378 - RTPM_APP - INFO - Data updater started.
+2025-09-01 00:00:13,651 - RTPM_APP - INFO - Processing worker finished.
+2025-09-01 00:12:50,856 - RTPM_APP - INFO - Data updater started.
+2025-09-01 00:12:50,856 - RTPM_APP - INFO - Processing worker started.
+2025-09-01 00:13:09,100 - RTPM_APP - INFO - Processing worker started.
+2025-09-01 00:13:09,100 - RTPM_APP - INFO - Data updater started.
+2025-09-01 00:13:30,306 - RTPM_APP - INFO - Successfully saved prediction file to C:/Users/qkrck/Desktop/hehe_result\predictions.json
+2025-09-01 00:13:30,307 - RTPM_APP - INFO - Processing worker finished.
+2025-09-01 00:18:01,592 - RTPM_APP - INFO - Data updater started.
+2025-09-01 00:18:01,592 - RTPM_APP - INFO - Processing worker started.
+2025-09-01 00:18:18,206 - RTPM_APP - INFO - Processing worker finished.
+2025-09-01 00:51:57,755 - RTPM_APP - INFO - Data updater started.
+2025-09-01 00:51:57,755 - RTPM_APP - INFO - Processing worker started.
+2025-09-01 00:52:17,452 - RTPM_APP - INFO - Successfully saved COCO prediction file to C:/Users/qkrck/Desktop/hehe_result\coco_predictions.json
+2025-09-01 00:52:17,452 - RTPM_APP - INFO - Processing worker finished.
+2025-09-01 01:11:47,068 - RTPM_APP - INFO - Processing worker started.
+2025-09-01 01:11:47,068 - RTPM_APP - INFO - Data updater started.
+2025-09-01 01:13:52,851 - RTPM_APP - INFO - Processing worker started.
+2025-09-01 01:13:52,851 - RTPM_APP - INFO - Data updater started.
+2025-09-01 01:14:07,895 - RTPM_APP - INFO - Successfully saved COCO prediction file to C:/Users/qkrck/Desktop/hehe_result\coco_predictions.json
+2025-09-01 01:14:07,895 - RTPM_APP - INFO - Processing worker finished.

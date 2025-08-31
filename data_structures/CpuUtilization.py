@@ -25,7 +25,9 @@
 '''
 
 import struct
+
 from .Packet import ISerializable
+
 '''
 typedef struct tagCpuUtilization{
 	uint32_t utilization;

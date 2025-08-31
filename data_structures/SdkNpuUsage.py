@@ -25,6 +25,7 @@
 '''
 
 import struct
+
 from .Packet import ISerializable
 
 '''

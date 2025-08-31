@@ -24,33 +24,25 @@
  * Agreement between Telechips and Company.
 '''
 
-from models import *
-from views import *
-from view_models.main_view_model import MainViewModel
 import sys
-import yaml
+
 from PySide6.QtWidgets import QApplication, QWidget
 
-_VERSION_MAJOR = 2
-_VERSION_MINOR = 0
-_VERSION_PATCH = 5
-_VERSION = f"{_VERSION_MAJOR}.{_VERSION_MINOR}.{_VERSION_PATCH}"
+from config import settings
+from view_models.main_view_model import MainViewModel
+from views import *
+from version import __version__
+
 
 class Main(QWidget):
     def __init__(self):
         super(Main, self).__init__()
 
-        self.settingData = None
-        try:
-            with open('config/Setting.yaml') as f:
-                self.settingData = yaml.load(f, Loader=yaml.FullLoader)
-        except:
-            # default setting
-            self.settingData = {
-                    'Projection': {'width': 1280, 'height': 720, 'channel': 3}, 
-                    'Injection'	: {'width': 1280, 'height': 720, 'channel': 3}, 
-                    'DetectTypes': ['NPU0', 'NPU1']
-                    }
+        self.settingData = {
+            'Projection': settings.PROJECTION,
+            'Injection': settings.INJECTION,
+            'DetectTypes': settings.DETECT_TYPES
+        }
 
         self.init_views()
         self.init_view_model()
@@ -64,9 +56,11 @@ class Main(QWidget):
     def start(self):
         self.viewModel.connect_signals(self.rtpmMainWidget)
         self.rtpmMainWidget.show()
-        self.rtpmMainWidget.resize(1400, 900) # default size
+        self.rtpmMainWidget.resize(1400, 900)  # default size
+
 
 if __name__ == '__main__':
+    print(f"RTPM Version: {__version__}")
     app = QApplication([])
     main = Main()
     main.start()

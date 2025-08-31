@@ -24,18 +24,20 @@
  * Agreement between Telechips and Company.
 '''
 
-from PySide6.QtCore import QObject, Signal, Slot
-from models.VisionProtocol import VisionProtocol
-from models.PostProcessor import PostProcessor
-from models.workers.file_reader import RtpmFileReader
-from models.workers.data_updater import RtpmDataUpdater
-from models.workers.image_saver import RtpmImageSaver
-from models.workers.video_recorder import RtpmVideoRecorder
-from models.workers.processing_worker import ProcessingWorker, WorkerConfig
-from data_structures.enums import PerformanceDataType, ResultType
-
-from datetime import datetime
 import os
+from datetime import datetime
+
+from PySide6.QtCore import QObject, Signal, Slot
+
+from config import settings
+from models.PostProcessor import PostProcessor
+from models.VisionProtocol import VisionProtocol
+from models.workers.data_updater import RtpmDataUpdater
+from models.workers.file_reader import RtpmFileReader
+from models.workers.image_saver import RtpmImageSaver
+from models.workers.processing_worker import ProcessingWorker, WorkerConfig
+from models.workers.video_recorder import RtpmVideoRecorder
+
 
 class MainViewModel(QObject):
     # Signals to be emitted to the View
@@ -168,7 +170,7 @@ class MainViewModel(QObject):
                 stream_height = self.__projframeHeightYV12
             stream_channel = self.__frameChannel if self.__mode else self.__projframeChannel
             self.visionProtocol = VisionProtocol(input_mode, stream_width, stream_height, stream_channel)
-            self.postProcessor = PostProcessor(self.__frameWidth, self.__frameHeight)
+            self.postProcessor = PostProcessor(self.__frameWidth, self.__frameHeight, label_path=settings.LABEL_PATH)
 
     def _setup_save_paths(self, input_mode, file_path):
         if not self.__fileSaveStatus:

@@ -1,8 +1,11 @@
-from PySide6.QtCore import QThread
-from datetime import datetime
-import cv2
 import time
+from datetime import datetime
+
+import cv2
+from PySide6.QtCore import QThread
+
 from utils.logger import logger
+
 
 class RtpmVideoRecorder(QThread):
     def __init__(self):
