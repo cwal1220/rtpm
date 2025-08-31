@@ -71,7 +71,7 @@ class ProcessingWorker(QThread):
             frame_data = cfg.frame_list.pop(0)
             if frame_data[1] != result_list['info'][0]:
                 logger.warning(f"Frame sync mismatch: expected {result_list['info'][0]}, got {frame_data[1]}")
-                return
+                return # Not the corresponding frame
 
             draw_ratio = [frame_data[0].shape[1] / cfg.frame_width, frame_data[0].shape[0] / cfg.frame_height]
             

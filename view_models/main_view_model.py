@@ -134,6 +134,12 @@ class MainViewModel(QObject):
             self.__fileSaveStatus = save_mode
             self.__mode = True if input_mode > 0 else False
 
+            # Clear frame list and vision protocol queues for a fresh start
+            self.__frameList.clear()
+            if self.visionProtocol: # Ensure visionProtocol exists before clearing
+                self.visionProtocol.detectionResultQueueClear()
+                self.visionProtocol.frameQueueClear()
+
             self._setup_model(input_mode)
             self.visionProtocol.start()
             self._init_workers()
