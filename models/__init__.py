@@ -26,4 +26,3 @@
 
 from .post_processor import *
 from .vision_protocol import *
-from .yolo_to_coco import *
