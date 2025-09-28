@@ -1,20 +1,12 @@
 import time
-
-from PySide6.QtCore import QThread, Signal
+import threading
 
 from data_structures.enums import PerformanceDataType
 import logging
 logger = logging.getLogger(__name__)
 
 
-class RtpmDataUpdater(QThread):
-    inference_time_updated = Signal(int, int, int)
-    fps_updated = Signal(int, int)
-    cpu_updated = Signal(int, int)
-    memory_updated = Signal(int, int)
-    npu_usage_updated = Signal(int, tuple)
-    updater_finished = Signal()
-
+class RtpmDataUpdater(threading.Thread):
     def __init__(self, vision_protocol):
         super().__init__()
         self.vision_protocol = vision_protocol

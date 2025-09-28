@@ -4,14 +4,12 @@ import sys
 
 import cv2
 import numpy as np
-from PySide6.QtCore import QThread
 
 
-class PostProcessor(QThread):
+class PostProcessor:
     """Handles post-processing of detection results, including drawing on frames and creating annotations."""
 
     def __init__(self, frame_width, frame_height, label_path):
-        super().__init__()
         self._frame_width = frame_width
         self._frame_height = frame_height
         self.categories = self._load_categories(label_path)

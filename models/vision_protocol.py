@@ -28,8 +28,8 @@ import ctypes
 import json
 import time
 
+import threading
 import numpy as np
-from PySide6.QtCore import QThread
 
 from data_structures import msginfo
 from data_structures.cpu_utilization import CpuUtilizationClass
@@ -44,9 +44,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class VisionProtocol(QThread):
+class VisionProtocol(threading.Thread):
     def __init__(self, inputMode, frameWidth, frameHeight, frameChannel):
         super(VisionProtocol, self).__init__()
+        self._stop_event = threading.Event()
         self.__sendStreamSize = frameWidth * frameHeight * frameChannel
         self.__sendQueueSize = 4
         self.rtpmMode = inputMode
@@ -102,7 +103,7 @@ class VisionProtocol(QThread):
             self.__reader.start()
 
         self.__isRunning = True
-        while True:
+        while not self._stop_event.is_set():
             resultType, resultData = self.__receiveData()
             if resultType is None:
                 time.sleep(0.001)
@@ -218,15 +219,15 @@ class VisionProtocol(QThread):
 
         return ret, resultData
 
-class FrameReader(QThread):
+class FrameReader(threading.Thread):
     def __init__(self, parent):
-        super(FrameReader, self).__init__(parent)
+        super(FrameReader, self).__init__()
         self.parent = parent
         self.frameQueue = list()
         self.frameLenMax = 3
 
     def run(self):
-        while True:
+        while not self.parent._stop_event.is_set():
             ret, peekStreamInfo, peekIndex= self.parent.vpm_stream.PeekStream()
             if(ret == VISION_SUCCESS):
                 ret, pStreamInfo, pIndex = self.parent.vpm_stream.RecvStream(BLOCKING)

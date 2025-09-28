@@ -1,21 +1,16 @@
 import os
 import time
+import threading
 
 import cv2
 from numpy import asarray, ravel
 from PIL import Image
-from PySide6.QtCore import QThread, Signal
 
 import logging
 logger = logging.getLogger(__name__)
 
 
-class RtpmFileReader(QThread):
-    reader_stopped = Signal()
-    progress_updated = Signal(int, int)
-    file_read = Signal(list)
-    error_occurred = Signal(str, str)
-
+class RtpmFileReader(threading.Thread):
     def __init__(self, vision_protocol, base_size_tuple):
         super().__init__()
         self.vision_protocol = vision_protocol
@@ -26,46 +21,69 @@ class RtpmFileReader(QThread):
         self.video_ext = ['.mp4', '.avi']
         self.frame_list = None
         self.frame_list_max = 0
+        self.total_files = 0  # 총 파일 수
 
     def run(self):
         self.is_running = True
-        time_stamp = 0
 
         if os.path.isdir(self.file_path):
             self._read_folder()
         else:
             self._read_file()
 
-        self.reader_stopped.emit()
+        # 🔥 핵심 수정: 모든 파일 처리 완료 시 is_running을 False로 설정!
+        self.is_running = False
+        logger.info("파일 읽기 중지됨")
 
     def _read_folder(self):
         file_list = [f for f in os.listdir(self.file_path) if f.lower().endswith(tuple(self.image_ext))]
         file_num = len(file_list)
-        self.progress_updated.emit(0, file_num)
+        self.total_files = file_num  # 총 파일 수 저장
+        logger.info(f"폴더에서 {file_num}개 파일 발견")
+        logger.info(f"[DEBUG] frame_list_max: {self.frame_list_max}, is_running: {self.is_running}")
 
         for idx, file_name in enumerate(file_list):
+            logger.info(f"[DEBUG] 파일 {idx+1}/{file_num} 처리 중: {file_name}, is_running: {self.is_running}")
+            
             if not self.is_running:
+                logger.warning(f"[DEBUG] is_running=False로 인해 파일 읽기 중단됨 ({idx}/{file_num})")
                 break
             
+            # 큐 대기 로그 추가
+            wait_count = 0
             while len(self.frame_list) >= self.frame_list_max:
                 time.sleep(0.001)
+                wait_count += 1
+                if wait_count % 1000 == 0:  # 1초마다 로그
+                    logger.warning(f"[DEBUG] frame_list 가득참 - 대기 중... ({len(self.frame_list)}/{self.frame_list_max})")
 
             full_path = os.path.join(self.file_path, file_name)
+            logger.debug(f"[DEBUG] 이미지 로드 시도: {full_path}")
             try:
                 image = cv2.imread(full_path)
                 if image is None:
                     logger.warning(f"Could not read image file: {full_path}")
                     continue
                 
+                logger.info(f"[DEBUG] 이미지 로드 성공: {file_name}, 크기: {image.shape}")
+                
                 time_stamp = idx + 1
                 frame_raw = self._resize_image(image)
-                ret = self.vision_protocol.sendFrame([frame_raw, time_stamp])
-
-                if ret:
-                    self.progress_updated.emit(time_stamp, file_num)
-                    self.frame_list.append([image, time_stamp, file_name])
-                else:
-                    logger.warning(f'Failed to send frame: {full_path}')
+                logger.info(f"[DEBUG] frame_raw 준비 완료: shape={frame_raw.shape}, dtype={frame_raw.dtype}")
+                
+                # NPU 전송 시도
+                try:
+                    ret = self.vision_protocol.sendFrame([frame_raw, time_stamp])
+                    logger.info(f"[DEBUG] sendFrame 결과: {ret}, timestamp: {time_stamp}")
+                    
+                    if ret:
+                        logger.info(f"✅ 파일 읽기 및 NPU 전송 성공: {file_name} ({time_stamp}/{file_num})")
+                        self.frame_list.append([image, time_stamp, file_name])
+                    else:
+                        logger.error(f"❌ NPU 전송 실패: {full_path}")
+                except Exception as e:
+                    logger.error(f"❌ sendFrame 호출 오류: {full_path}, 오류: {e}")
+                    ret = False
             except Exception as e:
                 logger.error(f"Error reading file {full_path}: {e}", exc_info=True)
 
@@ -76,12 +94,12 @@ class RtpmFileReader(QThread):
         elif file_ext in self.image_ext:
             self._read_image()
         else:
-            self.error_occurred.emit('Error', f"Can't open file: {self.file_path}")
+            logger.error(f"파일을 열 수 없습니다: {self.file_path}")
 
     def _read_image(self):
         try:
             image = cv2.imread(self.file_path)
-            self.progress_updated.emit(1, 1)
+            logger.info("이미지 파일 읽기 완료")
             frame_raw = self._resize_image(image)
             ret = self.vision_protocol.sendFrame([frame_raw, 0])
             if ret:
@@ -94,7 +112,7 @@ class RtpmFileReader(QThread):
     def _read_video(self):
         video_obj = cv2.VideoCapture(self.file_path)
         if not video_obj.isOpened():
-            self.error_occurred.emit('Message', f"Can't open file: {self.file_path}")
+            logger.error(f"비디오 파일을 열 수 없습니다: {self.file_path}")
             return
 
         total_frame_count = int(video_obj.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -114,7 +132,7 @@ class RtpmFileReader(QThread):
                 break
 
             current_frame_count += 1
-            self.progress_updated.emit(current_frame_count, total_frame_count)
+            logger.debug(f"비디오 진행: {current_frame_count}/{total_frame_count}")
 
             if len(self.frame_list) < self.frame_list_max:
                 frame_raw = self._resize_image(frame, use_pil=True)

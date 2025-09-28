@@ -1,11 +1,11 @@
 """
 FastAPI 기반 RTPM 웹 서버
 
-기존 PySide6 데스크톱 애플리케이션을 웹 기반으로 변환
+TCC7500 NPU 모니터링을 위한 웹 기반 애플리케이션
 Vision Protocol 통신 로직은 그대로 유지
 """
 
-from fastapi import FastAPI, WebSocket, HTTPException, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 import uvicorn
@@ -13,17 +13,12 @@ import asyncio
 import cv2
 import base64
 import json
-from threading import Thread
 import queue
 import logging
 from typing import Dict, Any
 
-# 기존 코드들을 수정 없이 그대로 import
-from models.vision_protocol import VisionProtocol
-from models.post_processor import PostProcessor
-from models.workers.file_reader import RtpmFileReader
-from models.workers.data_updater import RtpmDataUpdater
-from data_structures.enums import PerformanceDataType
+# RTPM 매니저 및 설정 import
+from managers import RTPMManager
 from config import settings
 
 # 로깅 설정
@@ -36,28 +31,9 @@ app = FastAPI(title="RTPM Web API", description="TCC7500 NPU Real-Time Performan
 # 정적 파일 서빙
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# 전역 인스턴스들 (기존 MainViewModel과 동일한 구조)
-vision_protocol_instance = None
-post_processor_instance = None
-file_reader_instance = None
-data_updater_instance = None
 
-# 프레임 및 결과 데이터를 위한 큐
-frame_queue = queue.Queue(maxsize=30)
-result_queue = queue.Queue(maxsize=100)
-
-# 애플리케이션 상태
-app_state = {
-    "connected": False,
-    "running": False,
-    "mode": 0,  # 0=projection(receive), 1=injection(send)
-    "input_path": "",
-    "output_path": "",
-    "fps": 0,
-    "cpu_usage": 0,
-    "memory_usage": 0,
-    "npu_usage": [0, 0]
-}
+# 전역 매니저 인스턴스 (단일 인스턴스)
+rtpm_manager = RTPMManager()
 
 @app.get("/")
 async def read_index():
@@ -71,168 +47,23 @@ async def read_index():
 @app.post("/api/connect")
 async def connect_board():
     """TCC7500 보드에 연결"""
-    global vision_protocol_instance, post_processor_instance
-    global file_reader_instance, data_updater_instance
-
-    try:
-        logger.info("보드 연결 시작...")
-        
-        # 기존 MainViewModel.__init__과 동일한 초기화
-        vision_protocol_instance = VisionProtocol(
-            inputMode=app_state["mode"],
-            frameWidth=settings.INJECTION['width'],
-            frameHeight=settings.INJECTION['height'], 
-            frameChannel=settings.INJECTION['channel']
-        )
-
-        post_processor_instance = PostProcessor(
-            frame_width=settings.INJECTION['width'],
-            frame_height=settings.INJECTION['height'],
-            label_path=settings.LABEL_PATH
-        )
-
-        # VisionProtocol 스레드 시작 (QThread 상속)
-        vision_protocol_instance.start()
-
-        # 워커 인스턴스들 초기화 (기존과 동일)
-        file_reader_instance = RtpmFileReader(
-            vision_protocol_instance,
-            (settings.INJECTION['height'], 
-             settings.INJECTION['width'],
-             settings.INJECTION['channel'])
-        )
-
-        data_updater_instance = RtpmDataUpdater(vision_protocol_instance)
-
-        app_state["connected"] = True
-        logger.info("보드 연결 성공")
-        return {"status": "success", "message": "Board connected successfully"}
-
-    except Exception as e:
-        logger.error(f"보드 연결 실패: {str(e)}")
-        return {"status": "error", "message": f"Connection failed: {str(e)}"}
+    return await rtpm_manager.connect_board()
 
 @app.post("/api/disconnect") 
 async def disconnect_board():
     """TCC7500 보드 연결 해제"""
-    global vision_protocol_instance
-
-    try:
-        if vision_protocol_instance:
-            # QThread의 quit() 메서드로 스레드 종료 요청
-            vision_protocol_instance.quit()
-            # 스레드 종료까지 대기 (최대 1초)
-            if not vision_protocol_instance.wait(1000):
-                # 3초 내에 종료되지 않으면 강제 종료
-                vision_protocol_instance.terminate()
-                vision_protocol_instance.wait()
-            
-            vision_protocol_instance = None
-
-        app_state["connected"] = False
-        app_state["running"] = False
-        logger.info("보드 연결 해제")
-        return {"status": "success", "message": "Board disconnected"}
-
-    except Exception as e:
-        logger.error(f"보드 연결 해제 실패: {str(e)}")
-        return {"status": "error", "message": str(e)}
+    return await rtpm_manager.disconnect_board()
 
 @app.post("/api/start")
 async def start_test():
     """테스트 시작"""
-    if not app_state["connected"]:
-        raise HTTPException(status_code=400, detail="Board not connected")
-
-    try:
-        if vision_protocol_instance:
-            # VisionProtocol은 이미 실행 중이므로 running 상태만 변경
-            app_state["running"] = True
-
-            # 백그라운드에서 프레임 수집 시작
-            Thread(target=collect_frames_background, daemon=True).start()
-            
-            logger.info("테스트 시작")
-            return {"status": "success", "message": "Test started"}
-
-    except Exception as e:
-        logger.error(f"테스트 시작 실패: {str(e)}")
-        return {"status": "error", "message": str(e)}
+    return await rtpm_manager.start_test()
 
 @app.post("/api/stop")
 async def stop_test():
     """테스트 중지"""
-    try:
-        if vision_protocol_instance:
-            # running 상태만 변경 (VisionProtocol 자체는 연결 유지)
-            app_state["running"] = False
-            
-        logger.info("테스트 중지")
-        return {"status": "success", "message": "Test stopped"}
+    return await rtpm_manager.stop_test()
 
-    except Exception as e:
-        logger.error(f"테스트 중지 실패: {str(e)}")
-        return {"status": "error", "message": str(e)}
-
-def collect_frames_background():
-    """백그라운드에서 VisionProtocol로부터 프레임 수집"""
-    logger.info("프레임 수집 백그라운드 스레드 시작")
-    
-    while app_state["running"]:
-        try:
-            if vision_protocol_instance:
-                # 실제 VisionProtocol 메소드 사용
-                frame_data = vision_protocol_instance.getFrame()
-                if frame_data is not None:
-                    logger.debug(f"백그라운드에서 프레임 수집: type={type(frame_data)}, shape={frame_data.shape if hasattr(frame_data, 'shape') else 'No shape'}")
-                    
-                    # 프레임 데이터 검증 및 reshape
-                    if hasattr(frame_data, 'shape'):
-                        if len(frame_data.shape) == 1:
-                            # 1차원 Raw RGB 데이터를 이미지 형태로 reshape
-                            expected_size = settings.INJECTION['width'] * settings.INJECTION['height'] * settings.INJECTION['channel']
-                            if frame_data.shape[0] == expected_size:
-                                # (2764800,) → (720, 1280, 3) 형태로 reshape
-                                frame_data = frame_data.reshape(
-                                    settings.INJECTION['height'], 
-                                    settings.INJECTION['width'], 
-                                    settings.INJECTION['channel']
-                                )
-                                logger.debug(f"프레임 reshape 완료: {frame_data.shape}")
-                            else:
-                                logger.warning(f"예상과 다른 프레임 크기: {frame_data.shape[0]} != {expected_size}")
-                                continue
-                        elif len(frame_data.shape) < 2:
-                            logger.warning(f"유효하지 않은 프레임 차원: {frame_data.shape}")
-                            continue
-                        
-                        # 큐가 가득 차면 오래된 프레임 제거
-                        if frame_queue.full():
-                            try:
-                                frame_queue.get_nowait()
-                            except queue.Empty:
-                                pass
-                        frame_queue.put(frame_data)
-                    else:
-                        logger.warning(f"유효하지 않은 프레임 데이터: {type(frame_data)}")
-                else:
-                    logger.debug("getFrame()에서 None 반환됨")
-
-                result_data = vision_protocol_instance.getDetectionResult()
-                if result_data is not None:
-                    if result_queue.full():
-                        try:
-                            result_queue.get_nowait()
-                        except queue.Empty:
-                            pass
-                    result_queue.put(result_data)
-
-        except Exception as e:
-            logger.error(f"프레임 수집 오류: {str(e)}")
-            
-        # CPU 사용량 조절을 위한 짧은 대기
-        import time
-        time.sleep(0.01)
 
 @app.websocket("/ws/stream")
 async def websocket_stream(websocket: WebSocket):
@@ -241,15 +72,36 @@ async def websocket_stream(websocket: WebSocket):
     logger.info("WebSocket 연결됨")
 
     try:
+        frame_count = 0
+        empty_queue_count = 0
+        
         while True:
-            if not frame_queue.empty():
+            frame = None
+            
+            if not rtpm_manager.frame_queue.empty():
                 # 큐에서 프레임 가져오기
-                frame = frame_queue.get_nowait()
+                frame = rtpm_manager.frame_queue.get_nowait()
+                frame_count += 1
+                
+                # 10번마다 전송 상태 로그
+                if frame_count % 10 == 0:
+                    logger.info(f"프레임 전송 중: #{frame_count}개 전송")
+                
+                # 🔧 디버깅: 프레임 정보 로그
+                if frame_count <= 3:  # 처음 3개 프레임만
+                    logger.info(f"🖼️ [WebSocket] 프레임 #{frame_count} 수신: shape={frame.shape if hasattr(frame, 'shape') else 'N/A'}, dtype={frame.dtype if hasattr(frame, 'dtype') else 'N/A'}")
 
                 # 검출 결과가 있으면 바운딩 박스 그리기
-                if post_processor_instance and not result_queue.empty():
+                result_queue_empty = rtpm_manager.result_queue.empty()
+                
+                # 🔧 디버깅: 결과 큐 상태 로그
+                if frame_count <= 3:  # 처음 3개 프레임만
+                    logger.info(f"🎯 [WebSocket] 프레임 #{frame_count} 결과 큐 상태: empty={result_queue_empty}")
+                
+                if rtpm_manager.post_processor_instance and not result_queue_empty:
                     try:
-                        result = result_queue.get_nowait()
+                        result = rtpm_manager.result_queue.get_nowait()
+                        logger.info(f"📋 [WebSocket] 결과 데이터 수신: type={type(result)}")
                         # 실제 결과 데이터 구조 확인 및 처리
                         if result is not None:
                             logger.debug(f"Result data type: {type(result)}, content: {result}")
@@ -273,13 +125,25 @@ async def websocket_stream(websocket: WebSocket):
                                 
                                 # 검출 결과가 있을 때만 PostProcessor 호출
                                 if detection_results:
-                                    frame = post_processor_instance.draw_object_detection_boxes(
-                                        frame, detection_results, 0
+                                    # 좌표 스케일링 비율 계산
+                                    # NPU 해상도: settings.INJECTION → 웹 표시 해상도: 현재 프레임 크기
+                                    current_height, current_width = frame.shape[:2]
+                                    npu_width = settings.INJECTION['width']
+                                    npu_height = settings.INJECTION['height']
+                                    
+                                    scale_x = current_width / npu_width
+                                    scale_y = current_height / npu_height
+                                    
+                                    logger.info(f"🎨 [WebSocket] Bounding box 그리기 시작: {len(detection_results)}개 객체, scale=({scale_x:.2f}, {scale_y:.2f})")
+                                    
+                                    frame = rtpm_manager.post_processor_instance.draw_object_detection_boxes(
+                                        frame, detection_results, 0, [scale_x, scale_y]
                                     )
+                                    logger.info(f"✅ [WebSocket] Bounding box 그리기 완료")
                                 else:
-                                    logger.debug("검출된 객체 없음")
+                                    logger.info("❌ [WebSocket] 검출된 객체 없음")
                             else:
-                                logger.debug(f"처리할 수 없는 결과 데이터 형태: {type(result)}")
+                                logger.warning(f"❌ [WebSocket] 처리할 수 없는 결과 데이터 형태: {type(result)}")
                     except queue.Empty:
                         pass
                     except Exception as result_error:
@@ -288,8 +152,6 @@ async def websocket_stream(websocket: WebSocket):
 
                 # 프레임 크기 검증 및 리사이징
                 if frame is not None and frame.size > 0:
-                    logger.debug(f"프레임 shape: {frame.shape}, dtype: {frame.dtype}")
-                    
                     # 프레임 차원 확인
                     if len(frame.shape) < 2:
                         logger.error(f"유효하지 않은 프레임 차원: {frame.shape}")
@@ -297,11 +159,9 @@ async def websocket_stream(websocket: WebSocket):
                     elif len(frame.shape) == 2:
                         # 그레이스케일 이미지
                         height, width = frame.shape
-                        logger.debug(f"그레이스케일 프레임: {width}x{height}")
                     else:
                         # 컬러 이미지 (3차원 이상)
                         height, width = frame.shape[:2]
-                        logger.debug(f"컬러 프레임: {width}x{height}, channels: {frame.shape[2] if len(frame.shape) > 2 else 'N/A'}")
                     
                     # OpenCV 최대 크기 제한 (65500 픽셀)을 고려하여 리사이징
                     max_dimension = 1920  # 최대 해상도 제한
@@ -314,11 +174,14 @@ async def websocket_stream(websocket: WebSocket):
                             new_width = int(width * (max_dimension / height))
                         
                         frame = cv2.resize(frame, (new_width, new_height))
-                        logger.debug(f"리사이징된 프레임 크기: {new_width}x{new_height}")
+                        
+                        # 첫 번째 리사이징에서만 로그 출력
+                        if frame_count == 1:
+                            logger.info(f"프레임 리사이징: {width}x{height} → {new_width}x{new_height}")
                     
-                    # 프레임을 JPEG로 인코딩
+                    # 프레임을 JPEG로 인코딩 (품질 향상)
                     success, buffer = cv2.imencode('.jpg', frame, 
-                                                 [cv2.IMWRITE_JPEG_QUALITY, 80])
+                                                 [cv2.IMWRITE_JPEG_QUALITY, 90])
                     if success:
                         jpg_base64 = base64.b64encode(buffer).decode('utf-8')
                     else:
@@ -333,9 +196,17 @@ async def websocket_stream(websocket: WebSocket):
                     "type": "frame",
                     "data": jpg_base64
                 })
+            else:
+                # 🔧 디버깅: 큐가 비어있을 때 로그 (주기적으로만)
+                empty_queue_count += 1
+                
+                if empty_queue_count % 100 == 0:  # 100번마다 로그
+                    logger.info(f"⏳ [WebSocket] 프레임 큐 비어있음 (연속 {empty_queue_count}회)")
+                
+                await asyncio.sleep(0.033)
 
-            # ~30 FPS 유지
-            await asyncio.sleep(0.033)
+            # ~15 FPS 유지 (테어링 방지)
+            # await asyncio.sleep(0.066)
 
     except WebSocketDisconnect:
         logger.info("WebSocket 클라이언트가 연결을 해제했습니다")
@@ -360,54 +231,35 @@ async def websocket_stream(websocket: WebSocket):
 @app.get("/api/status")
 async def get_status():
     """현재 상태 및 성능 메트릭 반환"""
-    try:
-        if vision_protocol_instance and app_state["connected"]:
-            # 성능 데이터 가져오기
-            perf_data = vision_protocol_instance.gerPerformanceData()  # 실제 메소드명
-            if perf_data:
-                # 성능 데이터 파싱 (실제 구조에 따라 조정 필요)
-                data_type = perf_data[0] if len(perf_data) > 0 else None
-                if data_type == PerformanceDataType.FPS and len(perf_data) > 2:
-                    app_state["fps"] = perf_data[2]
-                elif data_type == PerformanceDataType.CPU_PERFORMANCE and len(perf_data) > 2:
-                    app_state["cpu_usage"] = perf_data[2]
-                elif data_type == PerformanceDataType.MEMORY and len(perf_data) > 2:
-                    app_state["memory_usage"] = perf_data[2]
-                elif data_type == PerformanceDataType.NPU_USAGE and len(perf_data) > 3:
-                    app_state["npu_usage"] = [perf_data[2], perf_data[3]]
-
-        return app_state
-
-    except Exception as e:
-        logger.error(f"상태 조회 오류: {str(e)}")
-        return app_state
+    return await rtpm_manager.get_status()
 
 @app.post("/api/mode")
 async def set_mode(request: Dict[str, Any]):
     """동작 모드 설정 (0=projection, 1=injection)"""
-    try:
-        mode = request.get("mode", 0)
-        app_state["mode"] = mode
-        logger.info(f"모드 변경: {mode}")
-        return {"status": "success", "mode": mode}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+    mode = request.get("mode", 0)
+    return await rtpm_manager.set_mode(mode)
 
 @app.post("/api/file/input")
 async def set_input_file(request: Dict[str, Any]):
     """입력 파일 경로 설정"""
-    try:
-        file_path = request.get("file_path", "")
-        app_state["input_path"] = file_path
-        
-        if file_reader_instance:
-            file_reader_instance.setFilePath(file_path)
-            
-        logger.info(f"입력 파일 경로 설정: {file_path}")
-        return {"status": "success", "path": file_path}
-        
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+    file_path = request.get("file_path", "")
+    return await rtpm_manager.set_input_file(file_path)
+
+@app.post("/api/output/path")
+async def set_output_path(request: Dict[str, Any]):
+    """출력 경로 설정"""
+    output_path = request.get("output_path", "")
+    return await rtpm_manager.set_output_path(output_path)
+
+@app.post("/api/save/results")
+async def save_results():
+    """현재 세션의 결과 데이터 저장"""
+    return await rtpm_manager.save_results()
+
+@app.post("/api/export/coco")
+async def export_coco_annotations():
+    """COCO 형식으로 annotation 내보내기"""
+    return await rtpm_manager.export_coco_annotations()
 
 if __name__ == "__main__":
     print("=" * 50)

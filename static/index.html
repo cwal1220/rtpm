@@ -280,6 +280,39 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        /* Progress Bar 스타일 */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #20c997 50%, #17a2b8 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        #progressText {
+            font-weight: bold;
+            color: #495057;
+            font-size: 0.9em;
+            min-width: 120px;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -300,10 +333,35 @@
                 <span id="connectionStatus" class="status-badge disconnected">연결 안됨</span>
             </div>
 
+            <!-- 동작 모드 선택 (필수) -->
+            <div class="control-group">
+                <strong>동작 모드: <span style="color: red;">*</span></strong>
+                <select id="modeSelect" onchange="setMode(this.value)">
+                    <option value="">모드를 선택하세요</option>
+                    <option value="0">Projection (수신 모드)</option>
+                    <option value="1">Injection (송신 모드)</option>
+                </select>
+            </div>
+
+            <!-- 입력 경로 (Injection Mode에서만 표시) -->
+            <div class="control-group" id="fileInputGroup" style="display: none;">
+                <strong>입력 경로: <span style="color: red;">*</span></strong>
+                <input type="text" id="inputPath" placeholder="파일 경로를 입력하세요" oninput="checkInputPath(); updateOutputPath();">
+                <button onclick="setInputPath()">경로 설정</button>
+            </div>
+
+            <!-- 출력 경로 설정 -->
+            <div class="control-group">
+                <strong>출력 경로:</strong>
+                <input type="text" id="outputPath" placeholder="입력 경로 설정 시 자동 생성됩니다" 
+                       value="./results" oninput="updateSaveButtonsState(document.getElementById('connectionStatus').className.includes('connected'), false)">
+                <button onclick="setOutputPath()">경로 설정</button>
+            </div>
+
             <!-- 컨트롤 버튼들 -->
             <div class="control-group">
                 <strong>보드 제어:</strong>
-                <button id="connectBtn" class="primary" onclick="connectBoard()">
+                <button id="connectBtn" class="primary" onclick="connectBoard()" disabled>
                     보드 연결
                 </button>
                 <button id="disconnectBtn" class="danger" onclick="disconnectBoard()" disabled>
@@ -321,20 +379,26 @@
                 </button>
             </div>
 
-            <!-- 모드 선택 -->
-            <div class="control-group">
-                <strong>동작 모드:</strong>
-                <select id="modeSelect" onchange="setMode(this.value)">
-                    <option value="0">Projection (수신 모드)</option>
-                    <option value="1">Injection (송신 모드)</option>
-                </select>
+            <!-- 진행 상황 -->
+            <div class="control-group" id="progressGroup" style="display: none;">
+                <strong>진행 상황:</strong>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <span id="progressText">0 / 0 (0%)</span>
+                </div>
             </div>
 
-            <!-- 파일 경로 -->
+            <!-- 결과 저장 -->
             <div class="control-group">
-                <strong>입력 파일:</strong>
-                <input type="text" id="inputPath" placeholder="파일 경로를 입력하세요">
-                <button onclick="setInputPath()">경로 설정</button>
+                <strong>결과 저장:</strong>
+                <button id="saveResultsBtn" class="primary" onclick="saveResults()" disabled>
+                    결과 저장 (JSON)
+                </button>
+                <button id="exportCocoBtn" class="primary" onclick="exportCoco()" disabled>
+                    COCO 내보내기
+                </button>
             </div>
         </div>
 
@@ -375,6 +439,52 @@
         let statusInterval = null;
         const canvas = document.getElementById('videoCanvas');
         const ctx = canvas.getContext('2d');
+        
+        // 테어링 방지를 위한 이미지 버퍼링
+        let pendingImage = null;
+        let isRendering = false;
+        
+        // 동기화된 렌더링 함수
+        function scheduleRender() {
+            if (isRendering) return;
+            isRendering = true;
+            
+            requestAnimationFrame(() => {
+                if (pendingImage) {
+                    // 캔버스 클리어 (깜빡임 방지)
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // 이미지 그리기 (비율 유지하며 중앙 정렬)
+                    const imgAspect = pendingImage.width / pendingImage.height;
+                    const canvasAspect = canvas.width / canvas.height;
+                    
+                    let drawWidth, drawHeight, drawX, drawY;
+                    
+                    if (imgAspect > canvasAspect) {
+                        // 이미지가 캔버스보다 가로로 길 때
+                        drawWidth = canvas.width;
+                        drawHeight = canvas.width / imgAspect;
+                        drawX = 0;
+                        drawY = (canvas.height - drawHeight) / 2;
+                    } else {
+                        // 이미지가 캔버스보다 세로로 길 때
+                        drawWidth = canvas.height * imgAspect;
+                        drawHeight = canvas.height;
+                        drawX = (canvas.width - drawWidth) / 2;
+                        drawY = 0;
+                    }
+                    
+                    // 부드럽게 이미지 렌더링
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(pendingImage, drawX, drawY, drawWidth, drawHeight);
+                    
+                    pendingImage = null;
+                }
+                isRendering = false;
+            });
+        }
 
         // API 호출 헬퍼 함수
         async function apiCall(endpoint, method = 'POST', body = null) {
@@ -404,6 +514,21 @@
 
         // 보드 연결
         async function connectBoard() {
+            const modeSelect = document.getElementById('modeSelect');
+            const inputPath = document.getElementById('inputPath');
+            
+            // 모드 선택 확인
+            if (modeSelect.value === '') {
+                alert('먼저 동작 모드를 선택해주세요.');
+                return;
+            }
+            
+            // Injection Mode일 때 파일 경로 확인
+            if (modeSelect.value === '1' && inputPath.value.trim() === '') {
+                alert('Injection Mode에서는 입력 파일 경로를 입력해주세요.');
+                return;
+            }
+            
             const connectBtn = document.getElementById('connectBtn');
             const originalText = connectBtn.textContent;
             
@@ -437,6 +562,9 @@
                     ws.close();
                     ws = null;
                 }
+                // 렌더링 상태 초기화
+                pendingImage = null;
+                isRendering = false;
                 console.log('보드 연결 해제됨');
             }
         }
@@ -464,6 +592,9 @@
                     ws.close();
                     ws = null;
                 }
+                // 렌더링 상태 초기화
+                pendingImage = null;
+                isRendering = false;
                 // 캔버스 클리어
                 ctx.fillStyle = '#000';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -491,7 +622,12 @@
                     if (message.type === 'frame') {
                         const img = new Image();
                         img.onload = () => {
-                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                            // 새 이미지를 버퍼에 저장
+                            pendingImage = img;
+                            // 렌더링이 진행 중이 아니면 시작
+                            if (!isRendering) {
+                                scheduleRender();
+                            }
                         };
                         img.src = 'data:image/jpeg;base64,' + message.data;
                     }
@@ -531,6 +667,9 @@
                 startBtn.disabled = true;
                 document.getElementById('stopBtn').disabled = true;
             }
+            
+            // 저장 버튼 상태 업데이트
+            updateSaveButtonsState(connected, false);
         }
 
         // 상태 폴링 시작
@@ -539,11 +678,18 @@
                 try {
                     const status = await fetch('/api/status').then(r => r.json());
                     if (status) {
+                        // 성능 메트릭 업데이트
                         document.getElementById('fps').textContent = Math.round(status.fps || 0);
                         document.getElementById('cpu').textContent = Math.round(status.cpu_usage || 0);
                         document.getElementById('memory').textContent = Math.round(status.memory_usage || 0);
                         document.getElementById('npu0').textContent = Math.round(status.npu_usage?.[0] || 0);
                         document.getElementById('npu1').textContent = Math.round(status.npu_usage?.[1] || 0);
+                        
+                        // 진행 상황 업데이트
+                        updateProgress(status);
+                        
+                        // 테스트 완료 상태 확인 및 버튼 상태 업데이트
+                        updateButtonStates(status);
                     }
                 } catch (error) {
                     console.error('상태 업데이트 오류:', error);
@@ -565,11 +711,77 @@
             document.getElementById('npu1').textContent = '0';
         }
 
+        // 보드 연결 버튼 상태 업데이트
+        function updateConnectButtonState() {
+            const modeSelect = document.getElementById('modeSelect');
+            const inputPath = document.getElementById('inputPath');
+            const connectBtn = document.getElementById('connectBtn');
+            
+            const mode = modeSelect.value;
+            
+            if (mode === '') {
+                // 모드 미선택
+                connectBtn.disabled = true;
+            } else if (mode === '0') {
+                // Projection Mode: 모드만 선택하면 OK
+                connectBtn.disabled = false;
+            } else if (mode === '1') {
+                // Injection Mode: 모드 + 파일 경로 모두 필요
+                const pathValue = inputPath.value.trim();
+                connectBtn.disabled = pathValue === '';
+            }
+        }
+        
+        // 파일 경로 입력 체크
+        function checkInputPath() {
+            updateConnectButtonState();
+        }
+
         // 모드 설정
         async function setMode(value) {
+            const fileInputGroup = document.getElementById('fileInputGroup');
+            
+            if (value === '') {
+                // 모드가 선택되지 않은 경우
+                fileInputGroup.style.display = 'none';
+                updateConnectButtonState();
+                return;
+            }
+            
             const result = await apiCall('/api/mode', 'POST', { mode: parseInt(value) });
             if (result && result.status === 'success') {
                 console.log('모드 변경됨:', value);
+                
+                // 파일 입력 그룹 표시/숨김
+                if (parseInt(value) === 1) {  // Injection Mode
+                    fileInputGroup.style.display = 'block';
+                } else {  // Projection Mode
+                    fileInputGroup.style.display = 'none';
+                }
+                
+                // 보드 연결 버튼 상태 업데이트
+                updateConnectButtonState();
+            }
+        }
+
+        // 출력 경로 자동 생성 함수
+        function updateOutputPath() {
+            const inputPath = document.getElementById('inputPath').value.trim();
+            const outputPathInput = document.getElementById('outputPath');
+            
+            if (inputPath) {
+                // 입력 경로에 _results 접미사 추가
+                const outputPath = inputPath + '_results';
+                outputPathInput.value = outputPath;
+                
+                // 출력 경로도 백엔드에 자동 설정
+                apiCall('/api/output/path', 'POST', { output_path: outputPath });
+                
+                // 저장 버튼 상태 업데이트
+                const connected = document.getElementById('connectionStatus').className.includes('connected');
+                updateSaveButtonsState(connected, false);
+            } else {
+                outputPathInput.value = './results';
             }
         }
 
@@ -580,7 +792,18 @@
                 const result = await apiCall('/api/file/input', 'POST', { file_path: path });
                 if (result && result.status === 'success') {
                     console.log('입력 파일 경로 설정됨:', path);
-                    alert('파일 경로가 설정되었습니다');
+                    
+                    // 백엔드에서 자동 생성된 출력 경로를 UI에 반영
+                    if (result.output_path) {
+                        document.getElementById('outputPath').value = result.output_path;
+                        console.log('출력 경로 자동 설정됨:', result.output_path);
+                    }
+                    
+                    // 저장 버튼 상태 업데이트
+                    const connected = document.getElementById('connectionStatus').className.includes('connected');
+                    updateSaveButtonsState(connected, false);
+                    
+                    alert('파일 경로가 설정되었습니다\n출력 경로: ' + result.output_path);
                 }
             } else {
                 alert('파일 경로를 입력해주세요');
@@ -591,12 +814,171 @@
         window.onload = () => {
             updateConnectionStatus(false);
             console.log('RTPM Web Monitor 로드됨');
+            
+            // 초기 상태 설정
+            const fileInputGroup = document.getElementById('fileInputGroup');
+            fileInputGroup.style.display = 'none';
+            updateConnectButtonState();
+            
+            // 저장 버튼 초기 상태 설정
+            updateSaveButtonsState(false, false);
         };
+
+        // 저장 관련 함수들
+        async function setOutputPath() {
+            const outputPath = document.getElementById('outputPath').value;
+            if (outputPath.trim()) {
+                const result = await apiCall('/api/output/path', 'POST', { output_path: outputPath });
+                if (result.status === 'success') {
+                    alert('출력 경로가 설정되었습니다: ' + result.path);
+                    console.log('출력 경로 설정됨:', result.path);
+                    
+                    // 저장 버튼 상태 업데이트
+                    const connected = document.getElementById('connectionStatus').className.includes('connected');
+                    updateSaveButtonsState(connected, false);
+                } else {
+                    alert('출력 경로 설정 실패: ' + result.message);
+                }
+            } else {
+                alert('출력 경로를 입력해주세요');
+            }
+        }
+
+        async function saveResults() {
+            const saveBtn = document.getElementById('saveResultsBtn');
+            const originalText = saveBtn.textContent;
+            
+            try {
+                saveBtn.disabled = true;
+                saveBtn.textContent = '저장 중...';
+                
+                const result = await apiCall('/api/save/results');
+                
+                if (result.status === 'success') {
+                    alert('결과 저장 완료!\n' + result.message + '\n\n저장된 파일:\n' + result.files.join('\n'));
+                    console.log('결과 저장 완료:', result);
+                } else {
+                    alert('결과 저장 실패: ' + result.message);
+                }
+            } catch (error) {
+                console.error('결과 저장 오류:', error);
+                alert('결과 저장 중 오류가 발생했습니다');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = originalText;
+            }
+        }
+
+        async function exportCoco() {
+            const exportBtn = document.getElementById('exportCocoBtn');
+            const originalText = exportBtn.textContent;
+            
+            try {
+                exportBtn.disabled = true;
+                exportBtn.textContent = '내보내는 중...';
+                
+                const result = await apiCall('/api/export/coco');
+                
+                if (result.status === 'success') {
+                    const stats = result.stats;
+                    alert('COCO annotation 내보내기 완료!\n' + result.message + 
+                          '\n\n통계:\n' + 
+                          '- 이미지: ' + stats.images + '개\n' + 
+                          '- Annotation: ' + stats.annotations + '개\n' + 
+                          '- 카테고리: ' + stats.categories + '개\n\n' +
+                          '저장 파일: ' + result.file);
+                    console.log('COCO 내보내기 완료:', result);
+                } else {
+                    alert('COCO 내보내기 실패: ' + result.message);
+                }
+            } catch (error) {
+                console.error('COCO 내보내기 오류:', error);
+                alert('COCO 내보내기 중 오류가 발생했습니다');
+            } finally {
+                exportBtn.disabled = false;
+                exportBtn.textContent = originalText;
+            }
+        }
+
+        // 진행 상황 업데이트
+        function updateProgress(status) {
+            const progressGroup = document.getElementById('progressGroup');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            // Injection Mode에서 테스트 중일 때만 progress bar 표시
+            if (status.mode === 1 && (status.running || status.test_completed)) {
+                progressGroup.style.display = 'block';
+                
+                const processed = status.processed_images || 0;
+                const total = status.total_images || 0;
+                const percentage = status.progress_percentage || 0;
+                
+                progressFill.style.width = percentage + '%';
+                progressText.textContent = `${processed} / ${total} (${percentage}%)`;
+                
+                // 완료되면 progress bar 색상 변경
+                if (status.test_completed) {
+                    progressFill.style.background = 'linear-gradient(90deg, #28a745 0%, #28a745 100%)';
+                } else {
+                    progressFill.style.background = 'linear-gradient(90deg, #28a745 0%, #20c997 50%, #17a2b8 100%)';
+                }
+            } else {
+                progressGroup.style.display = 'none';
+            }
+        }
+
+        // 버튼 상태 업데이트
+        function updateButtonStates(status) {
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const saveResultsBtn = document.getElementById('saveResultsBtn');
+            const exportCocoBtn = document.getElementById('exportCocoBtn');
+            
+            if (status.test_completed && !status.running) {
+                // 테스트 완료 시
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                
+                // 저장 버튼 활성화 (연결되어 있고 출력 경로가 있을 때)
+                const outputPath = document.getElementById('outputPath').value.trim();
+                const canSave = status.connected && outputPath;
+                saveResultsBtn.disabled = !canSave;
+                exportCocoBtn.disabled = !canSave;
+                
+                console.log('테스트 완료 - 저장 버튼 활성화');
+            } else if (status.running) {
+                // 테스트 실행 중
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                
+                // 저장 버튼 비활성화
+                saveResultsBtn.disabled = true;
+                exportCocoBtn.disabled = true;
+            } else if (status.connected) {
+                // 연결되어 있지만 테스트 중이 아님
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                
+                // 저장 버튼 비활성화 (테스트 완료 전까지)
+                saveResultsBtn.disabled = true;
+                exportCocoBtn.disabled = true;
+            }
+        }
+
+        // 저장 버튼 상태 업데이트 (기존 함수는 호환성을 위해 유지)
+        function updateSaveButtonsState(connected, running) {
+            // 이 함수는 이제 updateButtonStates에서 처리됨
+            console.log('updateSaveButtonsState 호출됨 (deprecated)');
+        }
 
         // 페이지 언로드시 정리
         window.onbeforeunload = () => {
             if (ws) ws.close();
             stopStatusPolling();
+            // 렌더링 상태 정리
+            pendingImage = null;
+            isRendering = false;
         };
     </script>
 </body>
