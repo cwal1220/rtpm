@@ -40,7 +40,8 @@ from data_structures.sdk_npu_usage import SdkNpuUsageClass
 
 # Load C based Vision Protocol Library v2.x.x
 from third_party.visionprotocol.cython_visionprotocol.vision_api import *
-from utils.logger import logger
+import logging
+logger = logging.getLogger(__name__)
 
 
 class VisionProtocol(QThread):

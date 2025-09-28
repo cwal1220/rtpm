@@ -6,7 +6,8 @@ from numpy import asarray, ravel
 from PIL import Image
 from PySide6.QtCore import QThread, Signal
 
-from utils.logger import logger
+import logging
+logger = logging.getLogger(__name__)
 
 
 class RtpmFileReader(QThread):

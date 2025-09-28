@@ -3,7 +3,8 @@ import time
 from PySide6.QtCore import QThread, Signal
 
 from data_structures.enums import PerformanceDataType
-from utils.logger import logger
+import logging
+logger = logging.getLogger(__name__)
 
 
 class RtpmDataUpdater(QThread):
