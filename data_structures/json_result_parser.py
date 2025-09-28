@@ -26,7 +26,7 @@
 
 import struct
 
-from .Packet import ISerializable
+from .packet import ISerializable
 
 
 class JsonResultParser(ISerializable):

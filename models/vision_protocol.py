@@ -32,11 +32,11 @@ import numpy as np
 from PySide6.QtCore import QThread
 
 from data_structures import msginfo
-from data_structures.CpuUtilization import CpuUtilizationClass
+from data_structures.cpu_utilization import CpuUtilizationClass
 from data_structures.enums import PerformanceDataType, ResultType
-from data_structures.JsonResultParser import JsonResultParser
-from data_structures.SdkMemUsage import SdkMemUsageClass
-from data_structures.SdkNpuUsage import SdkNpuUsageClass
+from data_structures.json_result_parser import JsonResultParser
+from data_structures.sdk_mem_usage import SdkMemUsageClass
+from data_structures.sdk_npu_usage import SdkNpuUsageClass
 
 # Load C based Vision Protocol Library v2.x.x
 from third_party.visionprotocol.cython_visionprotocol.vision_api import *

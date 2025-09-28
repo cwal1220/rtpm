@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTPM Web Monitor</title>
+    <style>
+        /* 기본 스타일 리셋 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* 레이아웃 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #0066cc;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* 컨트롤 패널 */
+        .control-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .control-panel h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .control-group {
+            margin: 20px 0;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .control-group:last-child {
+            border-bottom: none;
+        }
+
+        .control-group strong {
+            min-width: 120px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* 버튼 스타일 */
+        button {
+            padding: 12px 24px;
+            margin: 0 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 100px;
+        }
+
+        button.primary {
+            background: #0066cc;
+            color: white;
+        }
+
+        button.primary:hover {
+            background: #0052a3;
+        }
+
+        button.danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        button.danger:hover {
+            background: #c82333;
+        }
+
+        button.success {
+            background: #28a745;
+            color: white;
+        }
+
+        button.success:hover {
+            background: #218838;
+        }
+
+        button:disabled {
+            background: #ccc !important;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* 비디오 컨테이너 */
+        .video-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .video-container h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        #videoCanvas {
+            width: 100%;
+            max-width: 1280px;
+            height: auto;
+            border: 3px solid #ddd;
+            border-radius: 8px;
+            background: #000;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* 상태 배지 */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-badge.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* 메트릭스 바 */
+        .metrics-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* 입력 필드 */
+        input[type="text"] {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 400px;
+            margin: 0 10px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        select {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            margin: 0 10px;
+            background: white;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        /* 로딩 애니메이션 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0066cc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .control-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            input[type="text"] {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            button {
+                margin: 5px 0;
+            }
+            
+            .metrics-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>RTPM - Real-Time Performance Monitor</h1>
+            <p>TCC7500 NPU Board Testing System - Web Interface</p>
+        </div>
+
+        <!-- 컨트롤 패널 -->
+        <div class="control-panel">
+            <h2>제어 패널</h2>
+
+            <!-- 연결 상태 -->
+            <div class="control-group">
+                <strong>연결 상태:</strong>
+                <span id="connectionStatus" class="status-badge disconnected">연결 안됨</span>
+            </div>
+
+            <!-- 컨트롤 버튼들 -->
+            <div class="control-group">
+                <strong>보드 제어:</strong>
+                <button id="connectBtn" class="primary" onclick="connectBoard()">
+                    보드 연결
+                </button>
+                <button id="disconnectBtn" class="danger" onclick="disconnectBoard()" disabled>
+                    연결 해제
+                </button>
+            </div>
+
+            <div class="control-group">
+                <strong>테스트 제어:</strong>
+                <button id="startBtn" class="success" onclick="startTest()" disabled>
+                    테스트 시작
+                </button>
+                <button id="stopBtn" class="danger" onclick="stopTest()" disabled>
+                    테스트 중지
+                </button>
+            </div>
+
+            <!-- 모드 선택 -->
+            <div class="control-group">
+                <strong>동작 모드:</strong>
+                <select id="modeSelect" onchange="setMode(this.value)">
+                    <option value="0">Projection (수신 모드)</option>
+                    <option value="1">Injection (송신 모드)</option>
+                </select>
+            </div>
+
+            <!-- 파일 경로 -->
+            <div class="control-group">
+                <strong>입력 파일:</strong>
+                <input type="text" id="inputPath" placeholder="파일 경로를 입력하세요">
+                <button onclick="setInputPath()">경로 설정</button>
+            </div>
+        </div>
+
+        <!-- 비디오 디스플레이 -->
+        <div class="video-container">
+            <h2>실시간 스트림</h2>
+            <canvas id="videoCanvas" width="1280" height="720"></canvas>
+
+            <!-- 성능 메트릭 디스플레이 -->
+            <div class="metrics-bar">
+                <div class="metric-item">
+                    <div class="metric-value" id="fps">0</div>
+                    <div class="metric-label">FPS</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="cpu">0</div>
+                    <div class="metric-label">CPU %</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="memory">0</div>
+                    <div class="metric-label">Memory %</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="npu0">0</div>
+                    <div class="metric-label">NPU0 %</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="npu1">0</div>
+                    <div class="metric-label">NPU1 %</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수들
+        let ws = null;
+        let statusInterval = null;
+        const canvas = document.getElementById('videoCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // API 호출 헬퍼 함수
+        async function apiCall(endpoint, method = 'POST', body = null) {
+            try {
+                const options = { 
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                
+                if (body && method !== 'GET') {
+                    options.body = JSON.stringify(body);
+                }
+                
+                console.log(`API 호출: ${method} ${endpoint}`, body);
+                const response = await fetch(endpoint, options);
+                const result = await response.json();
+                console.log(`API 응답:`, result);
+                return result;
+            } catch (error) {
+                console.error('API 오류:', error);
+                alert('API 호출 중 오류가 발생했습니다: ' + error.message);
+                return null;
+            }
+        }
+
+        // 보드 연결
+        async function connectBoard() {
+            const connectBtn = document.getElementById('connectBtn');
+            const originalText = connectBtn.textContent;
+            
+            connectBtn.disabled = true;
+            connectBtn.innerHTML = '<span class="loading"></span> 연결 중...';
+            
+            try {
+                const result = await apiCall('/api/connect');
+                if (result && result.status === 'success') {
+                    updateConnectionStatus(true);
+                    startStatusPolling();
+                    console.log('보드 연결 성공');
+                } else {
+                    alert('보드 연결 실패: ' + (result?.message || '알 수 없는 오류'));
+                    connectBtn.disabled = false;
+                    connectBtn.textContent = originalText;
+                }
+            } catch (error) {
+                connectBtn.disabled = false;
+                connectBtn.textContent = originalText;
+            }
+        }
+
+        // 보드 연결 해제
+        async function disconnectBoard() {
+            const result = await apiCall('/api/disconnect');
+            if (result && result.status === 'success') {
+                updateConnectionStatus(false);
+                stopStatusPolling();
+                if (ws) {
+                    ws.close();
+                    ws = null;
+                }
+                console.log('보드 연결 해제됨');
+            }
+        }
+
+        // 테스트 시작
+        async function startTest() {
+            const result = await apiCall('/api/start');
+            if (result && result.status === 'success') {
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+                startVideoStream();
+                console.log('테스트 시작됨');
+            } else {
+                alert('테스트 시작 실패: ' + (result?.message || '알 수 없는 오류'));
+            }
+        }
+
+        // 테스트 중지
+        async function stopTest() {
+            const result = await apiCall('/api/stop');
+            if (result && result.status === 'success') {
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = true;
+                if (ws) {
+                    ws.close();
+                    ws = null;
+                }
+                // 캔버스 클리어
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                console.log('테스트 중지됨');
+            }
+        }
+
+        // 비디오 스트리밍 시작
+        function startVideoStream() {
+            if (ws) ws.close();
+
+            const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${location.host}/ws/stream`;
+            
+            console.log('WebSocket 연결 시도:', wsUrl);
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('WebSocket 연결됨');
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data);
+                    if (message.type === 'frame') {
+                        const img = new Image();
+                        img.onload = () => {
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        };
+                        img.src = 'data:image/jpeg;base64,' + message.data;
+                    }
+                } catch (error) {
+                    console.error('WebSocket 메시지 처리 오류:', error);
+                }
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket 오류:', error);
+            };
+
+            ws.onclose = (event) => {
+                console.log('WebSocket 연결 종료:', event.code, event.reason);
+            };
+        }
+
+        // 연결 상태 UI 업데이트
+        function updateConnectionStatus(connected) {
+            const statusEl = document.getElementById('connectionStatus');
+            const connectBtn = document.getElementById('connectBtn');
+            const disconnectBtn = document.getElementById('disconnectBtn');
+            const startBtn = document.getElementById('startBtn');
+
+            if (connected) {
+                statusEl.textContent = '연결됨';
+                statusEl.className = 'status-badge connected';
+                connectBtn.disabled = true;
+                disconnectBtn.disabled = false;
+                startBtn.disabled = false;
+            } else {
+                statusEl.textContent = '연결 안됨';
+                statusEl.className = 'status-badge disconnected';
+                connectBtn.disabled = false;
+                connectBtn.textContent = '보드 연결';
+                disconnectBtn.disabled = true;
+                startBtn.disabled = true;
+                document.getElementById('stopBtn').disabled = true;
+            }
+        }
+
+        // 상태 폴링 시작
+        function startStatusPolling() {
+            statusInterval = setInterval(async () => {
+                try {
+                    const status = await fetch('/api/status').then(r => r.json());
+                    if (status) {
+                        document.getElementById('fps').textContent = Math.round(status.fps || 0);
+                        document.getElementById('cpu').textContent = Math.round(status.cpu_usage || 0);
+                        document.getElementById('memory').textContent = Math.round(status.memory_usage || 0);
+                        document.getElementById('npu0').textContent = Math.round(status.npu_usage?.[0] || 0);
+                        document.getElementById('npu1').textContent = Math.round(status.npu_usage?.[1] || 0);
+                    }
+                } catch (error) {
+                    console.error('상태 업데이트 오류:', error);
+                }
+            }, 1000);
+        }
+
+        // 상태 폴링 중지
+        function stopStatusPolling() {
+            if (statusInterval) {
+                clearInterval(statusInterval);
+                statusInterval = null;
+            }
+            // 메트릭 초기화
+            document.getElementById('fps').textContent = '0';
+            document.getElementById('cpu').textContent = '0';
+            document.getElementById('memory').textContent = '0';
+            document.getElementById('npu0').textContent = '0';
+            document.getElementById('npu1').textContent = '0';
+        }
+
+        // 모드 설정
+        async function setMode(value) {
+            const result = await apiCall('/api/mode', 'POST', { mode: parseInt(value) });
+            if (result && result.status === 'success') {
+                console.log('모드 변경됨:', value);
+            }
+        }
+
+        // 입력 파일 경로 설정
+        async function setInputPath() {
+            const path = document.getElementById('inputPath').value;
+            if (path.trim()) {
+                const result = await apiCall('/api/file/input', 'POST', { file_path: path });
+                if (result && result.status === 'success') {
+                    console.log('입력 파일 경로 설정됨:', path);
+                    alert('파일 경로가 설정되었습니다');
+                }
+            } else {
+                alert('파일 경로를 입력해주세요');
+            }
+        }
+
+        // 페이지 로드시 초기화
+        window.onload = () => {
+            updateConnectionStatus(false);
+            console.log('RTPM Web Monitor 로드됨');
+        };
+
+        // 페이지 언로드시 정리
+        window.onbeforeunload = () => {
+            if (ws) ws.close();
+            stopStatusPolling();
+        };
+    </script>
+</body>
+</html>
+
