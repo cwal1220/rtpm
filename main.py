@@ -5,7 +5,7 @@ FastAPI 기반 RTPM 웹 서버
 Vision Protocol 통신 로직은 그대로 유지
 """
 
-from fastapi import FastAPI, WebSocket, HTTPException
+from fastapi import FastAPI, WebSocket, HTTPException, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 import uvicorn
@@ -23,7 +23,7 @@ from models.vision_protocol import VisionProtocol
 from models.post_processor import PostProcessor
 from models.workers.file_reader import RtpmFileReader
 from models.workers.data_updater import RtpmDataUpdater
-from data_structures.enums import PerformanceDataType, ResultType
+from data_structures.enums import PerformanceDataType
 from config import settings
 
 # 로깅 설정
@@ -119,7 +119,14 @@ async def disconnect_board():
 
     try:
         if vision_protocol_instance:
-            vision_protocol_instance.stop()
+            # QThread의 quit() 메서드로 스레드 종료 요청
+            vision_protocol_instance.quit()
+            # 스레드 종료까지 대기 (최대 1초)
+            if not vision_protocol_instance.wait(1000):
+                # 3초 내에 종료되지 않으면 강제 종료
+                vision_protocol_instance.terminate()
+                vision_protocol_instance.wait()
+            
             vision_protocol_instance = None
 
         app_state["connected"] = False
@@ -330,11 +337,25 @@ async def websocket_stream(websocket: WebSocket):
             # ~30 FPS 유지
             await asyncio.sleep(0.033)
 
+    except WebSocketDisconnect:
+        logger.info("WebSocket 클라이언트가 연결을 해제했습니다")
     except Exception as e:
-        logger.error(f"WebSocket 오류: {e}")
+        # WebSocket 연결 종료 관련 에러는 일반적이므로 로그 레벨 조정
+        if "1005" in str(e) or "no status received" in str(e):
+            logger.info(f"WebSocket 연결이 정상적으로 종료됨: {e}")
+        elif "websocket" in str(e).lower() and ("closed" in str(e).lower() or "disconnect" in str(e).lower()):
+            logger.info(f"WebSocket 클라이언트 연결 해제: {e}")
+        else:
+            logger.error(f"WebSocket 오류: {e}")
     finally:
-        logger.info("WebSocket 연결 종료")
-        await websocket.close()
+        try:
+            logger.info("WebSocket 연결 종료")
+            # WebSocket 상태를 안전하게 확인하고 종료
+            if hasattr(websocket, 'client_state') and websocket.client_state.name != "DISCONNECTED":
+                await websocket.close()
+        except Exception as close_error:
+            # 종료 과정에서의 에러는 무시 (이미 연결이 끊어진 상태)
+            logger.debug(f"WebSocket 종료 과정에서 무시되는 에러: {close_error}")
 
 @app.get("/api/status")
 async def get_status():
