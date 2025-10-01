@@ -8,6 +8,7 @@ import logging
 from threading import Thread
 import time
 from fastapi import HTTPException
+import cv2
 
 # 기존 코드들을 수정 없이 그대로 import
 from models.vision_protocol import VisionProtocol
@@ -35,11 +36,14 @@ class RTPMManager:
         # 프레임 및 결과 데이터를 위한 큐 (단순한 방식)
         self.frame_queue = queue.Queue(maxsize=30)
         self.result_queue = queue.Queue(maxsize=100)
-        
+
         # 결과 데이터 저장을 위한 컬렉션
         self.session_results = []  # 현재 세션의 모든 결과 저장
         self.performance_data = []  # 성능 데이터 저장
         self.current_session_id = None  # 현재 세션 ID
+
+        # 시퀀스 번호 기반 프레임-결과 동기화를 위한 딕셔너리
+        self.sent_frames_info = {}  # {sequence_number: {"file_name": "...", "timestamp": ..., "frame": ...}}
         
         # 애플리케이션 상태
         self.app_state = {
@@ -167,7 +171,8 @@ class RTPMManager:
                 self.current_session_id = str(uuid.uuid4())[:8]
                 self.session_results = []
                 self.performance_data = []
-                
+                self.sent_frames_info = {}  # 시퀀스 매핑 초기화
+
                 # 테스트 진행 상태 초기화
                 self.app_state["test_completed"] = False
                 self.app_state["processed_images"] = 0
@@ -335,31 +340,35 @@ class RTPMManager:
                             if len(frame_list) > 0:
                                 # 첫 번째 프레임 꺼내기
                                 frame_info = frame_list.pop(0)  # 🔥 핵심: 처리된 프레임을 리스트에서 제거!
-                                
-                                if frame_info and len(frame_info) > 0:
-                                    frame_data = frame_info[0]  # [이미지, 타임스탬프] 중 이미지
-                                    
+
+                                if frame_info and len(frame_info) >= 2:
+                                    frame_data = frame_info[0]  # [이미지, 타임스탬프, 파일명]
+                                    timestamp = frame_info[1]  # 시퀀스 번호
+                                    file_name = frame_info[2] if len(frame_info) > 2 else None
+
                                     if frame_data is not None:
-                                        # 직접 WebSocket 큐에 추가 (즉시 전송)
-                                        if self.frame_queue.full():
-                                            try:
-                                                self.frame_queue.get_nowait()
-                                            except queue.Empty:
-                                                pass
-                                        self.frame_queue.put(frame_data)
-                                        
+                                        # 시퀀스 번호로 프레임 정보 저장 (결과 매칭용)
+                                        # 프레임 데이터를 복사하여 저장 (바운딩 박스 그리기 전 원본)
+                                        self.sent_frames_info[timestamp] = {
+                                            "file_name": file_name,
+                                            "timestamp": timestamp,
+                                            "frame": frame_data.copy()  # 원본 프레임 복사
+                                        }
+
                                         # 진행 상황 업데이트
                                         if not hasattr(self, '_processed_count'):
                                             self._processed_count = 0
                                         self._processed_count += 1
-                                        
+
                                         self.app_state["processed_images"] = self._processed_count
                                         if self.app_state["total_images"] > 0:
                                             self.app_state["progress_percentage"] = int(
                                                 (self.app_state["processed_images"] / self.app_state["total_images"]) * 100
                                             )
-                                        
-                                        logger.info(f"🚀 [Injection] 프레임 #{self._processed_count}/{self.app_state['total_images']} 웹 표시용 큐 추가 (진행률: {self.app_state['progress_percentage']}%, 대기 중: {len(frame_list)}개)")
+
+                                        logger.info(f"🚀 [Injection] 프레임 #{self._processed_count}/{self.app_state['total_images']} "
+                                                  f"(seq:{timestamp}, file:{file_name}) 웹 표시용 큐 추가 "
+                                                  f"(진행률: {self.app_state['progress_percentage']}%, 대기 중: {len(frame_list)}개)")
 
                                         # 🎯 참고: NPU 전송은 FileReader에서 이미 완료됨 (file_reader.py:76)
                         elif self.file_reader_instance:
@@ -388,12 +397,21 @@ class RTPMManager:
                                           f"total={self.app_state['total_images']}, "
                                           f"completed={file_reader_completed}, all_processed={all_files_processed}")
                             
-                            # 테스트 완료 조건: file_reader가 완료되고 모든 파일이 처리되었을 때
+                            # 테스트 완료 조건: file_reader가 완료되고 모든 결과를 수신했을 때
+                            frames_sent = self.app_state["processed_images"]
+                            results_received = len(self.session_results)
+
                             if file_reader_completed and all_files_processed and not self.app_state["test_completed"]:
-                                self.app_state["test_completed"] = True
-                                self.app_state["running"] = False
-                                self.app_state["progress_percentage"] = 100
-                                logger.info(f"✅ [완료] 모든 {self.app_state['total_images']}개 파일 처리 및 전송 완료 - 테스트 완료!")
+                                # 전송한 프레임 수와 받은 결과 수 비교
+                                if results_received >= frames_sent:
+                                    self.app_state["test_completed"] = True
+                                    self.app_state["running"] = False
+                                    self.app_state["progress_percentage"] = 100
+                                    logger.info(f"✅ [완료] 모든 {frames_sent}개 파일 처리 및 결과 수신 완료 (결과: {results_received}개)")
+                                else:
+                                    # 아직 결과를 기다리는 중
+                                    if self._debug_count % 50 == 0:
+                                        logger.info(f"⏳ 결과 대기 중: {results_received}/{frames_sent} (남은 결과: {frames_sent - results_received}개)")
                             elif file_reader_completed and self.app_state["total_images"] == 0:
                                 # 예외 상황: 파일이 없는 경우
                                 logger.warning("⚠️ file_reader 완료되었지만 처리할 파일이 없습니다")
@@ -419,23 +437,67 @@ class RTPMManager:
                             "mode": self.app_state["mode"],
                             "image_info": {
                                 "shape": [settings.INJECTION['height'], settings.INJECTION['width']],
-                                "file_name": None  # Injection Mode에서는 file_reader에서 설정 필요
+                                "file_name": None
                             }
                         }
-                        
-                        # Injection Mode에서 파일 정보 추가
-                        if (self.app_state["mode"] == 1 and 
-                            self.file_reader_instance and 
-                            hasattr(self.file_reader_instance, 'frame_list') and 
-                            len(self.file_reader_instance.frame_list) > 0):
-                            
-                            # 현재 처리 중인 프레임 정보 추출
-                            current_idx = getattr(self, '_injection_simple_index', 0) - 1
-                            if current_idx >= 0 and current_idx < len(self.file_reader_instance.frame_list):
-                                frame_info = self.file_reader_instance.frame_list[current_idx]
-                                if len(frame_info) > 2:  # [이미지, 타임스탬프, 파일명]
-                                    result_entry["image_info"]["file_name"] = frame_info[2]
-                        
+
+                        # 시퀀스 번호 기반 프레임-결과 매칭
+                        if self.app_state["mode"] == 1:  # Injection Mode
+                            # 결과 데이터에서 시퀀스 번호 추출
+                            sequence_number = None
+                            if isinstance(result_data, dict) and "info" in result_data:
+                                # result_data["info"] = [시퀀스번호]
+                                if isinstance(result_data["info"], list) and len(result_data["info"]) > 0:
+                                    sequence_number = result_data["info"][0]
+
+                            # 시퀀스 번호로 프레임 정보 매칭
+                            if sequence_number is not None and sequence_number in self.sent_frames_info:
+                                frame_info = self.sent_frames_info[sequence_number]
+                                result_entry["image_info"]["file_name"] = frame_info["file_name"]
+                                logger.debug(f"✅ 결과 매칭 성공: seq={sequence_number}, file={frame_info['file_name']}")
+
+                                # 프레임에 바운딩 박스 그리기
+                                frame_with_boxes = frame_info["frame"].copy()
+
+                                if self.post_processor_instance and isinstance(result_data, dict):
+                                    detection_results = []
+                                    if 'cluster1' in result_data and 'od' in result_data['cluster1']:
+                                        detection_results = result_data['cluster1']['od']
+
+                                    if detection_results:
+                                        # 좌표 스케일 계산
+                                        current_height, current_width = frame_with_boxes.shape[:2]
+                                        npu_width = settings.INJECTION['width']
+                                        npu_height = settings.INJECTION['height']
+                                        scale_x = current_width / npu_width
+                                        scale_y = current_height / npu_height
+
+                                        # 바운딩 박스 그리기
+                                        frame_with_boxes = self.post_processor_instance.draw_object_detection_boxes(
+                                            frame_with_boxes, detection_results, 0, [scale_x, scale_y]
+                                        )
+                                        logger.debug(f"🎨 바운딩 박스 그리기 완료: seq={sequence_number}, 검출 수={len(detection_results)}")
+
+                                # 프레임 전처리: 리사이징 + JPEG 인코딩
+                                jpeg_bytes = self._prepare_frame_for_streaming(frame_with_boxes)
+
+                                # JPEG 바이트를 웹 표시용 큐에 추가
+                                if jpeg_bytes:
+                                    if self.frame_queue.full():
+                                        try:
+                                            self.frame_queue.get_nowait()
+                                        except queue.Empty:
+                                            pass
+                                    self.frame_queue.put(jpeg_bytes)
+
+                                # 메모리 절약을 위해 매칭된 프레임 정보 삭제
+                                del self.sent_frames_info[sequence_number]
+                            else:
+                                if sequence_number is not None:
+                                    logger.warning(f"⚠️ 시퀀스 번호 {sequence_number}에 해당하는 프레임 정보를 찾을 수 없습니다")
+                                else:
+                                    logger.warning("⚠️ 결과 데이터에서 시퀀스 번호를 추출할 수 없습니다")
+
                         self.session_results.append(result_entry)
                         logger.debug(f"추론 결과 추가: {type(result_data)} (세션 결과: {len(self.session_results)}개)")
 
@@ -696,3 +758,36 @@ class RTPMManager:
         except Exception as e:
             logger.error(f"COCO 내보내기 오류: {str(e)}")
             return {"status": "error", "message": str(e)}
+
+    def _prepare_frame_for_streaming(self, frame) -> bytes:
+        """프레임을 웹 스트리밍용으로 전처리 (리사이징 + JPEG 인코딩)"""
+        try:
+            if frame is None or frame.size == 0 or len(frame.shape) < 2:
+                return None
+
+            # 최대 해상도 제한
+            height, width = frame.shape[:2]
+            max_dimension = 1920
+
+            if width > max_dimension or height > max_dimension:
+                if width > height:
+                    new_width = max_dimension
+                    new_height = int(height * (max_dimension / width))
+                else:
+                    new_height = max_dimension
+                    new_width = int(width * (max_dimension / height))
+
+                frame = cv2.resize(frame, (new_width, new_height))
+
+            # JPEG 인코딩 (품질 85)
+            success, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 85])
+
+            if success:
+                return buffer.tobytes()
+            else:
+                logger.error("JPEG 인코딩 실패")
+                return None
+
+        except Exception as e:
+            logger.error(f"프레임 전처리 오류: {e}")
+            return None

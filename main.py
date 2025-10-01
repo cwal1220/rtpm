@@ -10,7 +10,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, StreamingResponse
 import uvicorn
 import asyncio
-import cv2
 import json
 import queue
 import logging
@@ -77,109 +76,26 @@ async def mjpeg_stream():
 
     async def generate_frames():
         """프레임 생성기 - MJPEG 형식으로 연속 전송"""
-        frame_count = 0
-        empty_count = 0
-
         logger.info("MJPEG 스트림 시작")
 
         try:
             while True:
-                # 프레임 큐에서 가져오기
-                if not rtpm_manager.frame_queue.empty():
-                    frame = rtpm_manager.frame_queue.get_nowait()
-                    frame_count += 1
-                    empty_count = 0
+                # JPEG 바이트 큐에서 가져오기 (이미 인코딩된 바이트)
+                try:
+                    jpeg_bytes = rtpm_manager.frame_queue.get_nowait()
 
-                    # 10프레임마다 로그
-                    if frame_count % 10 == 0:
-                        logger.info(f"MJPEG 프레임 전송 중: #{frame_count}개")
+                    # MJPEG 형식으로 전송
+                    yield (b'--frame\r\n'
+                           b'Content-Type: image/jpeg\r\n\r\n' +
+                           jpeg_bytes + b'\r\n')
 
-                    # 검출 결과가 있으면 바운딩 박스 그리기
-                    if rtpm_manager.post_processor_instance and not rtpm_manager.result_queue.empty():
-                        try:
-                            result = rtpm_manager.result_queue.get_nowait()
-
-                            # 결과 데이터 처리
-                            if result is not None:
-                                # 문자열이면 JSON 파싱
-                                if isinstance(result, str):
-                                    try:
-                                        result = json.loads(result)
-                                    except json.JSONDecodeError:
-                                        logger.warning(f"JSON 파싱 실패: {result}")
-                                        result = None
-
-                                # 검출 결과 추출
-                                if isinstance(result, dict):
-                                    detection_results = []
-                                    if 'cluster1' in result and 'od' in result['cluster1']:
-                                        detection_results = result['cluster1']['od']
-
-                                    # 바운딩 박스 그리기
-                                    if detection_results:
-                                        current_height, current_width = frame.shape[:2]
-                                        npu_width = settings.INJECTION['width']
-                                        npu_height = settings.INJECTION['height']
-
-                                        scale_x = current_width / npu_width
-                                        scale_y = current_height / npu_height
-
-                                        frame = rtpm_manager.post_processor_instance.draw_object_detection_boxes(
-                                            frame, detection_results, 0, [scale_x, scale_y]
-                                        )
-                        except queue.Empty:
-                            pass
-                        except Exception as e:
-                            logger.warning(f"검출 결과 처리 오류: {e}")
-
-                    # 프레임 크기 검증 및 리사이징
-                    if frame is not None and frame.size > 0:
-                        # 프레임 차원 확인
-                        if len(frame.shape) < 2:
-                            logger.error(f"유효하지 않은 프레임 차원: {frame.shape}")
-                            continue
-
-                        height, width = frame.shape[:2]
-
-                        # 최대 해상도 제한
-                        max_dimension = 1920
-                        if width > max_dimension or height > max_dimension:
-                            if width > height:
-                                new_width = max_dimension
-                                new_height = int(height * (max_dimension / width))
-                            else:
-                                new_height = max_dimension
-                                new_width = int(width * (max_dimension / height))
-
-                            frame = cv2.resize(frame, (new_width, new_height))
-
-                        # JPEG 인코딩 (품질 85)
-                        success, buffer = cv2.imencode('.jpg', frame,
-                                                     [cv2.IMWRITE_JPEG_QUALITY, 85])
-
-                        if success:
-                            # MJPEG 형식으로 전송
-                            yield (b'--frame\r\n'
-                                   b'Content-Type: image/jpeg\r\n\r\n' +
-                                   buffer.tobytes() + b'\r\n')
-                        else:
-                            logger.error("JPEG 인코딩 실패")
-
-                    # FPS 제한 (약 30 FPS)
-                    await asyncio.sleep(0.033)
-
-                else:
-                    # 큐가 비어있으면 대기
-                    empty_count += 1
-                    if empty_count % 100 == 0:
-                        logger.debug(f"프레임 큐 비어있음 (연속 {empty_count}회)")
-
-                    await asyncio.sleep(0.033)
-
+                except queue.Empty:
+                    await asyncio.sleep(0.01)
+                
         except Exception as e:
-            logger.error(f"MJPEG 스트림 오류: {e}", exc_info=True)
+            logger.error(f"MJPEG 스트림 오류: {e}")
         finally:
-            logger.info(f"MJPEG 스트림 종료 (총 {frame_count}프레임 전송)")
+            logger.info("MJPEG 스트림 종료")
 
     return StreamingResponse(
         generate_frames(),
