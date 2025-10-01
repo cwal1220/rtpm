@@ -347,15 +347,13 @@
             <div class="control-group" id="fileInputGroup" style="display: none;">
                 <strong>입력 경로: <span style="color: red;">*</span></strong>
                 <input type="text" id="inputPath" placeholder="파일 경로를 입력하세요" oninput="checkInputPath(); updateOutputPath();">
-                <button onclick="setInputPath()">경로 설정</button>
             </div>
 
             <!-- 출력 경로 설정 -->
             <div class="control-group">
                 <strong>출력 경로:</strong>
-                <input type="text" id="outputPath" placeholder="입력 경로 설정 시 자동 생성됩니다" 
-                       value="./results" oninput="updateSaveButtonsState(document.getElementById('connectionStatus').className.includes('connected'), false)">
-                <button onclick="setOutputPath()">경로 설정</button>
+                <input type="text" id="outputPath" placeholder="입력 경로 설정 시 자동 생성됩니다"
+                       oninput="updateSaveButtonsState(document.getElementById('connectionStatus').className.includes('connected'), false)">
             </div>
 
             <!-- 컨트롤 버튼들 -->
@@ -483,16 +481,20 @@
             
             const connectBtn = document.getElementById('connectBtn');
             const originalText = connectBtn.textContent;
-            
+
+            // 모드 값 가져오기
+            const mode = parseInt(modeSelect.value);
+
             connectBtn.disabled = true;
             connectBtn.innerHTML = '<span class="loading"></span> 연결 중...';
-            
+
             try {
-                const result = await apiCall('/api/connect');
+                // 모드를 포함하여 보드 연결
+                const result = await apiCall('/api/connect', 'POST', { mode: mode });
                 if (result && result.status === 'success') {
                     updateConnectionStatus(true);
                     startStatusPolling();
-                    console.log('보드 연결 성공');
+                    console.log('보드 연결 성공 (mode:', mode, ')');
                 } else {
                     alert('보드 연결 실패: ' + (result?.message || '알 수 없는 오류'));
                     connectBtn.disabled = false;
@@ -517,12 +519,28 @@
 
         // 테스트 시작
         async function startTest() {
-            const result = await apiCall('/api/start');
+            // 경로 설정값 수집
+            const mode = parseInt(document.getElementById('modeSelect').value);
+            const inputPath = document.getElementById('inputPath').value.trim();
+            const outputPath = document.getElementById('outputPath').value.trim();
+
+            // Injection 모드일 때 입력 경로 필수 확인
+            if (mode === 1 && !inputPath) {
+                alert('Injection 모드에서는 입력 경로가 필수입니다');
+                return;
+            }
+
+            // 입력/출력 경로만 포함하여 /api/start 호출 (모드는 이미 보드 연결 시 설정됨)
+            const result = await apiCall('/api/start', 'POST', {
+                input_path: inputPath,
+                output_path: outputPath
+            });
+
             if (result && result.status === 'success') {
                 document.getElementById('startBtn').disabled = true;
                 document.getElementById('stopBtn').disabled = false;
                 startVideoStream();
-                console.log('테스트 시작됨');
+                console.log('테스트 시작됨 (input:', inputPath, ', output:', outputPath, ')');
             } else {
                 alert('테스트 시작 실패: ' + (result?.message || '알 수 없는 오류'));
             }
@@ -644,76 +662,46 @@
             updateConnectButtonState();
         }
 
-        // 모드 설정
-        async function setMode(value) {
+        // 모드 설정 (UI만 업데이트, 실제 API 호출은 startTest에서 수행)
+        function setMode(value) {
             const fileInputGroup = document.getElementById('fileInputGroup');
-            
+
             if (value === '') {
                 // 모드가 선택되지 않은 경우
                 fileInputGroup.style.display = 'none';
                 updateConnectButtonState();
                 return;
             }
-            
-            const result = await apiCall('/api/mode', 'POST', { mode: parseInt(value) });
-            if (result && result.status === 'success') {
-                console.log('모드 변경됨:', value);
-                
-                // 파일 입력 그룹 표시/숨김
-                if (parseInt(value) === 1) {  // Injection Mode
-                    fileInputGroup.style.display = 'block';
-                } else {  // Projection Mode
-                    fileInputGroup.style.display = 'none';
-                }
-                
-                // 보드 연결 버튼 상태 업데이트
-                updateConnectButtonState();
+
+            console.log('모드 선택됨:', value, '(설정은 테스트 시작 시 적용됩니다)');
+
+            // 파일 입력 그룹 표시/숨김
+            if (parseInt(value) === 1) {  // Injection Mode
+                fileInputGroup.style.display = 'flex';
+            } else {  // Projection Mode
+                fileInputGroup.style.display = 'none';
             }
+
+            // 보드 연결 버튼 상태 업데이트
+            updateConnectButtonState();
         }
 
         // 출력 경로 자동 생성 함수
         function updateOutputPath() {
             const inputPath = document.getElementById('inputPath').value.trim();
             const outputPathInput = document.getElementById('outputPath');
-            
+
             if (inputPath) {
                 // 입력 경로에 _results 접미사 추가
                 const outputPath = inputPath + '_results';
                 outputPathInput.value = outputPath;
-                
-                // 출력 경로도 백엔드에 자동 설정
-                apiCall('/api/output/path', 'POST', { output_path: outputPath });
-                
+                console.log('출력 경로 자동 생성됨:', outputPath, '(테스트 시작 시 적용됩니다)');
+
                 // 저장 버튼 상태 업데이트
                 const connected = document.getElementById('connectionStatus').className.includes('connected');
                 updateSaveButtonsState(connected, false);
             } else {
                 outputPathInput.value = './results';
-            }
-        }
-
-        // 입력 파일 경로 설정
-        async function setInputPath() {
-            const path = document.getElementById('inputPath').value;
-            if (path.trim()) {
-                const result = await apiCall('/api/file/input', 'POST', { file_path: path });
-                if (result && result.status === 'success') {
-                    console.log('입력 파일 경로 설정됨:', path);
-                    
-                    // 백엔드에서 자동 생성된 출력 경로를 UI에 반영
-                    if (result.output_path) {
-                        document.getElementById('outputPath').value = result.output_path;
-                        console.log('출력 경로 자동 설정됨:', result.output_path);
-                    }
-                    
-                    // 저장 버튼 상태 업데이트
-                    const connected = document.getElementById('connectionStatus').className.includes('connected');
-                    updateSaveButtonsState(connected, false);
-                    
-                    alert('파일 경로가 설정되었습니다\n출력 경로: ' + result.output_path);
-                }
-            } else {
-                alert('파일 경로를 입력해주세요');
             }
         }
 
@@ -732,25 +720,6 @@
         };
 
         // 저장 관련 함수들
-        async function setOutputPath() {
-            const outputPath = document.getElementById('outputPath').value;
-            if (outputPath.trim()) {
-                const result = await apiCall('/api/output/path', 'POST', { output_path: outputPath });
-                if (result.status === 'success') {
-                    alert('출력 경로가 설정되었습니다: ' + result.path);
-                    console.log('출력 경로 설정됨:', result.path);
-                    
-                    // 저장 버튼 상태 업데이트
-                    const connected = document.getElementById('connectionStatus').className.includes('connected');
-                    updateSaveButtonsState(connected, false);
-                } else {
-                    alert('출력 경로 설정 실패: ' + result.message);
-                }
-            } else {
-                alert('출력 경로를 입력해주세요');
-            }
-        }
-
         async function saveResults() {
             const saveBtn = document.getElementById('saveResultsBtn');
             const originalText = saveBtn.textContent;

@@ -47,9 +47,10 @@ async def read_index():
         return HTMLResponse("<h1>Web UI not found. Please create static/index.html</h1>")
 
 @app.post("/api/connect")
-async def connect_board():
-    """TCC7500 보드에 연결"""
-    return await rtpm_manager.connect_board()
+async def connect_board(request: Dict[str, Any]):
+    """TCC7500 보드에 연결 (모드 포함)"""
+    mode = request.get("mode", 0)
+    return await rtpm_manager.connect_board(mode)
 
 @app.post("/api/disconnect") 
 async def disconnect_board():
@@ -57,9 +58,12 @@ async def disconnect_board():
     return await rtpm_manager.disconnect_board()
 
 @app.post("/api/start")
-async def start_test():
-    """테스트 시작"""
-    return await rtpm_manager.start_test()
+async def start_test(request: Dict[str, Any]):
+    """테스트 시작 (입력/출력 경로 포함)"""
+    input_path = request.get("input_path", "")
+    output_path = request.get("output_path", "")
+
+    return await rtpm_manager.start_test(input_path, output_path)
 
 @app.post("/api/stop")
 async def stop_test():
@@ -188,23 +192,6 @@ async def get_status():
     """현재 상태 및 성능 메트릭 반환"""
     return await rtpm_manager.get_status()
 
-@app.post("/api/mode")
-async def set_mode(request: Dict[str, Any]):
-    """동작 모드 설정 (0=projection, 1=injection)"""
-    mode = request.get("mode", 0)
-    return await rtpm_manager.set_mode(mode)
-
-@app.post("/api/file/input")
-async def set_input_file(request: Dict[str, Any]):
-    """입력 파일 경로 설정"""
-    file_path = request.get("file_path", "")
-    return await rtpm_manager.set_input_file(file_path)
-
-@app.post("/api/output/path")
-async def set_output_path(request: Dict[str, Any]):
-    """출력 경로 설정"""
-    output_path = request.get("output_path", "")
-    return await rtpm_manager.set_output_path(output_path)
 
 @app.post("/api/save/results")
 async def save_results():

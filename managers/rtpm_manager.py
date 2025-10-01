@@ -58,16 +58,18 @@ class RTPMManager:
             "progress_percentage": 0  # 진행률 (0-100)
         }
     
-    async def connect_board(self):
-        """TCC7500 보드에 연결"""
+    async def connect_board(self, mode: int = 0):
+        """TCC7500 보드에 연결 (모드 포함)"""
         try:
-            logger.info("보드 연결 시작...")
-            
+            # 모드 설정
+            self.app_state["mode"] = mode
+            logger.info(f"보드 연결 시작... (mode: {mode})")
+
             # 기존 MainViewModel.__init__과 동일한 초기화
             self.vision_protocol_instance = VisionProtocol(
-                inputMode=self.app_state["mode"],
+                inputMode=mode,
                 frameWidth=settings.INJECTION['width'],
-                frameHeight=settings.INJECTION['height'], 
+                frameHeight=settings.INJECTION['height'],
                 frameChannel=settings.INJECTION['channel']
             )
 
@@ -141,10 +143,19 @@ class RTPMManager:
             logger.error(f"보드 연결 해제 실패: {str(e)}")
             return {"status": "error", "message": str(e)}
     
-    async def start_test(self):
-        """테스트 시작"""
+    async def start_test(self, input_path: str = None, output_path: str = None):
+        """테스트 시작 (입력/출력 경로 포함)"""
         if not self.app_state["connected"]:
             raise HTTPException(status_code=400, detail="Board not connected")
+
+        # 경로 설정
+        if input_path is not None:
+            self.app_state["input_path"] = input_path
+            logger.info(f"입력 경로 설정: {input_path}")
+
+        if output_path is not None:
+            self.app_state["output_path"] = output_path
+            logger.info(f"출력 경로 설정: {output_path}")
 
         try:
             if self.vision_protocol_instance:
