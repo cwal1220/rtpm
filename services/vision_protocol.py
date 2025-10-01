@@ -233,7 +233,8 @@ class FrameReader(threading.Thread):
                 ret, pStreamInfo, pIndex = self.parent.vpm_stream.RecvStream(BLOCKING)
                 if(ret == VISION_SUCCESS):
                     pBuffer, addr = self.parent.vpm_stream.buf2ndarray(pStreamInfo.pBuffer, pStreamInfo.length)
-                    self.frameQueue.append(pBuffer)
+                    # 프레임과 시퀀스 번호를 함께 저장 (튜플 형태)
+                    self.frameQueue.append((pBuffer, pStreamInfo.seqNum))
                     if len(self.frameQueue) > self.frameLenMax:
                         del self.frameQueue[0]
                     self.parent.vpm_stream.ReleaseStreamRecvBuffer(pStreamInfo, pIndex)

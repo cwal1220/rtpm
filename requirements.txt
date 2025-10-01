@@ -1,9 +1,6 @@
 numpy==1.26.4
 opencv-python==4.6.0.66
-imagesize
-matplotlib
 
 # FastAPI dependencies
 fastapi==0.104.1
 uvicorn==0.24.0
-python-multipart==0.0.6

@@ -3,8 +3,7 @@ import time
 import threading
 
 import cv2
-from numpy import asarray, ravel
-from PIL import Image
+from numpy import ravel
 
 import logging
 logger = logging.getLogger(__name__)
@@ -145,18 +144,13 @@ class RtpmFileReader(threading.Thread):
         
         video_obj.release()
 
-    def _resize_image(self, image, use_pil=False):
+    def _resize_image(self, image):
         if image.shape[:2] == (self.base_size[0], self.base_size[1]):
             return ravel(image[..., ::-1], order='C')
 
-        if use_pil:
-            img = Image.fromarray(image[..., ::-1])  # BGR -> RGB
-            img_resize = img.resize((self.base_size[1], self.base_size[0]), Image.LANCZOS)
-            r_image = asarray(img_resize)
-            return ravel(r_image, order='C')
-        else:
-            r_image = cv2.resize(image, (self.base_size[1], self.base_size[0]))
-            return ravel(r_image[..., ::-1], order='C')
+        # Lanczos 보간 알고리즘 사용 (고품질 리사이즈)
+        r_image = cv2.resize(image, (self.base_size[1], self.base_size[0]), interpolation=cv2.INTER_LANCZOS4)
+        return ravel(r_image[..., ::-1], order='C')
 
     def start_reader(self, filePath, frameList, frameListMax):
         self.file_path = filePath

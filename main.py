@@ -15,8 +15,8 @@ import queue
 import logging
 from typing import Dict, Any
 
-# RTPM 매니저 및 설정 import
-from managers import RTPMManager
+# RTPM 서비스 및 설정 import
+from services.rtpm_service import RTPMService
 from config import settings
 
 # 로깅 설정 (DEBUG 레벨로 상세 로그 출력)
@@ -33,8 +33,8 @@ app = FastAPI(title="RTPM Web API", description="TCC7500 NPU Real-Time Performan
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-# 전역 매니저 인스턴스 (단일 인스턴스)
-rtpm_manager = RTPMManager()
+# 전역 서비스 인스턴스 (단일 인스턴스)
+rtpm_manager = RTPMService()
 
 @app.get("/")
 async def read_index():
