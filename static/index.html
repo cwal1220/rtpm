@@ -404,8 +404,8 @@
 
         <!-- 비디오 디스플레이 -->
         <div class="video-container">
-            <h2>실시간 스트림</h2>
-            <canvas id="videoCanvas" width="1280" height="720"></canvas>
+            <h2>📹 실시간 스트림 (MJPEG)</h2>
+            <img id="videoStream" src="" alt="Video Stream" style="width: 100%; max-width: 1280px; height: auto; border: 3px solid #ddd; border-radius: 8px; background: #000; display: block; margin: 0 auto;" />
 
             <!-- 성능 메트릭 디스플레이 -->
             <div class="metrics-bar">
@@ -435,56 +435,8 @@
 
     <script>
         // 전역 변수들
-        let ws = null;
         let statusInterval = null;
-        const canvas = document.getElementById('videoCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        // 테어링 방지를 위한 이미지 버퍼링
-        let pendingImage = null;
-        let isRendering = false;
-        
-        // 동기화된 렌더링 함수
-        function scheduleRender() {
-            if (isRendering) return;
-            isRendering = true;
-            
-            requestAnimationFrame(() => {
-                if (pendingImage) {
-                    // 캔버스 클리어 (깜빡임 방지)
-                    ctx.fillStyle = '#000000';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    // 이미지 그리기 (비율 유지하며 중앙 정렬)
-                    const imgAspect = pendingImage.width / pendingImage.height;
-                    const canvasAspect = canvas.width / canvas.height;
-                    
-                    let drawWidth, drawHeight, drawX, drawY;
-                    
-                    if (imgAspect > canvasAspect) {
-                        // 이미지가 캔버스보다 가로로 길 때
-                        drawWidth = canvas.width;
-                        drawHeight = canvas.width / imgAspect;
-                        drawX = 0;
-                        drawY = (canvas.height - drawHeight) / 2;
-                    } else {
-                        // 이미지가 캔버스보다 세로로 길 때
-                        drawWidth = canvas.height * imgAspect;
-                        drawHeight = canvas.height;
-                        drawX = (canvas.width - drawWidth) / 2;
-                        drawY = 0;
-                    }
-                    
-                    // 부드럽게 이미지 렌더링
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(pendingImage, drawX, drawY, drawWidth, drawHeight);
-                    
-                    pendingImage = null;
-                }
-                isRendering = false;
-            });
-        }
+        const videoStream = document.getElementById('videoStream');
 
         // API 호출 헬퍼 함수
         async function apiCall(endpoint, method = 'POST', body = null) {
@@ -558,13 +510,7 @@
             if (result && result.status === 'success') {
                 updateConnectionStatus(false);
                 stopStatusPolling();
-                if (ws) {
-                    ws.close();
-                    ws = null;
-                }
-                // 렌더링 상태 초기화
-                pendingImage = null;
-                isRendering = false;
+                stopVideoStream();
                 console.log('보드 연결 해제됨');
             }
         }
@@ -588,61 +534,22 @@
             if (result && result.status === 'success') {
                 document.getElementById('startBtn').disabled = false;
                 document.getElementById('stopBtn').disabled = true;
-                if (ws) {
-                    ws.close();
-                    ws = null;
-                }
-                // 렌더링 상태 초기화
-                pendingImage = null;
-                isRendering = false;
-                // 캔버스 클리어
-                ctx.fillStyle = '#000';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                stopVideoStream();
                 console.log('테스트 중지됨');
             }
         }
 
-        // 비디오 스트리밍 시작
+        // 비디오 스트리밍 시작 (MJPEG)
         function startVideoStream() {
-            if (ws) ws.close();
+            videoStream.src = '/video/mjpeg?' + new Date().getTime();
+            videoStream.style.display = 'block';
+            console.log('MJPEG 스트림 시작');
+        }
 
-            const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const wsUrl = `${protocol}//${location.host}/ws/stream`;
-            
-            console.log('WebSocket 연결 시도:', wsUrl);
-            ws = new WebSocket(wsUrl);
-
-            ws.onopen = () => {
-                console.log('WebSocket 연결됨');
-            };
-
-            ws.onmessage = (event) => {
-                try {
-                    const message = JSON.parse(event.data);
-                    if (message.type === 'frame') {
-                        const img = new Image();
-                        img.onload = () => {
-                            // 새 이미지를 버퍼에 저장
-                            pendingImage = img;
-                            // 렌더링이 진행 중이 아니면 시작
-                            if (!isRendering) {
-                                scheduleRender();
-                            }
-                        };
-                        img.src = 'data:image/jpeg;base64,' + message.data;
-                    }
-                } catch (error) {
-                    console.error('WebSocket 메시지 처리 오류:', error);
-                }
-            };
-
-            ws.onerror = (error) => {
-                console.error('WebSocket 오류:', error);
-            };
-
-            ws.onclose = (event) => {
-                console.log('WebSocket 연결 종료:', event.code, event.reason);
-            };
+        // 비디오 스트리밍 중지
+        function stopVideoStream() {
+            videoStream.src = '';
+            console.log('MJPEG 스트림 중지');
         }
 
         // 연결 상태 UI 업데이트
@@ -974,11 +881,8 @@
 
         // 페이지 언로드시 정리
         window.onbeforeunload = () => {
-            if (ws) ws.close();
             stopStatusPolling();
-            // 렌더링 상태 정리
-            pendingImage = null;
-            isRendering = false;
+            stopVideoStream();
         };
     </script>
 </body>

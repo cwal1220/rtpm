@@ -348,9 +348,9 @@ class RTPMManager:
                                                 (self.app_state["processed_images"] / self.app_state["total_images"]) * 100
                                             )
                                         
-                                        logger.info(f"🚀 [FIFO] 프레임 #{self._processed_count}/{self.app_state['total_images']} WebSocket 전송 (진행률: {self.app_state['progress_percentage']}%, 대기 중: {len(frame_list)}개)")
-                                        
-                                        # 🎯 중요: frame_list에서 제거했으므로 file_reader가 다시 파일을 읽을 수 있음!
+                                        logger.info(f"🚀 [Injection] 프레임 #{self._processed_count}/{self.app_state['total_images']} 웹 표시용 큐 추가 (진행률: {self.app_state['progress_percentage']}%, 대기 중: {len(frame_list)}개)")
+
+                                        # 🎯 참고: NPU 전송은 FileReader에서 이미 완료됨 (file_reader.py:76)
                         elif self.file_reader_instance:
                             # file_reader는 있지만 frame_list가 아직 비어있거나 완료된 경우
                             if not hasattr(self, '_waiting_logged'):
