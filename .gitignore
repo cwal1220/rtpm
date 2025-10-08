@@ -3,8 +3,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.pyc
-*.pyd
-*.so
+#*.pyd
+#*.so
 
 # Virtual environment
 .venv/
